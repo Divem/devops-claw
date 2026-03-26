@@ -23,13 +23,18 @@
           @close="store.closeModal()"
           @submit="handleCreate"
         />
+        <ProgressModal
+          :show="store.modalState === 'progress'"
+          :steps="store.steps"
+          @retry="handleRetry"
+        />
       </div>
     </n-message-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { NConfigProvider, NMessageProvider } from 'naive-ui'
 import { themeOverrides } from './theme'
 import AppHeader from './components/AppHeader.vue'
@@ -39,6 +44,8 @@ import { useProjectStore } from './stores/project'
 import CreateGuide from './components/CreateGuide.vue'
 import ProjectCard from './components/ProjectCard.vue'
 import CreateModal from './components/CreateModal.vue'
+import ProgressModal from './components/ProgressModal.vue'
+import type { ProgressResponse } from './types/project'
 
 const store = useProjectStore()
 
@@ -67,6 +74,52 @@ function handleChat() {
   }
 }
 
+let pollTimer: ReturnType<typeof setInterval> | null = null
+let failCount = 0
+
+function pollProgress(projectId: string) {
+  failCount = 0
+  if (pollTimer) clearInterval(pollTimer)
+
+  pollTimer = setInterval(async () => {
+    try {
+      const res = await fetch(`/api/project/${projectId}/progress`)
+      const data: ProgressResponse = await res.json()
+      failCount = 0
+
+      for (const step of data.steps) {
+        store.updateStep(step.key, step.status, step.elapsed)
+      }
+
+      if (data.done) {
+        clearInterval(pollTimer!)
+        pollTimer = null
+        store.showComplete()
+        const projectRes = await fetch('/api/project')
+        if (projectRes.ok) {
+          store.setProject(await projectRes.json())
+        }
+      }
+    } catch {
+      failCount++
+      if (failCount >= 3) {
+        clearInterval(pollTimer!)
+        pollTimer = null
+        const runningStep = store.steps.find((s) => s.status === 'running')
+        if (runningStep) {
+          store.updateStep(runningStep.key, 'error')
+        }
+      }
+    }
+  }, 2000)
+}
+
+function handleRetry() {
+  if (!store.project) return
+  store.startProgress()
+  pollProgress(store.project.id)
+}
+
 async function handleCreate(payload: { name: string; botName: string; avatarUrl: string }) {
   store.startProgress()
   try {
@@ -77,10 +130,18 @@ async function handleCreate(payload: { name: string; botName: string; avatarUrl:
     })
     const project = await res.json()
     store.setProject(project)
+    pollProgress(project.id)
   } catch {
     store.updateStep('vm', 'error')
   }
 }
+
+onUnmounted(() => {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = null
+  }
+})
 </script>
 
 <style lang="less">
