@@ -5,7 +5,7 @@
 - 规划一下这个平台，前端支持员工快速创建 openclaw，后台管理端支持对所有openclaw 虚拟机和服务进行监控和管理
 
 参考：https://openclaw.feishu.cn/
-截图参考：docs/images
+设计课截图参考：docs/images
 
 # DevOps OpenClaw 部署流程
 
@@ -33,3 +33,4 @@ sequenceDiagram
     D-->>C: 10.同步长连接成功状态
     C-->>B: 11.页面显示机器人名称,二维码,提示对接完成可使用
 ```
+x

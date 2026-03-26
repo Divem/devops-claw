@@ -5,8 +5,9 @@
         <AppHeader />
         <main class="app-main">
           <HeroSection />
+          <n-spin v-if="store.pageState === 'loading'" size="large" />
           <CreateGuide
-            v-if="store.pageState === 'empty'"
+            v-else-if="store.pageState === 'empty'"
             @create="store.openCreateModal()"
           />
           <ProjectCard
@@ -18,6 +19,7 @@
           />
           <FeatureList />
         </main>
+        <footer class="app-footer"><span>企业内部 OpenClaw 托管平台</span></footer>
         <CreateModal
           :show="store.modalState === 'create'"
           @close="store.closeModal()"
@@ -48,7 +50,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { NConfigProvider, NMessageProvider } from 'naive-ui'
+import { NConfigProvider, NMessageProvider, NSpin } from 'naive-ui'
 import { themeOverrides } from './theme'
 import AppHeader from './components/AppHeader.vue'
 import HeroSection from './components/HeroSection.vue'
@@ -185,5 +187,12 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   padding: 40px 24px;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: @textColorPlaceholder;
 }
 </style>
