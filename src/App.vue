@@ -28,6 +28,19 @@
           :steps="store.steps"
           @retry="handleRetry"
         />
+
+        <CompleteModal
+          :show="store.modalState === 'complete'"
+          @close="store.closeModal()"
+          @open-project="handleOpenProject"
+          @view-approval="store.closeModal()"
+        />
+
+        <DeleteConfirm
+          :show="store.modalState === 'delete'"
+          @cancel="store.closeModal()"
+          @confirm="handleDelete"
+        />
       </div>
     </n-message-provider>
   </n-config-provider>
@@ -45,6 +58,8 @@ import CreateGuide from './components/CreateGuide.vue'
 import ProjectCard from './components/ProjectCard.vue'
 import CreateModal from './components/CreateModal.vue'
 import ProgressModal from './components/ProgressModal.vue'
+import CompleteModal from './components/CompleteModal.vue'
+import DeleteConfirm from './components/DeleteConfirm.vue'
 import type { ProgressResponse } from './types/project'
 
 const store = useProjectStore()
@@ -133,6 +148,17 @@ async function handleCreate(payload: { name: string; botName: string; avatarUrl:
     pollProgress(project.id)
   } catch {
     store.updateStep('vm', 'error')
+  }
+}
+
+async function handleDelete() {
+  if (!store.project) return
+  try {
+    await fetch(`/api/project/${store.project.id}`, { method: 'DELETE' })
+    store.closeModal()
+    store.setEmpty()
+  } catch {
+    // keep modal open for retry
   }
 }
 
