@@ -18,6 +18,11 @@
           />
           <FeatureList />
         </main>
+        <CreateModal
+          :show="store.modalState === 'create'"
+          @close="store.closeModal()"
+          @submit="handleCreate"
+        />
       </div>
     </n-message-provider>
   </n-config-provider>
@@ -33,6 +38,7 @@ import FeatureList from './components/FeatureList.vue'
 import { useProjectStore } from './stores/project'
 import CreateGuide from './components/CreateGuide.vue'
 import ProjectCard from './components/ProjectCard.vue'
+import CreateModal from './components/CreateModal.vue'
 
 const store = useProjectStore()
 
@@ -58,6 +64,21 @@ function handleOpenProject() {
 function handleChat() {
   if (store.project?.feishuChatUrl) {
     window.open(store.project.feishuChatUrl, '_blank')
+  }
+}
+
+async function handleCreate(payload: { name: string; botName: string; avatarUrl: string }) {
+  store.startProgress()
+  try {
+    const res = await fetch('/api/project', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    const project = await res.json()
+    store.setProject(project)
+  } catch {
+    store.updateStep('vm', 'error')
   }
 }
 </script>
