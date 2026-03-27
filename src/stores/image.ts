@@ -8,6 +8,12 @@ import type {
   CreateImageRequest,
   UpdateImageRequest,
 } from '@/types/image'
+import {
+  getImages,
+  createImage as mockCreateImage,
+  updateImage as mockUpdateImage,
+  deleteImage as mockDeleteImage,
+} from '@/mocks/imageData'
 
 export const useImageStore = defineStore('image', () => {
   const items = ref<Image[]>([])
@@ -29,21 +35,17 @@ export const useImageStore = defineStore('image', () => {
   async function fetchImages() {
     isLoading.value = true
     try {
-      const params = new URLSearchParams()
-      if (filters.search) params.set('search', filters.search)
-      if (filters.status.length) params.set('status', filters.status.join(','))
-      if (filters.type.length) params.set('type', filters.type.join(','))
-      params.set('sort', filters.sort)
-      params.set('order', filters.order)
-      params.set('page', String(page.value))
-      params.set('pageSize', String(pageSize.value))
-
-      const res = await fetch(`/api/admin/images?${params}`)
-      if (res.ok) {
-        const data = await res.json()
-        items.value = data.items
-        total.value = data.total
-      }
+      const data = getImages({
+        search: filters.search || undefined,
+        status: filters.status.length ? filters.status.join(',') : undefined,
+        type: filters.type.length ? filters.type.join(',') : undefined,
+        sort: filters.sort,
+        order: filters.order,
+        page: page.value,
+        pageSize: pageSize.value,
+      })
+      items.value = data.items
+      total.value = data.total
     } finally {
       isLoading.value = false
     }
@@ -51,16 +53,9 @@ export const useImageStore = defineStore('image', () => {
 
   async function createImage(data: CreateImageRequest): Promise<boolean> {
     try {
-      const res = await fetch('/api/admin/images', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-      if (res.ok) {
-        await fetchImages()
-        return true
-      }
-      return false
+      mockCreateImage({ ...data, imageUrl: data.imageUrl || `https://example.com/${data.name}-${data.version}.qcow2` })
+      await fetchImages()
+      return true
     } catch {
       return false
     }
@@ -68,12 +63,8 @@ export const useImageStore = defineStore('image', () => {
 
   async function updateImage(id: string, data: UpdateImageRequest): Promise<boolean> {
     try {
-      const res = await fetch(`/api/admin/images/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-      if (res.ok) {
+      const result = mockUpdateImage(id, data)
+      if (result) {
         await fetchImages()
         return true
       }
@@ -85,10 +76,8 @@ export const useImageStore = defineStore('image', () => {
 
   async function deleteImage(id: string): Promise<boolean> {
     try {
-      const res = await fetch(`/api/admin/images/${id}`, {
-        method: 'DELETE',
-      })
-      if (res.ok) {
+      const result = mockDeleteImage(id)
+      if (result) {
         await fetchImages()
         return true
       }

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import apiFetch from '@/api/client'
+import { updateBotConfig as mockUpdateBotConfig } from '@/mocks/data'
 import type {
   PageState,
   ModalState,
@@ -88,13 +88,8 @@ export const useProjectStore = defineStore('project', () => {
   async function updateBotConfig(payload: UpdateBotConfigPayload): Promise<boolean> {
     if (!project.value) return false
     try {
-      const res = await apiFetch(`/api/project/${project.value.id}/bot-config`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      if (!res.ok) throw new Error()
-      const data = await res.json()
+      const data = mockUpdateBotConfig(payload.appId, payload.appSecret)
+      if (!data) return false
       project.value.appId = data.appId
       return true
     } catch {

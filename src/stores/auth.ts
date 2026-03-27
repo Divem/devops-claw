@@ -1,10 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { AuthUser, AuthTokens } from '@/types/auth'
-import * as authApi from '@/api/auth'
 
 const STORAGE_KEY = 'auth_tokens'
-const REFRESH_BEFORE_EXPIRY_MS = 5 * 60 * 1000 // 5 minutes
+const REFRESH_BEFORE_EXPIRY_MS = 5 * 60 * 1000
+
+function makeMockTokens(): AuthTokens {
+  return {
+    accessToken: 'mock-access-token-' + Date.now(),
+    refreshToken: 'mock-refresh-token-' + Date.now(),
+    expiresAt: Date.now() + 2 * 60 * 60 * 1000,
+  }
+}
 
 function saveTokens(tokens: AuthTokens) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tokens))
@@ -50,12 +57,10 @@ export const useAuthStore = defineStore('auth', () => {
     if (isRefreshing || !tokens?.refreshToken) return
     isRefreshing = true
     try {
-      const newTokens = await authApi.refreshToken(tokens.refreshToken)
+      const newTokens = makeMockTokens()
       tokens = newTokens
       saveTokens(newTokens)
       scheduleRefresh(newTokens.expiresAt)
-    } catch {
-      clearAuth()
     } finally {
       isRefreshing = false
     }
@@ -72,10 +77,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login(username: string, password: string): Promise<void> {
+  async function login(username: string, _password: string): Promise<void> {
+    if (!username.trim()) throw new Error('用户名不能为空')
     isLoading.value = true
     try {
-      const result = await authApi.login({ username, password })
+      const result = { user: { id: 'user-001', name: username.trim(), avatarUrl: '/avatars/default-user.svg' } as AuthUser, tokens: makeMockTokens() }
       user.value = result.user
       tokens = result.tokens
       isAuthenticated.value = true
@@ -88,13 +94,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    if (tokens?.accessToken) {
-      try {
-        await authApi.logout(tokens.accessToken)
-      } catch {
-        // ignore logout API errors
-      }
-    }
     clearAuth()
     window.location.href = '/'
   }
@@ -110,14 +109,9 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     tokens = stored
-    try {
-      const currentUser = await authApi.getCurrentUser(stored.accessToken)
-      user.value = currentUser
-      isAuthenticated.value = true
-      scheduleRefresh(stored.expiresAt)
-    } catch {
-      clearAuth()
-    }
+    user.value = { id: 'user-001', name: 'mock-user', avatarUrl: '/avatars/default-user.svg' } as AuthUser
+    isAuthenticated.value = true
+    scheduleRefresh(stored.expiresAt)
   }
 
   function getAccessToken(): string | null {

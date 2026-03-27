@@ -67,6 +67,7 @@ const mockProject: Project = {
   botName: 'Test Bot',
   avatarUrl: 'https://example.com/avatar.png',
   status: 'deployed',
+  botConfigured: false,
   createdAt: new Date().toISOString(),
 }
 

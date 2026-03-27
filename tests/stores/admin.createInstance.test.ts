@@ -26,12 +26,12 @@ describe('useAdminStore.createInstance', () => {
     } as Response)
 
     const store = useAdminStore()
-    const result = await store.createInstance({ name: '测试实例', ownerId: 'u-001' })
+    const result = await store.createInstance({ name: '测试实例', avatarUrl: '/avatars/avatar-1.svg' })
 
     expect(result.ok).toBe(true)
     expect(mockFetch).toHaveBeenCalledWith('/api/admin/instances', expect.objectContaining({
       method: 'POST',
-      body: JSON.stringify({ name: '测试实例', ownerId: 'u-001' }),
+      body: JSON.stringify({ name: '测试实例', avatarUrl: '/avatars/avatar-1.svg' }),
     }))
   })
 
@@ -43,7 +43,7 @@ describe('useAdminStore.createInstance', () => {
     } as Response)
 
     const store = useAdminStore()
-    const result = await store.createInstance({ name: '重复实例', ownerId: 'u-001' })
+    const result = await store.createInstance({ name: '重复实例', avatarUrl: '/avatars/avatar-1.svg' })
 
     expect(result.ok).toBe(false)
     expect(result.error).toBe('实例名称已存在')
@@ -54,7 +54,7 @@ describe('useAdminStore.createInstance', () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
     const store = useAdminStore()
-    const result = await store.createInstance({ name: '测试实例', ownerId: 'u-001' })
+    const result = await store.createInstance({ name: '测试实例', avatarUrl: '/avatars/avatar-1.svg' })
 
     expect(result.ok).toBe(false)
     expect(result.error).toBe('创建失败，请稍后重试')

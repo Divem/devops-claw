@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
-import { defineComponent, h, ref } from 'vue'
+import { defineComponent, h } from 'vue'
 import { setActivePinia, createPinia } from 'pinia'
 import GlobalConfig from '@/views/admin/GlobalConfig.vue'
 
@@ -41,9 +41,6 @@ vi.mock('@/stores/admin', () => ({
   }),
 }))
 
-const naiveStub = (name: string) =>
-  defineComponent({ name, setup(_, { slots }) { return () => h('div', { 'data-naive': name }, slots.default?.()) } })
-
 vi.mock('naive-ui', () => ({
   NButton: defineComponent({
     props: ['loading', 'type', 'block', 'size', 'quaternary'],
@@ -54,7 +51,7 @@ vi.mock('naive-ui', () => ({
   }),
   NSpin: defineComponent({
     props: ['show'],
-    setup(props, { slots }) { return () => h('div', slots.default?.()) },
+    setup(_, { slots }) { return () => h('div', slots.default?.()) },
   }),
   NInput: defineComponent({
     props: ['value', 'modelValue', 'type', 'readonly', 'placeholder', 'autosize'],
@@ -107,7 +104,7 @@ vi.mock('naive-ui', () => ({
   NDrawer: defineComponent({
     props: ['show', 'width', 'placement'],
     emits: ['update:show'],
-    setup(props, { slots }) {
+    setup(_, { slots }) {
       return () => h('div', { 'data-testid': 'drawer' }, slots.default?.())
     },
   }),

@@ -60,7 +60,6 @@ const authStore = useAuthStore()
 
 const form = ref({ username: '', password: '' })
 const errorMessage = ref('')
-const formRef = ref()
 
 const canSubmit = computed(() => form.value.username.trim() !== '' && form.value.password.trim() !== '')
 

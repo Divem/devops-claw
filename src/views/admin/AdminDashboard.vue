@@ -136,6 +136,7 @@ import { NProgress, NButton } from 'naive-ui'
 import InteractiveTrendChart from '@/components/dashboard/InteractiveTrendChart.vue'
 import TimeRangeSelector from '@/components/dashboard/TimeRangeSelector.vue'
 import { useTrendData } from '@/composables/useTrendData'
+import { getDashboardData } from '@/mocks/data'
 import type { TimeRange, TodoItem, DashboardStats, ResourceUsage } from '@/types/dashboard'
 
 const router = useRouter()
@@ -163,13 +164,10 @@ function navigateTo(path: string, query?: Record<string, string>) {
 
 async function fetchDashboardData() {
   try {
-    const res = await fetch('/api/admin/dashboard')
-    if (res.ok) {
-      const data = await res.json()
-      stats.value = data.stats
-      resources.value = data.resources
-      todoItems.value = data.todos
-    }
+    const data = getDashboardData()
+    stats.value = data.stats
+    resources.value = data.resources
+    todoItems.value = data.todos
   } catch {
     // 静默失败，保持默认值
   }

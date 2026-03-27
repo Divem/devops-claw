@@ -267,7 +267,7 @@ export const handlers = [
     if (!body.type || !body.name || !body.version) {
       return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
     }
-    const img = createImage({ ...body, type: body.type as 'vm' | 'openclaw' })
+    const img = createImage({ ...body, type: body.type as 'vm' | 'openclaw', imageUrl: `https://example.com/${body.name}-${body.version}.qcow2` })
     return HttpResponse.json(img, { status: 201 })
   }),
 

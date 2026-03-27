@@ -12,6 +12,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NSpin } from 'naive-ui'
 import OpenClawAdmin from '@/components/OpenClawAdmin.vue'
+import { getProjectById } from '@/mocks/adminData'
 import type { Project } from '@/types/project'
 
 const route = useRoute()
@@ -21,11 +22,10 @@ const project = ref<Project | null>(null)
 onMounted(async () => {
   const projectId = route.params.id as string
   try {
-    const res = await fetch(`/api/projects/${projectId}`)
-    if (res.ok) {
-      project.value = await res.json()
+    const data = getProjectById(projectId)
+    if (data) {
+      project.value = data
     } else {
-      // 项目不存在，返回实例列表
       router.replace('/admin/instances')
     }
   } catch {

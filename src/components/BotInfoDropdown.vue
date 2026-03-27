@@ -121,7 +121,7 @@ const displayBotName = computed(() => {
 })
 
 const props = withDefaults(defineProps<{
-  project: { id: string; botName: string; appId?: string; feishuChatUrl?: string; createdAt: string }
+  project: { id: string; botName?: string; appId?: string; feishuChatUrl?: string; createdAt: string }
   size?: 'small' | 'medium'
 }>(), {
   size: 'medium'

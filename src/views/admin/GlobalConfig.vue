@@ -550,7 +550,7 @@ async function handleConfirmPublish() {
 
 onMounted(async () => {
   await store.fetchGlobalConfig()
-  form.model = { ...store.config.model }
+  form.model = { ...store.config.model, baseUrl: store.config.model.baseUrl ?? '' }
   // 同步文件数据
   if (store.config.files) {
     for (const saved of store.config.files) {

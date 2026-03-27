@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { TrendDataPoint, TimeRange, TrendDataState } from '@/types/dashboard'
+import { getDashboardData } from '@/mocks/data'
 
 export const useTrendStore = defineStore('trend', () => {
   // State
@@ -50,19 +51,13 @@ export const useTrendStore = defineStore('trend', () => {
     state.value.error = null
 
     try {
-      const response = await fetch(`/api/admin/dashboard?days=${days}`)
-      if (!response.ok) {
-        throw new Error('Failed to fetch trend data')
-      }
+      const data = getDashboardData(days)
 
-      const data = await response.json()
-      
-      // 缓存数据
       state.value.allData = data.trend.map((item: TrendDataPoint) => ({
         ...item,
         cachedAt: Date.now(),
       }))
-      
+
       state.value.lastUpdated = Date.now()
       return data.trend
     } catch (err) {

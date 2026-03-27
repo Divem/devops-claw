@@ -171,7 +171,7 @@ const columns: DataTableColumns<Instance> = [
         },
       ]
       return h(NSpace, { size: 8 }, () => [
-        ...(row.projectId ? [h(NButton, { size: 'small', quaternary: true, onClick: () => emit('config', row.projectId) }, () => 'OpenClaw 控制台')] : []),
+        ...(row.projectId ? [h(NButton, { size: 'small', quaternary: true, onClick: () => emit('config', row.projectId!) }, () => 'OpenClaw 控制台')] : []),
         h(NDropdown, {
           options,
           trigger: 'click',

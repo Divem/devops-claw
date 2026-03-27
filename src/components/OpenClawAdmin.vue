@@ -250,21 +250,7 @@ async function checkGateway() {
 }
 
 onMounted(() => {
-  // 获取项目配置
   fetchProjectConfig()
-  
-  checkTimer = setInterval(async () => {
-    if (!iframeLoading.value && !gatewayAvailable.value && props.project?.id) {
-      try {
-        const res = await fetch(`/api/projects/${props.project.id}/gateway/health`, { method: 'HEAD' })
-        if (res.ok) {
-          checkGateway()
-        }
-      } catch {
-        // ignore
-      }
-    }
-  }, 10000)
 })
 
 onUnmounted(() => {
@@ -281,9 +267,9 @@ watch(activeMenu, () => {
 async function fetchProjectConfig() {
   if (!props.project?.id) return
   try {
-    const response = await fetch(`/api/projects/${props.project.id}/config`)
-    if (response.ok) {
-      projectConfig.value = await response.json()
+    projectConfig.value = {
+      model: { provider: 'anthropic', defaultModel: 'claude-sonnet-4-20250514' },
+      gateway: { url: 'https://gateway.example.com', status: 'running' },
     }
   } catch {
     projectConfig.value = {}

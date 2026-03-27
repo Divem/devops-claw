@@ -26,6 +26,7 @@
 import { ref, computed } from 'vue'
 import { NAutoComplete, NIcon, NTag } from 'naive-ui'
 import { PersonOutline } from '@vicons/ionicons5'
+import { searchUsers } from '@/mocks/adminData'
 
 interface UserOption {
   id: string
@@ -65,10 +66,7 @@ async function handleSearch(val: string) {
   debounceTimer = setTimeout(async () => {
     loading.value = true
     try {
-      const res = await fetch(`/api/users/search?q=${encodeURIComponent(val)}`)
-      if (res.ok) {
-        users.value = await res.json()
-      }
+      users.value = searchUsers(val)
     } finally {
       loading.value = false
     }
