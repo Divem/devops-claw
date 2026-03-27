@@ -40,7 +40,7 @@
       <n-button text type="primary" tag="a" href="https://open.feishu.cn" target="_blank">
         去配置
       </n-button>
-      <n-button type="primary" size="small" :loading="approving" @click="handleApprove">
+      <n-button type="primary" size="small" @click="handleApprove">
         标记完成
       </n-button>
     </div>
@@ -53,7 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { NCard, NAvatar, NTag, NButton, useDialog } from 'naive-ui'
 import type { Approval } from '@/types/admin'
 import ApprovalGuide from './ApprovalGuide.vue'
@@ -66,7 +65,6 @@ const emit = defineEmits<{
   approve: [id: string]
 }>()
 
-const approving = ref(false)
 const dialog = useDialog()
 
 function maskAppId(appId: string): string {
@@ -97,10 +95,8 @@ function handleApprove() {
     content: '确认已完成飞书长连接配置？',
     positiveText: '确认',
     negativeText: '取消',
-    onPositiveClick: async () => {
-      approving.value = true
+    onPositiveClick: () => {
       emit('approve', props.approval.id)
-      approving.value = false
     },
   })
 }
