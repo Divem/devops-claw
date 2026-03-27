@@ -58,7 +58,7 @@ export interface InstanceListResponse {
 }
 
 /** 审批状态 */
-export type ApprovalStatus = 'pending' | 'approved'
+export type ApprovalStatus = 'all' | 'pending' | 'approved'
 
 /** 审批记录 */
 export interface Approval {
@@ -74,6 +74,12 @@ export interface Approval {
   approvedAt?: string
   feishuStatus: FeishuConnectionStatus
 }
+
+/** 审批视图模式 */
+export type ApprovalViewMode = 'card' | 'compact' | 'list'
+
+/** 飞书开放平台基础 URL */
+export const FEISHU_OPEN_PLATFORM_URL = 'https://open.feishu.cn'
 
 /** 仪表盘统计 */
 export interface DashboardStats {
