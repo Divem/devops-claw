@@ -67,7 +67,7 @@
       </template>
 
       <!-- 登录弹窗：挂载在顶层，全局可用 -->
-      <LoginModal :show="authStore.showLogin" />
+      <LoginModal :show="authStore.showLogin" @close="authStore.showLogin = false" />
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>

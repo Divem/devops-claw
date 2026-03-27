@@ -16,6 +16,10 @@ export const avatarList = Array.from(
 let currentProject: Project | null = null
 let progressCallCount = 0
 
+function generateProjectId(): string {
+  return 'proj_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 11)
+}
+
 export function getProject(): Project | null {
   return currentProject
 }
@@ -23,7 +27,7 @@ export function getProject(): Project | null {
 export function createProject(name: string, avatarUrl: string, botName?: string): Project {
   progressCallCount = 0
   currentProject = {
-    id: crypto.randomUUID(),
+    id: generateProjectId(),
     name,
     botName,
     avatarUrl,

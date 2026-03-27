@@ -96,6 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
     }
     clearAuth()
+    window.location.href = '/'
   }
 
   async function checkAuth() {
