@@ -28,6 +28,10 @@
 
       <div class="toolbar-spacer" />
 
+      <n-button type="primary" size="medium" @click="createModalVisible = true">
+        + 创建实例
+      </n-button>
+
       <n-select
         v-model:value="adminStore.filters.sort"
         :options="sortOptions"
@@ -51,6 +55,7 @@
       :loading="adminStore.instanceLoading"
       @select="handleSelect"
       @action="handleAction"
+      @config="handleConfig"
     />
 
     <!-- 分页 -->
@@ -63,6 +68,12 @@
       />
     </div>
 
+    <!-- 创建实例弹窗 -->
+    <InstanceCreateModal
+      v-model:show="createModalVisible"
+      @success="handleFetch"
+    />
+
     <!-- 抽屉 -->
     <InstanceDrawer
       :show="adminStore.drawerVisible"
@@ -73,17 +84,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { NInput, NSelect, NButton, NIcon, NPagination } from 'naive-ui'
 import { SearchOutline } from '@vicons/ionicons5'
 import { useAdminStore } from '@/stores/admin'
 import InstanceTable from '@/components/admin/InstanceTable.vue'
 import InstanceDrawer from '@/components/admin/InstanceDrawer.vue'
+import InstanceCreateModal from '@/components/admin/InstanceCreateModal.vue'
 import type { Instance, InstanceAction, VmStatus } from '@/types/admin'
 
 const adminStore = useAdminStore()
 const route = useRoute()
+const createModalVisible = ref(false)
 
 const statusOptions = [
   { label: '运行中', value: 'running' },
@@ -123,6 +136,10 @@ function handleAction(id: string, action: InstanceAction) {
   adminStore.executeAction(id, action)
 }
 
+function handleConfig(projectId: string) {
+  window.open(`/projects/${projectId}/admin`, '_blank')
+}
+
 onMounted(() => {
   const statusQuery = route.query.status as string | undefined
   if (statusQuery) {
@@ -134,8 +151,6 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .instance-list {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .toolbar {

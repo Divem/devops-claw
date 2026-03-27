@@ -13,8 +13,12 @@ import {
   getInstances,
   getInstanceDetail,
   executeInstanceAction,
+  createInstance,
+  getInstanceCreateProgress,
+  searchUsers,
   getApprovals,
   approveApproval,
+  getProjectById,
 } from './adminData'
 
 export const handlers = [
@@ -31,10 +35,12 @@ export const handlers = [
     await delay(500)
     const body = (await request.json()) as {
       name: string
-      botName: string
+      botName?: string
       avatarUrl: string
+      appId?: string
+      appSecret?: string
     }
-    const project = createProject(body.name, body.botName, body.avatarUrl)
+    const project = createProject(body.name, body.avatarUrl, body.botName)
     return HttpResponse.json(project, { status: 201 })
   }),
 
@@ -88,9 +94,12 @@ export const handlers = [
   }),
 
   // 管理后台仪表盘数据
-  http.get('/api/admin/dashboard', async () => {
+  http.get('/api/admin/dashboard', async ({ request }) => {
     await delay(300)
-    const data = getDashboardData()
+    const url = new URL(request.url)
+    const daysParam = url.searchParams.get('days')
+    const days = daysParam ? Number.parseInt(daysParam, 10) : 30
+    const data = getDashboardData(days)
     return HttpResponse.json(data)
   }),
 
@@ -130,6 +139,35 @@ export const handlers = [
     return HttpResponse.json(result)
   }),
 
+  // 管理后台 - 创建实例
+  http.post('/api/admin/instances', async ({ request }) => {
+    await delay(800)
+    const body = (await request.json()) as { name: string; ownerId: string; appId?: string; appSecret?: string }
+    if (!body.name || !body.ownerId) {
+      return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
+    }
+    const inst = createInstance(body.name, body.ownerId, body.appId, body.appSecret)
+    return HttpResponse.json(inst, { status: 201 })
+  }),
+
+  // 管理后台 - 创建实例进度
+  http.get('/api/admin/instances/:id/progress', async ({ params, request }) => {
+    await delay(200)
+    const url = new URL(request.url)
+    const hasAppId = url.searchParams.get('hasAppId') === 'true'
+    const progress = getInstanceCreateProgress(params.id as string, hasAppId)
+    return HttpResponse.json(progress)
+  }),
+
+  // 用户搜索
+  http.get('/api/users/search', async ({ request }) => {
+    await delay(300)
+    const url = new URL(request.url)
+    const q = url.searchParams.get('q') || ''
+    const users = searchUsers(q)
+    return HttpResponse.json(users)
+  }),
+
   // 管理后台 - 审批列表
   http.get('/api/admin/approvals', async ({ request }) => {
     await delay(300)
@@ -147,5 +185,15 @@ export const handlers = [
       return new HttpResponse(null, { status: 404 })
     }
     return HttpResponse.json(result)
+  }),
+
+  // 根据 projectId 获取项目详情（管理员查看实例配置）
+  http.get('/api/projects/:id', async ({ params }) => {
+    await delay(300)
+    const project = getProjectById(params.id as string)
+    if (!project) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(project)
   }),
 ]

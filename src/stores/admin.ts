@@ -5,6 +5,8 @@ import type {
   InstanceDetail,
   InstanceFilters,
   InstanceAction,
+  CreateInstanceRequest,
+  InstanceCreateStep,
   Approval,
   ApprovalStatus,
 } from '@/types/admin'
@@ -83,6 +85,62 @@ export const useAdminStore = defineStore('admin', () => {
     }
   }
 
+  async function createInstance(req: CreateInstanceRequest): Promise<{ ok: boolean; id?: string; error?: string }> {
+    try {
+      const res = await fetch('/api/admin/instances', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        return { ok: true, id: data.id }
+      }
+      const data = await res.json().catch(() => ({}))
+      return { ok: false, error: data.message || '创建失败，请稍后重试' }
+    } catch {
+      return { ok: false, error: '创建失败，请稍后重试' }
+    }
+  }
+
+  // --- 创建进度轮询 ---
+  const createProgress = ref<InstanceCreateStep[]>([])
+  const createProgressDone = ref(false)
+  let pollingTimer: ReturnType<typeof setInterval> | null = null
+
+  function startProgressPolling(id: string, hasAppId: boolean) {
+    createProgress.value = [
+      { key: 'vm', label: '启动云端电脑', status: 'running' },
+      { key: 'openclaw', label: '安装 OpenClaw', status: 'pending' },
+      { key: 'feishu', label: '配置飞书连接', status: 'pending' },
+    ]
+    createProgressDone.value = false
+
+    pollingTimer = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/admin/instances/${id}/progress?hasAppId=${hasAppId}`)
+        if (res.ok) {
+          const data = await res.json()
+          createProgress.value = data.steps
+          if (data.done) {
+            createProgressDone.value = true
+            stopProgressPolling()
+            await fetchInstances()
+          }
+        }
+      } catch {
+        // 静默失败，继续轮询
+      }
+    }, 1500)
+  }
+
+  function stopProgressPolling() {
+    if (pollingTimer) {
+      clearInterval(pollingTimer)
+      pollingTimer = null
+    }
+  }
+
   function closeDrawer() {
     drawerVisible.value = false
     selectedInstance.value = null
@@ -91,13 +149,14 @@ export const useAdminStore = defineStore('admin', () => {
   // --- 审批管理 ---
   const approvals = ref<Approval[]>([])
   const approvalLoading = ref(false)
-  const approvalTab = ref<ApprovalStatus>('pending')
+  const approvalTab = ref<ApprovalStatus>('all')
 
   async function fetchApprovals(status?: ApprovalStatus) {
     approvalLoading.value = true
     try {
       const s = status ?? approvalTab.value
-      const res = await fetch(`/api/admin/approvals?status=${s}`)
+      const query = s === 'all' ? '' : `?status=${s}`
+      const res = await fetch(`/api/admin/approvals${query}`)
       if (res.ok) {
         approvals.value = await res.json()
       }
@@ -133,6 +192,11 @@ export const useAdminStore = defineStore('admin', () => {
     fetchInstances,
     fetchInstanceDetail,
     executeAction,
+    createInstance,
+    createProgress,
+    createProgressDone,
+    startProgressPolling,
+    stopProgressPolling,
     closeDrawer,
     approvals,
     approvalLoading,

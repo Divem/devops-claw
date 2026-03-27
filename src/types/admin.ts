@@ -28,6 +28,7 @@ export interface Instance {
   createdAt: string
   lastActiveAt: string
   appId?: string
+  projectId?: string
 }
 
 /** 实例详情（抽屉用） */
@@ -57,6 +58,29 @@ export interface InstanceListResponse {
   pageSize: number
 }
 
+/** 创建实例请求 */
+export interface CreateInstanceRequest {
+  name: string
+  ownerId: string
+  appId?: string
+  appSecret?: string
+}
+
+/** 创建实例进度步骤 */
+export interface InstanceCreateStep {
+  key: 'vm' | 'openclaw' | 'feishu'
+  label: string
+  status: 'pending' | 'running' | 'done' | 'error'
+  elapsed?: number
+  note?: string
+}
+
+/** 创建实例进度响应 */
+export interface InstanceCreateProgress {
+  steps: InstanceCreateStep[]
+  done: boolean
+}
+
 /** 审批状态 */
 export type ApprovalStatus = 'all' | 'pending' | 'approved'
 
@@ -76,7 +100,7 @@ export interface Approval {
 }
 
 /** 审批视图模式 */
-export type ApprovalViewMode = 'card' | 'compact' | 'list'
+export type ApprovalViewMode = 'card' | 'list'
 
 /** 飞书开放平台基础 URL */
 export const FEISHU_OPEN_PLATFORM_URL = 'https://open.feishu.cn'

@@ -312,7 +312,7 @@ const isAdminRoute = computed(() => route.path.startsWith('/admin'))
         </n-button>
         <div class="header-brand">
           <span class="brand-logo">🦞</span>
-          <span class="brand-title">OpenClaw 管理后台</span>
+          <span class="brand-title">DevOps-Claw 管理后台</span>
         </div>
       </div>
       <div class="header-right">

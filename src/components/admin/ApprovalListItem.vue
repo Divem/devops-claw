@@ -1,21 +1,31 @@
 <template>
   <div class="list-item" :class="{ approved: approval.status === 'approved' }">
-    <n-avatar :src="approval.ownerAvatarUrl" round :size="24">
-      {{ approval.ownerName.charAt(0) }}
-    </n-avatar>
-    <span class="owner-name">{{ approval.ownerName }}</span>
-    <n-avatar :src="approval.instanceAvatarUrl" round :size="20" />
-    <span class="instance-name">{{ approval.instanceName }}</span>
-    <span class="app-id">{{ maskAppId(approval.appId) }}</span>
-    <span class="time">{{ formatRelativeTime(approval.submittedAt) }}</span>
-    <n-tag
-      :type="approval.status === 'approved' ? 'success' : 'warning'"
-      size="tiny"
-      round
-    >
-      {{ approval.status === 'approved' ? '已通过' : '待审批' }}
-    </n-tag>
-    <div class="actions">
+    <div class="col-owner">
+      <n-avatar :src="approval.ownerAvatarUrl" round :size="24">
+        {{ approval.ownerName.charAt(0) }}
+      </n-avatar>
+      <span class="owner-name">{{ approval.ownerName }}</span>
+    </div>
+    <div class="col-instance">
+      <n-avatar :src="approval.instanceAvatarUrl" round :size="20" />
+      <span class="instance-name">{{ approval.instanceName }}</span>
+    </div>
+    <div class="col-appid">
+      <span class="app-id">{{ maskAppId(approval.appId) }}</span>
+    </div>
+    <div class="col-time">
+      <span class="time">{{ formatRelativeTime(approval.submittedAt) }}</span>
+    </div>
+    <div class="col-status">
+      <n-tag
+        :type="approval.status === 'approved' ? 'success' : 'warning'"
+        size="tiny"
+        round
+      >
+        {{ approval.status === 'approved' ? '已通过' : '待审批' }}
+      </n-tag>
+    </div>
+    <div class="col-actions">
       <template v-if="approval.status === 'pending'">
         <n-button
           text
@@ -92,7 +102,6 @@ function handleApprove() {
 .list-item {
   display: flex;
   align-items: center;
-  gap: 10px;
   height: 56px;
   padding: 0 16px;
   border-bottom: 1px solid #f0f0f0;
@@ -107,17 +116,62 @@ function handleApprove() {
   }
 }
 
+.col-owner {
+  width: 140px;
+  flex-shrink: 0;
+  padding-right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.col-instance {
+  width: 180px;
+  flex-shrink: 0;
+  padding-right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.col-appid {
+  width: 140px;
+  flex-shrink: 0;
+  padding-right: 12px;
+}
+
+.col-time {
+  width: 80px;
+  flex-shrink: 0;
+  padding-right: 12px;
+}
+
+.col-status {
+  width: 70px;
+  flex-shrink: 0;
+  padding-right: 12px;
+}
+
+.col-actions {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .owner-name {
   font-size: 13px;
   font-weight: 500;
   color: #30363e;
-  min-width: 56px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .instance-name {
   font-size: 13px;
   color: #4e5358;
-  min-width: 80px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -127,21 +181,11 @@ function handleApprove() {
   font-size: 12px;
   color: #8a8f8d;
   font-family: monospace;
-  min-width: 80px;
 }
 
 .time {
   font-size: 12px;
   color: #8a8f8d;
-  min-width: 60px;
-}
-
-.actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
 }
 
 .approved-time {

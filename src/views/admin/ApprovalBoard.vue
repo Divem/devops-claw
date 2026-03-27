@@ -62,25 +62,15 @@
         />
       </div>
 
-      <!-- 紧凑卡片视图 -->
-      <div v-else-if="currentView === 'compact'" class="compact-list">
-        <ApprovalCard
-          v-for="approval in adminStore.approvals"
-          :key="approval.id"
-          :approval="approval"
-          @approve="handleApprove"
-        />
-      </div>
-
       <!-- 列表视图 -->
       <div v-else class="list-view">
         <div class="list-header">
-          <span class="col-owner">员工</span>
-          <span class="col-instance">实例</span>
-          <span class="col-appid">App ID</span>
-          <span class="col-time">提交时间</span>
-          <span class="col-status">状态</span>
-          <span class="col-actions">操作</span>
+          <div class="col-owner">员工</div>
+          <div class="col-instance">实例</div>
+          <div class="col-appid">App ID</div>
+          <div class="col-time">提交时间</div>
+          <div class="col-status">状态</div>
+          <div class="col-actions">操作</div>
         </div>
         <ApprovalListItem
           v-for="approval in adminStore.approvals"
@@ -108,7 +98,6 @@ const VIEW_MODE_KEY = 'approval-view-mode'
 
 const viewModes = [
   { label: '卡片', value: 'card' as ApprovalViewMode },
-  { label: '紧凑', value: 'compact' as ApprovalViewMode },
   { label: '列表', value: 'list' as ApprovalViewMode },
 ]
 
@@ -130,8 +119,9 @@ function setViewMode(mode: ApprovalViewMode) {
 }
 
 function handleResponsive() {
+  // 在小屏幕下自动切换到卡片视图
   if (window.innerWidth < 768 && currentView.value === 'list') {
-    currentView.value = 'compact'
+    currentView.value = 'card'
   }
 }
 
@@ -219,27 +209,6 @@ onUnmounted(() => {
   flex-direction: column;
 }
 
-.compact-list {
-  display: flex;
-  flex-direction: column;
-
-  :deep(.approval-card) {
-    margin-bottom: 4px;
-
-    .n-card__content {
-      padding: 8px 12px !important;
-    }
-
-    .card-header {
-      margin-bottom: 4px;
-    }
-
-    .card-detail {
-      font-size: 12px;
-    }
-  }
-}
-
 .list-view {
   border: 1px solid #e5e6eb;
   border-radius: 4px;
@@ -249,7 +218,6 @@ onUnmounted(() => {
 .list-header {
   display: flex;
   align-items: center;
-  gap: 10px;
   height: 40px;
   padding: 0 16px;
   background: #f7f7f7;
@@ -260,27 +228,38 @@ onUnmounted(() => {
 }
 
 .col-owner {
-  min-width: 90px;
+  width: 140px;
+  flex-shrink: 0;
+  padding-right: 12px;
 }
 
 .col-instance {
-  min-width: 100px;
+  width: 180px;
+  flex-shrink: 0;
+  padding-right: 12px;
 }
 
 .col-appid {
-  min-width: 80px;
+  width: 140px;
+  flex-shrink: 0;
+  padding-right: 12px;
 }
 
 .col-time {
-  min-width: 60px;
+  width: 80px;
+  flex-shrink: 0;
+  padding-right: 12px;
 }
 
 .col-status {
-  min-width: 60px;
+  width: 70px;
+  flex-shrink: 0;
+  padding-right: 12px;
 }
 
 .col-actions {
-  margin-left: auto;
+  flex: 1;
+  text-align: right;
 }
 
 @media (max-width: 768px) {

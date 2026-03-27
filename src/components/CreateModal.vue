@@ -32,11 +32,26 @@
 
         <div class="form-group">
           <label class="form-label">配置飞书渠道</label>
-          <p class="form-hint">将会自动创建飞书智能体并绑定到 OpenClaw 项目</p>
+<p class="form-hint" style="margin-top: 12px">
+            联系管理员，获取飞书机器人信息（选填）
+            <a
+              class="form-link"
+              href="https://openclaw.feishu.cn/home"
+              target="_blank"
+              rel="noopener noreferrer"
+            >申请机器人</a>
+          </p>          <label class="form-label-light" style="margin-top: 12px">应用 ID (App ID)</label>
           <n-input
-            v-model:value="form.botName"
-            placeholder="达尔文的 Claw"
-            maxlength="20"
+            v-model:value="form.appId"
+            placeholder="请输入 App ID"
+            style="margin-bottom: 8px"
+          />
+          <label class="form-label-light">应用密钥 (App Secret)</label>
+          <n-input
+            v-model:value="form.appSecret"
+            type="password"
+            show-password-on="click"
+            placeholder="请输入 App Secret"
           />
         </div>
 
@@ -65,44 +80,72 @@
         >
           创建
         </n-button>
+        <p
+          class="form-hint skip-link"
+          style="text-align: center; margin-top: 12px"
+          @click="handleSkipAndCreate"
+        >
+          跳过机器人配置，先直接创建OpenClaw
+        </p>
       </div>
     </div>
   </n-modal>
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
+import { reactive, computed, watch } from 'vue'
 import { NModal, NInput, NButton, NAvatar } from 'naive-ui'
 import { avatarList } from '@/mocks/data'
 
-defineProps<{
+const props = defineProps<{
   show: boolean
 }>()
 
 const emit = defineEmits<{
   close: []
-  submit: [payload: { name: string; botName: string; avatarUrl: string }]
+  submit: [payload: { name: string; avatarUrl: string; appId?: string; appSecret?: string }]
 }>()
 
 const form = reactive({
   name: '',
-  botName: '',
   avatarUrl: '',
+  appId: '',
+  appSecret: '',
+})
+
+// 当弹框打开时，默认选中第一个头像
+watch(() => props.show, (newShow) => {
+  if (newShow && !form.avatarUrl && avatarList.length > 0) {
+    form.avatarUrl = avatarList[0]
+  }
 })
 
 const isValid = computed(() => {
   return form.name.trim().length > 0
-    && form.botName.trim().length > 0
     && form.avatarUrl !== ''
 })
 
 function handleSubmit() {
   if (!isValid.value) return
-  emit('submit', {
+  const payload: { name: string; avatarUrl: string; appId?: string; appSecret?: string } = {
     name: form.name.trim(),
-    botName: form.botName.trim(),
     avatarUrl: form.avatarUrl,
-  })
+  }
+  if (form.appId.trim()) {
+    payload.appId = form.appId.trim()
+  }
+  if (form.appSecret.trim()) {
+    payload.appSecret = form.appSecret.trim()
+  }
+  emit('submit', payload)
+}
+
+function handleSkipAndCreate() {
+  // 清空机器人配置
+  form.appId = ''
+  form.appSecret = ''
+  // 直接提交（不包含机器人配置）
+  handleSubmit()
 }
 </script>
 
@@ -150,10 +193,28 @@ function handleSubmit() {
   display: block;
 }
 
+.form-label-light {
+  font-size: 14px;
+  font-weight: 400;
+  color: @textColorBody;
+  margin-bottom: 8px;
+  display: block;
+}
+
 .form-hint {
   font-size: 12px;
   color: @textColorPlaceholder;
   margin-bottom: 8px;
+}
+
+.form-link {
+  color: @primaryColor;
+  text-decoration: none;
+  margin-left: 4px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .avatar-grid {
@@ -184,5 +245,18 @@ function handleSubmit() {
 
 .modal-footer {
   margin-top: 24px;
+}
+
+.skip-link {
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: @primaryColor;
+    text-decoration-style: solid;
+  }
 }
 </style>

@@ -27,14 +27,11 @@
           ...
         </n-button>
       </n-dropdown>
-      <n-button size="medium" @click="emit('openProject')">
-        <template #icon><span>📝</span></template>
-        打开项目
+      <n-button size="medium" @click="emit('configOpenClaw')">
+        <template #icon><span>⚙️</span></template>
+        配置 OpenClaw
       </n-button>
-      <n-button type="primary" size="medium" @click="emit('chat')">
-        <template #icon><span>💬</span></template>
-        去对话
-      </n-button>
+      <BotInfoDropdown :project="project" />
     </div>
   </div>
 </template>
@@ -43,14 +40,14 @@
 import { computed } from 'vue'
 import { NAvatar, NTag, NButton, NDropdown } from 'naive-ui'
 import type { Project, ProjectStatus } from '@/types/project'
+import BotInfoDropdown from './BotInfoDropdown.vue'
 
 const props = defineProps<{
   project: Project
 }>()
 
 const emit = defineEmits<{
-  openProject: []
-  chat: []
+  configOpenClaw: []
   delete: []
 }>()
 

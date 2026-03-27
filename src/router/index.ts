@@ -4,6 +4,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/projects/:id/admin',
+      name: 'project-admin',
+      component: () => import('@/views/ProjectAdmin.vue'),
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: () => import('@/components/admin/AdminLayout.vue'),

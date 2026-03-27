@@ -24,16 +24,16 @@ const owners = [
 ]
 
 const instanceNames = [
-  '销售部 AI 助手',
-  '技术部代码审查',
-  '产品部需求分析',
-  '设计部灵感助手',
-  'HR 面试助手',
-  '市场部内容生成',
-  '财务部报表助手',
-  '运维部监控助手',
-  '客服部智能回复',
-  '研发部文档助手',
+  '张三 的 OpenClaw',
+  '李四 的 OpenClaw',
+  '王五 的 OpenClaw',
+  '赵六 的 OpenClaw',
+  '孙七 的 OpenClaw',
+  '周八 的 OpenClaw',
+  '吴九 的 OpenClaw',
+  '郑十 的 OpenClaw',
+  '陈十一 的 OpenClaw',
+  '刘十二 的 OpenClaw',
 ]
 
 function generateInstances(): Instance[] {
@@ -57,6 +57,7 @@ function generateInstances(): Instance[] {
       createdAt: createdAt.toISOString(),
       lastActiveAt: lastActive.toISOString(),
       appId: `cli_a${String(i + 1).padStart(4, '0')}`,
+      projectId: `proj-${String(i + 1).padStart(3, '0')}`,
     }
   })
 }
@@ -159,6 +160,81 @@ export function executeInstanceAction(id: string, action: string): Instance | nu
   return inst
 }
 
+export function createInstance(name: string, ownerId: string, appId?: string, appSecret?: string): Instance {
+  const owner = owners.find((o) => o.id === ownerId) || { id: ownerId, name: '未知用户' }
+  const idx = instances.length
+  const newInst: Instance = {
+    id: `inst-${String(idx + 1).padStart(3, '0')}-${Date.now()}`,
+    name,
+    avatarUrl: `/avatars/avatar-${(idx % 12) + 1}.svg`,
+    ownerName: owner.name,
+    ownerId: owner.id,
+    vmStatus: 'running',
+    feishuStatus: appId && appSecret ? 'connected' : 'pending',
+    createdAt: new Date().toISOString(),
+    lastActiveAt: new Date().toISOString(),
+    appId,
+    projectId: `proj-${String(idx + 1).padStart(3, '0')}-${Date.now()}`,
+  }
+  instances.push(newInst)
+  return newInst
+}
+
+// 进度状态存储：instanceId → { callCount, hasAppId }
+const progressState: Record<string, { callCount: number; hasAppId: boolean }> = {}
+
+export function getInstanceCreateProgress(
+  id: string,
+  hasAppId: boolean,
+): import('@/types/admin').InstanceCreateProgress {
+  if (!progressState[id]) {
+    progressState[id] = { callCount: 0, hasAppId }
+  }
+  const state = progressState[id]
+  state.callCount++
+  const n = state.callCount
+
+  // 步骤推进逻辑：每 1-2 次轮询推进一步
+  // n=1: vm running; n=2: vm done, openclaw running; n=4: openclaw done, feishu running/done; n=5: all done
+  const vmStatus = n >= 2 ? 'done' : 'running'
+  const vmElapsed = n >= 2 ? 8 : undefined
+
+  const openclawStatus = n >= 4 ? 'done' : n >= 2 ? 'running' : 'pending'
+  const openclawElapsed = n >= 4 ? 22 : undefined
+
+  const feishuDone = state.hasAppId ? n >= 5 : n >= 4
+  const feishuRunning = n === 4 && state.hasAppId
+  const feishuStatus = feishuDone ? 'done' : feishuRunning ? 'running' : 'pending'
+  const feishuElapsed = feishuDone ? (state.hasAppId ? 6 : 1) : undefined
+  const feishuNote = feishuDone && !state.hasAppId ? '待配置' : undefined
+
+  const done = feishuDone
+
+  return {
+    steps: [
+      { key: 'vm', label: '启动云端电脑', status: vmStatus, elapsed: vmElapsed },
+      { key: 'openclaw', label: '安装 OpenClaw', status: openclawStatus, elapsed: openclawElapsed },
+      { key: 'feishu', label: '配置飞书连接', status: feishuStatus, elapsed: feishuElapsed, note: feishuNote },
+    ],
+    done,
+  }
+}
+
+export function resetInstanceCreateProgress(id: string) {
+  delete progressState[id]
+}
+
+export function searchUsers(q: string): { id: string; name: string; department: string; avatarUrl: string }[] {
+  return owners
+    .filter((o) => o.name.includes(q))
+    .map((o, i) => ({
+      id: o.id,
+      name: o.name,
+      department: ['研发部', '产品部', '设计部', '销售部', '运营部'][i % 5],
+      avatarUrl: `/avatars/avatar-${(i % 12) + 1}.svg`,
+    }))
+}
+
 // --- 审批数据 ---
 
 const approvals: Approval[] = [
@@ -241,4 +317,23 @@ export function approveApproval(id: string): Approval | null {
   approval.approvedAt = new Date().toISOString()
   approval.feishuStatus = 'connected'
   return approval
+}
+
+// 根据 projectId 获取项目信息（用于管理员查看实例配置）
+export function getProjectById(projectId: string): import('@/types/project').Project | null {
+  const instance = instances.find((i) => i.projectId === projectId)
+  if (!instance) return null
+
+  return {
+    id: projectId,
+    name: instance.name,
+    botName: instance.name.replace(' 的 OpenClaw', ''),
+    avatarUrl: instance.avatarUrl,
+    status: instance.vmStatus === 'running' ? 'deployed' : 'error',
+    gatewayUrl: 'https://gateway.example.com/dashboard',
+    feishuChatUrl: 'https://applink.feishu.cn/client/chat/open',
+    createdAt: instance.createdAt,
+    botConfigured: instance.feishuStatus === 'connected',
+    appId: instance.appId,
+  }
 }

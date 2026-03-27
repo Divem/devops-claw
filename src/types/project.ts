@@ -18,7 +18,7 @@ export type ProjectStatus = 'creating' | 'deployed' | 'pending_approval' | 'erro
 export interface Project {
   id: string
   name: string
-  botName: string
+  botName?: string
   avatarUrl: string
   status: ProjectStatus
   appId?: string
@@ -26,11 +26,12 @@ export interface Project {
   gatewayUrl?: string
   feishuChatUrl?: string
   createdAt: string
+  botConfigured: boolean
 }
 
 export interface CreateProjectPayload {
   name: string
-  botName: string
+  botName?: string
   avatarUrl: string
   appId?: string
   appSecret?: string

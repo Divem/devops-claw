@@ -23,6 +23,7 @@ defineProps<{
 const emit = defineEmits<{
   select: [instance: Instance]
   action: [id: string, action: InstanceAction]
+  config: [projectId: string]
 }>()
 
 const vmStatusMap: Record<VmStatus, { label: string; type: 'success' | 'default' | 'error' }> = {
@@ -53,10 +54,6 @@ function formatDate(isoString: string): string {
   const pad = (n: number) => String(n).padStart(2, '0')
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
-
-const moreOptions = [
-  { label: '强制删除', key: 'delete' },
-]
 
 const columns: DataTableColumns<Instance> = [
   {
@@ -118,19 +115,29 @@ const columns: DataTableColumns<Instance> = [
   {
     title: '操作',
     key: 'actions',
-    width: 200,
+    width: 140,
     render(row) {
       const isRunning = row.vmStatus === 'running'
-      return h(NSpace, { size: 4 }, () => [
+      const options = [
+        { label: '重启', key: 'restart' },
+        ...(row.projectId ? [{ label: '配置', key: 'config' }] : []),
+        { label: '强制删除', key: 'delete' },
+      ]
+      return h(NSpace, { size: 8 }, () => [
         isRunning
           ? h(NButton, { size: 'small', quaternary: true, type: 'warning', onClick: () => emit('action', row.id, 'stop') }, () => '停止')
           : h(NButton, { size: 'small', quaternary: true, type: 'success', onClick: () => emit('action', row.id, 'start') }, () => '启动'),
-        h(NButton, { size: 'small', quaternary: true, type: 'info', onClick: () => emit('action', row.id, 'restart') }, () => '重启'),
         h(NDropdown, {
-          options: moreOptions,
+          options,
           trigger: 'click',
-          onSelect: (key: string) => emit('action', row.id, key as InstanceAction),
-        }, () => h(NButton, { size: 'small', quaternary: true }, () => '...')),
+          onSelect: (key: string) => {
+            if (key === 'config' && row.projectId) {
+              emit('config', row.projectId)
+            } else {
+              emit('action', row.id, key as InstanceAction)
+            }
+          },
+        }, () => h(NButton, { size: 'small', quaternary: true }, () => '更多')),
       ])
     },
   },

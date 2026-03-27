@@ -1,8 +1,8 @@
 <template>
   <header class="app-header">
     <div class="header-left">
-      <span class="header-logo">🦞</span>
-      <span class="header-title">DevOps OpenClaw</span>
+      <router-link to="/" class="header-logo">🦞</router-link>
+      <router-link to="/" class="header-title">DevOps-Claw</router-link>
     </div>
     <div class="header-right">
       <UserDropdown :user="mockUser" />
@@ -37,6 +37,13 @@ import { mockUser } from '@/mocks/data'
 
 .header-logo {
   font-size: 20px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header-title {
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .header-title {

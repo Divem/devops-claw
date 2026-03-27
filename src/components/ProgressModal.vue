@@ -7,7 +7,9 @@
       </div>
 
       <div class="steps">
-        <div v-for="(step, index) in steps" :key="step.key" class="step-item">
+        <div v-for="(step, index) in steps" :key="step.key" class="step-item" :class="{
+          'step-clickable': isStepClickable(step),
+        }" @click="handleStepClick(step)">
           <div class="step-indicator">
             <div class="step-icon" :class="{
               'step-pending': step.status === 'pending',
@@ -25,6 +27,9 @@
           <div class="step-content">
             <span class="step-label" :class="{ 'step-label-error': step.status === 'error' }">{{ step.label }}</span>
             <span v-if="step.elapsed" class="step-elapsed">{{ step.elapsed }} s</span>
+            <span v-if="step.key === 'feishu' && skippedBotConfig" class="skip-hint">
+              （本次跳过机器人配置）
+            </span>
           </div>
         </div>
       </div>
@@ -40,11 +45,31 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { NModal, NButton } from 'naive-ui'
-import type { StepInfo } from '@/types/project'
+import type { StepInfo, ProgressStep } from '@/types/project'
 
-const props = defineProps<{ show: boolean; steps: StepInfo[] }>()
-const emit = defineEmits<{ retry: [] }>()
+const props = defineProps<{
+  show: boolean
+  steps: StepInfo[]
+  skippedBotConfig?: boolean
+}>()
+
+const emit = defineEmits<{
+  retry: []
+  skipToStep: [step: ProgressStep]
+}>()
+
 const hasError = computed(() => props.steps.some((s) => s.status === 'error'))
+
+// OpenClaw 步骤完成时可以点击跳转到下一步
+function isStepClickable(step: StepInfo): boolean {
+  return step.key === 'openclaw' && step.status === 'done'
+}
+
+function handleStepClick(step: StepInfo) {
+  if (isStepClickable(step)) {
+    emit('skipToStep', 'feishu')
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -67,10 +92,32 @@ const hasError = computed(() => props.steps.some((s) => s.status === 'error'))
 .step-error { border-color: @errorColor; background: @errorColor; color: white; }
 .step-line { width: 2px; height: 32px; background: @borderColor; }
 .step-line-done { background: @successColor; }
-.step-content { display: flex; align-items: center; justify-content: space-between; flex: 1; min-height: 56px; padding-top: 2px; }
+.step-content { display: flex; align-items: center; gap: 8px; flex: 1; min-height: 56px; padding-top: 2px; }
 .step-label { font-size: 14px; color: @textColorBody; }
 .step-label-error { color: @errorColor; }
-.step-elapsed { font-size: 12px; color: @textColorPlaceholder; }
+.step-elapsed { font-size: 12px; color: @textColorPlaceholder; margin-left: auto; }
+.skip-hint { font-size: 12px; color: @warningColor; font-style: italic; }
+
+.step-item {
+  &.step-clickable {
+    cursor: pointer;
+
+    &:hover {
+      .step-label {
+        color: @primaryColor;
+      }
+
+      .step-icon.step-done {
+        transform: scale(1.1);
+        box-shadow: 0 0 8px fade(@successColor, 50%);
+      }
+    }
+
+    .step-icon.step-done {
+      transition: all 0.2s ease;
+    }
+  }
+}
 .spinner { animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .modal-footer { margin-top: 24px; }

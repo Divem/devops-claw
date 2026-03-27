@@ -10,7 +10,7 @@
         <span style="font-size: 64px;">🎉</span>
       </div>
       <div class="modal-footer">
-        <n-button size="large" @click="emit('openProject')">打开 OpenClaw 项目</n-button>
+        <n-button size="large" @click="emit('configOpenClaw')">配置 OpenClaw</n-button>
         <n-button type="primary" size="large" @click="emit('viewApproval')">查看审批单</n-button>
       </div>
     </div>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { NModal, NButton } from 'naive-ui'
 defineProps<{ show: boolean }>()
-const emit = defineEmits<{ close: []; openProject: []; viewApproval: [] }>()
+const emit = defineEmits<{ close: []; configOpenClaw: []; viewApproval: [] }>()
 </script>
 
 <style lang="less" scoped>

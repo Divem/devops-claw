@@ -1,6 +1,16 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useProjectStore } from '@/stores/project'
+
+const mockProject = {
+  id: '1',
+  name: '测试项目',
+  botName: '测试机器人',
+  avatarUrl: '/avatars/avatar-1.png',
+  status: 'deployed' as const,
+  createdAt: '2026-03-26',
+  botConfigured: true,
+}
 
 describe('useProjectStore', () => {
   beforeEach(() => {
@@ -16,28 +26,14 @@ describe('useProjectStore', () => {
 
   it('setProject 设置项目后 pageState 变为 has_project', () => {
     const store = useProjectStore()
-    store.setProject({
-      id: '1',
-      name: '测试项目',
-      botName: '测试机器人',
-      avatarUrl: '/avatars/avatar-1.png',
-      status: 'deployed',
-      createdAt: '2026-03-26',
-    })
+    store.setProject(mockProject)
     expect(store.pageState).toBe('has_project')
     expect(store.project?.name).toBe('测试项目')
   })
 
   it('setEmpty 清空项目后 pageState 变为 empty', () => {
     const store = useProjectStore()
-    store.setProject({
-      id: '1',
-      name: '测试项目',
-      botName: '测试机器人',
-      avatarUrl: '/avatars/avatar-1.png',
-      status: 'deployed',
-      createdAt: '2026-03-26',
-    })
+    store.setProject(mockProject)
     store.setEmpty()
     expect(store.pageState).toBe('empty')
     expect(store.project).toBeNull()
@@ -89,5 +85,38 @@ describe('useProjectStore', () => {
     store.openCreateModal()
     store.closeModal()
     expect(store.modalState).toBe('none')
+  })
+
+  it('updateBotConfig 成功时更新 appId', async () => {
+    const store = useProjectStore()
+    store.setProject(mockProject)
+
+    const mockResponse = { appId: 'cli_xxx', appSecret: undefined }
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockResponse),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await store.updateBotConfig({ appId: 'cli_xxx', appSecret: 'secret123' })
+    expect(result).toBe(true)
+    expect(store.project?.appId).toBe('cli_xxx')
+  })
+
+  it('updateBotConfig 失败时返回 false', async () => {
+    const store = useProjectStore()
+    store.setProject(mockProject)
+
+    const fetchMock = vi.fn().mockResolvedValue({ ok: false })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await store.updateBotConfig({ appId: 'cli_xxx', appSecret: 'secret123' })
+    expect(result).toBe(false)
+  })
+
+  it('updateBotConfig 无项目时返回 false', async () => {
+    const store = useProjectStore()
+    const result = await store.updateBotConfig({ appId: 'cli_xxx', appSecret: 'secret123' })
+    expect(result).toBe(false)
   })
 })

@@ -1,8 +1,9 @@
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
-    <n-message-provider>
-      <!-- Admin: handled by vue-router -->
-      <router-view v-if="isAdminRoute" />
+    <n-dialog-provider>
+      <n-message-provider>
+        <!-- Admin: handled by vue-router -->
+        <router-view v-if="isAdminRoute" />
 
       <!-- Employee side: keep existing pageState logic -->
       <template v-else>
@@ -46,7 +47,9 @@
           <ProgressModal
             :show="store.modalState === 'progress'"
             :steps="store.steps"
+            :skipped-bot-config="store.skippedBotConfig"
             @retry="handleRetry"
+            @skip-to-step="handleSkipToStep"
           />
 
           <CompleteModal
@@ -63,14 +66,15 @@
           />
         </div>
       </template>
-    </n-message-provider>
+      </n-message-provider>
+    </n-dialog-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { NConfigProvider, NMessageProvider, NSpin } from 'naive-ui'
+import { NConfigProvider, NMessageProvider, NSpin, NDialogProvider } from 'naive-ui'
 import { themeOverrides } from './theme'
 import AppHeader from './components/AppHeader.vue'
 import HeroSection from './components/HeroSection.vue'
@@ -87,7 +91,7 @@ import OpenClawAdmin from './components/OpenClawAdmin.vue'
 import type { ProgressResponse } from './types/project'
 
 const route = useRoute()
-const isAdminRoute = computed(() => route.path.startsWith('/admin'))
+const isAdminRoute = computed(() => route.path.startsWith('/admin') || route.path.match(/^\/projects\/[^/]+\/admin$/))
 
 const store = useProjectStore()
 
@@ -97,8 +101,6 @@ const showLandingPage = ref(true)
 // 处理从落地页开始部署
 function handleStartDeploy() {
   showLandingPage.value = false
-  // 打开创建弹窗
-  store.openCreateModal()
 }
 
 onMounted(async () => {
@@ -167,6 +169,8 @@ function handleRetry() {
 
 async function handleCreate(payload: { name: string; avatarUrl: string; appId?: string; appSecret?: string }) {
   store.startProgress()
+  // 标记是否跳过了机器人配置
+  store.setSkippedBotConfig(!payload.appId || !payload.appSecret)
   try {
     const res = await fetch('/api/project', {
       method: 'POST',
@@ -178,6 +182,14 @@ async function handleCreate(payload: { name: string; avatarUrl: string; appId?: 
     pollProgress(project.id)
   } catch {
     store.updateStep('vm', 'error')
+  }
+}
+
+function handleSkipToStep(step: import('./types/project').ProgressStep) {
+  // 手动跳到指定步骤，模拟该步骤完成
+  if (step === 'feishu') {
+    store.updateStep('feishu', 'done', 1)
+    store.showComplete()
   }
 }
 

@@ -15,6 +15,7 @@ export const useProjectStore = defineStore('project', () => {
   const modalState = ref<ModalState>('none')
   const project = ref<Project | null>(null)
   const steps = ref<StepInfo[]>([])
+  const skippedBotConfig = ref(false)
 
   function initSteps(): StepInfo[] {
     return [
@@ -65,6 +66,10 @@ export const useProjectStore = defineStore('project', () => {
     modalState.value = 'none'
   }
 
+  function setSkippedBotConfig(value: boolean) {
+    skippedBotConfig.value = value
+  }
+
   function showAdmin() {
     if (project.value) {
       pageState.value = 'admin'
@@ -101,6 +106,7 @@ export const useProjectStore = defineStore('project', () => {
     modalState,
     project,
     steps,
+    skippedBotConfig,
     setProject,
     setEmpty,
     openCreateModal,
@@ -112,5 +118,6 @@ export const useProjectStore = defineStore('project', () => {
     showAdmin,
     goHome,
     updateBotConfig,
+    setSkippedBotConfig,
   }
 })

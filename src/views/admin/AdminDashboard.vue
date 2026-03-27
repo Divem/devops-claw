@@ -69,17 +69,33 @@
       </div>
 
       <div class="dashboard-card trend-card">
-        <h3 class="card-title">近7天创建趋势</h3>
-        <div class="trend-chart">
-          <div
-            v-for="(day, index) in creationTrend"
-            :key="index"
-            class="trend-bar-wrapper"
+        <div class="trend-card-header">
+          <h3 class="card-title">创建趋势</h3>
+          <n-button
+            v-if="!isLoading"
+            size="tiny"
+            text
+            type="primary"
+            @click="refresh"
           >
-            <div class="trend-bar" :style="{ height: `${(day.count / maxTrendValue) * 100}%` }">
-              <span class="trend-count" v-if="day.count > 0">{{ day.count }}</span>
-            </div>
-            <span class="trend-day">{{ day.day }}</span>
+            刷新
+          </n-button>
+        </div>
+        <TimeRangeSelector
+          v-model="currentRange"
+          @change="handleTimeRangeChange"
+        />
+        <div class="trend-chart-wrapper">
+          <InteractiveTrendChart
+            v-if="trendData.length > 0"
+            :data="trendData"
+            :height="200"
+          />
+          <div v-else-if="isLoading" class="chart-loading">
+            加载中...
+          </div>
+          <div v-else class="chart-empty">
+            暂无数据
           </div>
         </div>
       </div>
@@ -114,39 +130,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { NProgress, NButton } from 'naive-ui'
+import InteractiveTrendChart from '@/components/dashboard/InteractiveTrendChart.vue'
+import TimeRangeSelector from '@/components/dashboard/TimeRangeSelector.vue'
+import { useTrendData } from '@/composables/useTrendData'
+import type { TimeRange, TodoItem, DashboardStats, ResourceUsage } from '@/types/dashboard'
 
 const router = useRouter()
-
-interface DashboardStats {
-  totalInstances: number
-  runningInstances: number
-  stoppedInstances: number
-  errorInstances: number
-}
-
-interface ResourceUsage {
-  cpu: number
-  memory: number
-  storage: number
-  network: number
-}
-
-interface TrendData {
-  day: string
-  count: number
-}
-
-interface TodoItem {
-  id: string
-  type: 'approval' | 'error' | 'info'
-  icon: string
-  title: string
-  description: string
-  action?: string
-}
+const { trendData, currentRange, isLoading, loadData, setTimeRange, refresh } = useTrendData()
 
 const stats = ref<DashboardStats>({
   totalInstances: 0,
@@ -162,14 +155,7 @@ const resources = ref<ResourceUsage>({
   network: 0,
 })
 
-const creationTrend = ref<TrendData[]>([])
-
 const todoItems = ref<TodoItem[]>([])
-
-const maxTrendValue = computed(() => {
-  const max = Math.max(...creationTrend.value.map(d => d.count))
-  return max > 0 ? max : 1
-})
 
 function navigateTo(path: string, query?: Record<string, string>) {
   router.push({ path, query })
@@ -182,12 +168,15 @@ async function fetchDashboardData() {
       const data = await res.json()
       stats.value = data.stats
       resources.value = data.resources
-      creationTrend.value = data.trend
       todoItems.value = data.todos
     }
   } catch {
     // 静默失败，保持默认值
   }
+}
+
+async function handleTimeRangeChange(range: TimeRange) {
+  await setTimeRange(range)
 }
 
 function handleTodoAction(item: TodoItem) {
@@ -200,13 +189,12 @@ function handleTodoAction(item: TodoItem) {
 
 onMounted(() => {
   fetchDashboardData()
+  loadData(30)
 })
 </script>
 
 <style lang="less" scoped>
 .admin-dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 /* 统计卡片 */
@@ -323,49 +311,30 @@ onMounted(() => {
 }
 
 /* 创建趋势图 */
-.trend-chart {
+.trend-card-header {
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
-  height: 150px;
-  padding: 0 8px;
-}
-
-.trend-bar-wrapper {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  flex: 1;
-  height: 100%;
-}
+  margin-bottom: 12px;
 
-.trend-bar {
-  width: 24px;
-  background: @primaryColor;
-  border-radius: 4px 4px 0 0;
-  min-height: 4px;
-  position: relative;
-  transition: height 0.3s ease;
-
-  &:hover {
-    opacity: 0.8;
+  .card-title {
+    margin-bottom: 0;
   }
 }
 
-.trend-count {
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: @textColorBody;
-  font-weight: 500;
+.trend-chart-wrapper {
+  margin-top: 16px;
+  min-height: 200px;
 }
 
-.trend-day {
-  margin-top: 8px;
-  font-size: 12px;
-  color: @textColorPlaceholder;
+.chart-loading,
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: @textColorSecondary;
+  font-size: 14px;
 }
 
 /* 待办事项 */

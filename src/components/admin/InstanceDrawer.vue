@@ -1,5 +1,5 @@
 <template>
-  <n-drawer :show="show" :width="480" placement="right" @update:show="emit('update:show', $event)">
+  <n-drawer :show="show" :width="640" placement="right" @update:show="emit('update:show', $event)">
     <n-drawer-content :title="detail?.name ?? '实例详情'" closable>
       <template v-if="detail">
         <!-- 基本信息 -->

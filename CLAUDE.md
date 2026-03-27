@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DevOps OpenClaw — 企业内部的 OpenClaw（开源 AI 助手平台）托管服务，模仿飞书 OpenClaw 的产品体验，让员工一键创建专属 AI 助手。项目当前处于规划设计阶段。
+DevOps OpenClaw — 企业内部的 OpenClaw（开源 AI 助手平台）托管服务，模仿飞书 OpenClaw 的产品体验，让员工一键创建专属 AI 助手。项目当前处于前端 Demo 开发阶段。
 
 产品关系：OpenClaw（开源项目）→ 飞书 OpenClaw（飞书托管服务）→ DevOps OpenClaw（本项目，企业内部自建）
 
@@ -25,6 +25,10 @@ DevOps OpenClaw — 企业内部的 OpenClaw（开源 AI 助手平台）托管�
 - **后端服务** — 编排引擎（VM 生命周期）、飞书集成服务（OAuth/WebSocket）、监控服务、API Gateway
 
 核心部署流程分三阶段：管理员准备凭证 → 员工一键创建（自动化 VM + OpenClaw 安装 + Gateway 启动）→ 管理员配置飞书长连接
+
+## Development Constraints
+
+当前阶段只做前端 Demo 页面，不做后端交互。所有数据使用 Mock（MSW）模拟，除非用户明确要求，否则不要引入真实 API 调用或后端集成逻辑。
 
 ## Design System
 

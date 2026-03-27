@@ -19,7 +19,7 @@ export function getProject(): Project | null {
   return currentProject
 }
 
-export function createProject(name: string, botName: string, avatarUrl: string): Project {
+export function createProject(name: string, avatarUrl: string, botName?: string): Project {
   progressCallCount = 0
   currentProject = {
     id: crypto.randomUUID(),
@@ -30,6 +30,7 @@ export function createProject(name: string, botName: string, avatarUrl: string):
     gatewayUrl: 'https://gateway.example.com/dashboard',
     feishuChatUrl: 'https://applink.feishu.cn/client/chat/open',
     createdAt: new Date().toISOString(),
+    botConfigured: !!botName,
   }
   return currentProject
 }
@@ -91,19 +92,41 @@ export function getGatewayProxyResponse(): { status: number; body: string } {
   }
 }
 
-// 管理后台仪表盘数据
-export function getDashboardData() {
-  // 生成近7天的日期标签
-  const days: string[] = []
-  const counts: number[] = []
-  const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+// 存储生成的趋势数据，确保多次调用返回一致数据
+let generatedTrendData: Array<{ date: string; count: number }> | null = null
 
-  for (let i = 6; i >= 0; i--) {
+// 生成趋势数据（内部使用，生成90天数据）
+function generateTrendData(): Array<{ date: string; count: number }> {
+  if (generatedTrendData) {
+    return generatedTrendData
+  }
+
+  const data: Array<{ date: string; count: number }> = []
+
+  for (let i = 89; i >= 0; i--) {
     const date = new Date()
     date.setDate(date.getDate() - i)
-    days.push(i === 0 ? '今天' : dayNames[date.getDay()])
-    counts.push(Math.floor(Math.random() * 5))
+    const dateStr = date.toISOString().split('T')[0]
+    // 模拟真实数据：工作日创建较多，周末较少
+    const dayOfWeek = date.getDay()
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
+    const baseCount = isWeekend ? 0 : Math.floor(Math.random() * 3) + 1
+    const randomFactor = Math.random() > 0.8 ? Math.floor(Math.random() * 3) : 0
+    data.push({
+      date: dateStr,
+      count: baseCount + randomFactor,
+    })
   }
+
+  generatedTrendData = data
+  return data
+}
+
+// 管理后台仪表盘数据
+export function getDashboardData(days?: number) {
+  const dayCount = days || 90
+  const allData = generateTrendData()
+  const trendData = allData.slice(-dayCount)
 
   return {
     stats: {
@@ -118,7 +141,7 @@ export function getDashboardData() {
       storage: 38,
       network: 27,
     },
-    trend: days.map((day, i) => ({ day, count: counts[i] })),
+    trend: trendData,
     todos: [
       {
         id: 'todo-1',
