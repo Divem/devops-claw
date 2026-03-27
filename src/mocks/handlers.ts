@@ -235,6 +235,15 @@ export const handlers = [
     return HttpResponse.json(project)
   }),
 
+  // 项目配置接口
+  http.get('/api/projects/:id/config', async () => {
+    await delay(200)
+    return HttpResponse.json({
+      model: { provider: 'anthropic', defaultModel: 'claude-sonnet-4-20250514' },
+      gateway: { url: 'https://gateway.example.com', status: 'running' },
+    })
+  }),
+
   // 管理后台 - 镜像列表
   http.get('/api/admin/images', async ({ request }) => {
     await delay(300)

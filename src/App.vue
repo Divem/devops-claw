@@ -131,6 +131,8 @@ onMounted(async () => {
     const res = await apiFetch('/api/project')
     if (res.ok) {
       store.setProject(await res.json())
+      // 有项目时自动跳过落地页
+      showLandingPage.value = false
     } else {
       store.setEmpty()
     }
