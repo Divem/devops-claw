@@ -7,6 +7,7 @@ import type {
   StepInfo,
   StepStatus,
   ProgressStep,
+  UpdateBotConfigPayload,
 } from '@/types/project'
 
 export const useProjectStore = defineStore('project', () => {
@@ -64,6 +65,37 @@ export const useProjectStore = defineStore('project', () => {
     modalState.value = 'none'
   }
 
+  function showAdmin() {
+    if (project.value) {
+      pageState.value = 'admin'
+    }
+  }
+
+  function goHome() {
+    if (project.value) {
+      pageState.value = 'has_project'
+    } else {
+      pageState.value = 'empty'
+    }
+  }
+
+  async function updateBotConfig(payload: UpdateBotConfigPayload): Promise<boolean> {
+    if (!project.value) return false
+    try {
+      const res = await fetch(`/api/project/${project.value.id}/bot-config`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) throw new Error()
+      const data = await res.json()
+      project.value.appId = data.appId
+      return true
+    } catch {
+      return false
+    }
+  }
+
   return {
     pageState,
     modalState,
@@ -77,5 +109,8 @@ export const useProjectStore = defineStore('project', () => {
     showComplete,
     openDeleteModal,
     closeModal,
+    showAdmin,
+    goHome,
+    updateBotConfig,
   }
 })

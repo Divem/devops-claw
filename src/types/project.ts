@@ -1,4 +1,4 @@
-export type PageState = 'loading' | 'empty' | 'has_project'
+export type PageState = 'loading' | 'empty' | 'has_project' | 'admin'
 
 export type ModalState = 'none' | 'create' | 'progress' | 'complete' | 'delete'
 
@@ -21,6 +21,8 @@ export interface Project {
   botName: string
   avatarUrl: string
   status: ProjectStatus
+  appId?: string
+  appSecret?: string
   gatewayUrl?: string
   feishuChatUrl?: string
   createdAt: string
@@ -30,6 +32,13 @@ export interface CreateProjectPayload {
   name: string
   botName: string
   avatarUrl: string
+  appId?: string
+  appSecret?: string
+}
+
+export interface UpdateBotConfigPayload {
+  appId: string
+  appSecret: string
 }
 
 export interface ProgressResponse {
@@ -45,4 +54,5 @@ export interface MockUser {
   id: string
   name: string
   avatarUrl: string
+  role: 'admin' | 'user'
 }
