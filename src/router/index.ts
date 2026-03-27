@@ -25,6 +25,16 @@ const router = createRouter({
           component: () => import('@/views/admin/InstanceList.vue'),
         },
         {
+          path: 'global-config',
+          name: 'admin-global-config',
+          component: () => import('@/views/admin/GlobalConfig.vue'),
+        },
+        {
+          path: 'images',
+          name: 'admin-images',
+          component: () => import('@/views/admin/ImageList.vue'),
+        },
+        {
           path: 'approvals',
           name: 'admin-approvals',
           component: () => import('@/views/admin/ApprovalBoard.vue'),

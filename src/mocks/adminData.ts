@@ -3,12 +3,14 @@ import type {
   InstanceDetail,
   VmStatus,
   FeishuConnectionStatus,
+  GlobalConfigStatus,
   Approval,
   OperationLog,
 } from '@/types/admin'
 
 const vmStatuses: VmStatus[] = ['running', 'running', 'running', 'running', 'running', 'stopped', 'stopped', 'error', 'error', 'running']
 const feishuStatuses: FeishuConnectionStatus[] = ['connected', 'connected', 'connected', 'pending', 'connected', 'disconnected', 'disconnected', 'disconnected', 'pending', 'connected']
+const globalConfigStatuses: GlobalConfigStatus[] = ['synced', 'synced', 'outdated', 'synced', 'pending', 'synced', 'outdated', 'pending', 'synced', 'synced']
 
 const owners = [
   { id: 'u-001', name: '张三' },
@@ -58,6 +60,10 @@ function generateInstances(): Instance[] {
       lastActiveAt: lastActive.toISOString(),
       appId: `cli_a${String(i + 1).padStart(4, '0')}`,
       projectId: `proj-${String(i + 1).padStart(3, '0')}`,
+      globalConfigStatus: globalConfigStatuses[i],
+      lastConfigSyncAt: globalConfigStatuses[i] === 'synced'
+        ? new Date(Date.now() - Math.random() * 86400000).toISOString()
+        : undefined,
     }
   })
 }
@@ -153,6 +159,15 @@ export function executeInstanceAction(id: string, action: string): Instance | nu
       inst.vmStatus = 'running'
       inst.lastActiveAt = new Date().toISOString()
       break
+    case 'restart-gateway':
+      inst.lastActiveAt = new Date().toISOString()
+      break
+    case 'repair-config':
+      break
+    case 'reset-instance':
+      inst.vmStatus = 'running'
+      inst.lastActiveAt = new Date().toISOString()
+      break
     case 'delete':
       instances = instances.filter((i) => i.id !== id)
       return inst
@@ -160,15 +175,15 @@ export function executeInstanceAction(id: string, action: string): Instance | nu
   return inst
 }
 
-export function createInstance(name: string, ownerId: string, appId?: string, appSecret?: string): Instance {
-  const owner = owners.find((o) => o.id === ownerId) || { id: ownerId, name: '未知用户' }
+export function createInstance(name: string, avatarUrl: string, appId?: string, appSecret?: string): Instance {
+  const adminOwner = owners[0]
   const idx = instances.length
   const newInst: Instance = {
     id: `inst-${String(idx + 1).padStart(3, '0')}-${Date.now()}`,
     name,
-    avatarUrl: `/avatars/avatar-${(idx % 12) + 1}.svg`,
-    ownerName: owner.name,
-    ownerId: owner.id,
+    avatarUrl,
+    ownerName: adminOwner.name,
+    ownerId: adminOwner.id,
     vmStatus: 'running',
     feishuStatus: appId && appSecret ? 'connected' : 'pending',
     createdAt: new Date().toISOString(),
@@ -331,7 +346,7 @@ export function getProjectById(projectId: string): import('@/types/project').Pro
     avatarUrl: instance.avatarUrl,
     status: instance.vmStatus === 'running' ? 'deployed' : 'error',
     gatewayUrl: 'https://gateway.example.com/dashboard',
-    feishuChatUrl: 'https://applink.feishu.cn/client/chat/open',
+    feishuChatUrl: 'https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg==',
     createdAt: instance.createdAt,
     botConfigured: instance.feishuStatus === 'connected',
     appId: instance.appId,

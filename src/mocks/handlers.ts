@@ -20,8 +20,46 @@ import {
   approveApproval,
   getProjectById,
 } from './adminData'
+import { getImages, createImage, updateImage, deleteImage } from './imageData'
+import { mockAuthLogin, mockAuthRefresh, mockAuthMe } from './data'
 
 export const handlers = [
+  // 认证接口
+  http.post('/api/auth/login', async ({ request }) => {
+    await delay(500)
+    const body = (await request.json()) as { username: string; password: string }
+    const result = mockAuthLogin(body.username, body.password)
+    if (!result) {
+      return HttpResponse.json({ message: '用户名或密码错误' }, { status: 401 })
+    }
+    return HttpResponse.json(result)
+  }),
+
+  http.post('/api/auth/refresh', async ({ request }) => {
+    await delay(300)
+    const body = (await request.json()) as { refreshToken: string }
+    const tokens = mockAuthRefresh(body.refreshToken)
+    if (!tokens) {
+      return HttpResponse.json({ message: 'Token 无效' }, { status: 401 })
+    }
+    return HttpResponse.json(tokens)
+  }),
+
+  http.post('/api/auth/logout', async () => {
+    await delay(200)
+    return new HttpResponse(null, { status: 204 })
+  }),
+
+  http.get('/api/auth/me', async ({ request }) => {
+    await delay(200)
+    const auth = request.headers.get('Authorization')
+    const user = mockAuthMe(auth)
+    if (!user) {
+      return HttpResponse.json({ message: '未授权' }, { status: 401 })
+    }
+    return HttpResponse.json(user)
+  }),
+
   http.get('/api/project', async () => {
     await delay(300)
     const project = getProject()
@@ -142,11 +180,11 @@ export const handlers = [
   // 管理后台 - 创建实例
   http.post('/api/admin/instances', async ({ request }) => {
     await delay(800)
-    const body = (await request.json()) as { name: string; ownerId: string; appId?: string; appSecret?: string }
-    if (!body.name || !body.ownerId) {
+    const body = (await request.json()) as { name: string; avatarUrl: string; appId?: string; appSecret?: string }
+    if (!body.name || !body.avatarUrl) {
       return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
     }
-    const inst = createInstance(body.name, body.ownerId, body.appId, body.appSecret)
+    const inst = createInstance(body.name, body.avatarUrl, body.appId, body.appSecret)
     return HttpResponse.json(inst, { status: 201 })
   }),
 
@@ -195,5 +233,53 @@ export const handlers = [
       return new HttpResponse(null, { status: 404 })
     }
     return HttpResponse.json(project)
+  }),
+
+  // 管理后台 - 镜像列表
+  http.get('/api/admin/images', async ({ request }) => {
+    await delay(300)
+    const url = new URL(request.url)
+    const result = getImages({
+      search: url.searchParams.get('search') || undefined,
+      status: url.searchParams.get('status') || undefined,
+      type: url.searchParams.get('type') || undefined,
+      sort: url.searchParams.get('sort') || undefined,
+      order: url.searchParams.get('order') || undefined,
+      page: Number(url.searchParams.get('page')) || undefined,
+      pageSize: Number(url.searchParams.get('pageSize')) || undefined,
+    })
+    return HttpResponse.json(result)
+  }),
+
+  // 管理后台 - 创建镜像
+  http.post('/api/admin/images', async ({ request }) => {
+    await delay(500)
+    const body = (await request.json()) as { type: string; name: string; version: string; description?: string; size?: number }
+    if (!body.type || !body.name || !body.version) {
+      return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
+    }
+    const img = createImage({ ...body, type: body.type as 'vm' | 'openclaw' })
+    return HttpResponse.json(img, { status: 201 })
+  }),
+
+  // 管理后台 - 更新镜像
+  http.put('/api/admin/images/:id', async ({ params, request }) => {
+    await delay(300)
+    const body = (await request.json()) as { name: string; description: string }
+    const result = updateImage(params.id as string, body)
+    if (!result) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(result)
+  }),
+
+  // 管理后台 - 删除镜像
+  http.delete('/api/admin/images/:id', async ({ params }) => {
+    await delay(300)
+    const ok = deleteImage(params.id as string)
+    if (!ok) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return new HttpResponse(null, { status: 204 })
   }),
 ]

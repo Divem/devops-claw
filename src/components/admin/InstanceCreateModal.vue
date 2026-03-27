@@ -1,139 +1,175 @@
 <template>
   <n-modal
     :show="show"
-    preset="card"
-    :title="modalTitle"
-    style="width: 480px"
     :mask-closable="view === 'form'"
-    :closable="view === 'form'"
-    @update:show="handleClose"
+    @update:show="(val: boolean) => !val && handleClose(false)"
   >
-    <!-- 表单视图 -->
-    <template v-if="view === 'form'">
-      <n-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-placement="left"
-        label-width="80"
-      >
-        <n-form-item label="实例名称" path="name">
+    <div class="create-modal">
+      <!-- Header -->
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <template v-if="view === 'progress'">正在创建实例...</template>
+          <template v-else-if="view === 'success'">创建完成</template>
+          <template v-else>创建实例</template>
+        </h2>
+        <p v-if="view === 'form'" class="modal-subtitle">一键接入飞书，创建预计耗时 1 分钟。</p>
+        <n-button
+          v-if="view === 'form'"
+          quaternary
+          circle
+          size="small"
+          class="modal-close"
+          @click="handleClose(false)"
+        >
+          ✕
+        </n-button>
+      </div>
+
+      <!-- 表单视图 -->
+      <div v-if="view === 'form'" class="modal-body">
+        <!-- 实例名称 -->
+        <div class="form-group">
+          <label class="form-label">设置实例名</label>
           <n-input
             v-model:value="form.name"
-            placeholder="请输入实例名称（2-50字符）"
-            :maxlength="50"
+            placeholder="请输入实例名称"
+            :maxlength="30"
             show-count
             :disabled="submitting"
           />
-        </n-form-item>
-        <n-form-item label="目标用户" path="ownerId">
-          <UserSelect
-            v-model="form.ownerId"
-            :disabled="submitting"
-          />
-        </n-form-item>
-        <n-form-item label="飞书 AppID">
+        </div>
+
+        <!-- 飞书渠道配置 -->
+        <div class="form-group">
+          <label class="form-label">配置飞书渠道</label>
+          <p class="form-hint" style="margin-top: 12px">
+            填写飞书机器人信息（选填）
+          </p>
+          <label class="form-label-light" style="margin-top: 12px">应用 ID (App ID)</label>
           <n-input
             v-model:value="form.appId"
-            placeholder="可选，创建后可在实例详情中配置"
+            placeholder="请输入 App ID"
             :disabled="submitting"
+            style="margin-bottom: 8px"
           />
-        </n-form-item>
-        <n-form-item label="AppSecret">
+          <label class="form-label-light">应用密钥 (App Secret)</label>
           <n-input
             v-model:value="form.appSecret"
             type="password"
             show-password-on="click"
-            placeholder="可选，填写 AppID 后配置"
+            placeholder="请输入 App Secret"
             :disabled="submitting || !form.appId"
           />
-        </n-form-item>
-      </n-form>
-      <n-alert v-if="errorMsg" type="error" :title="errorMsg" style="margin-top: 12px" />
-    </template>
+        </div>
 
-    <!-- 进度视图 -->
-    <template v-else-if="view === 'progress'">
-      <div class="steps">
-        <div
-          v-for="(step, index) in adminStore.createProgress"
-          :key="step.key"
-          class="step-item"
-        >
-          <div class="step-indicator">
-            <div
-              class="step-icon"
-              :class="{
-                'step-pending': step.status === 'pending',
-                'step-running': step.status === 'running',
-                'step-done': step.status === 'done',
-                'step-error': step.status === 'error',
-              }"
-            >
-              <span v-if="step.status === 'done'">✓</span>
-              <span v-else-if="step.status === 'error'">✕</span>
-              <span v-else-if="step.status === 'running'" class="spinner">◌</span>
-              <span v-else>○</span>
-            </div>
-            <div
-              v-if="index < adminStore.createProgress.length - 1"
-              class="step-line"
-              :class="{ 'step-line-done': step.status === 'done' }"
-            />
+        <!-- 头像选择 -->
+        <div class="avatar-grid">
+          <div
+            v-for="(avatar, index) in avatarList"
+            :key="avatar"
+            :data-testid="`avatar-${index}`"
+            class="avatar-item"
+            :class="{ selected: form.avatarUrl === avatar }"
+            @click="form.avatarUrl = avatar"
+          >
+            <n-avatar :size="48" :src="avatar" round />
           </div>
-          <div class="step-content">
-            <span class="step-label" :class="{ 'step-label-error': step.status === 'error' }">
-              {{ step.label }}
-            </span>
-            <span v-if="step.note" class="step-note">（{{ step.note }}）</span>
-            <span v-if="step.elapsed" class="step-elapsed">{{ step.elapsed }} s</span>
+        </div>
+
+        <n-alert v-if="errorMsg" type="error" :title="errorMsg" style="margin-top: 12px" />
+      </div>
+
+      <!-- 进度视图 -->
+      <div v-else-if="view === 'progress'" class="modal-body">
+        <div class="steps">
+          <div
+            v-for="(step, index) in adminStore.createProgress"
+            :key="step.key"
+            class="step-item"
+          >
+            <div class="step-indicator">
+              <div
+                class="step-icon"
+                :class="{
+                  'step-pending': step.status === 'pending',
+                  'step-running': step.status === 'running',
+                  'step-done': step.status === 'done',
+                  'step-error': step.status === 'error',
+                }"
+              >
+                <span v-if="step.status === 'done'">✓</span>
+                <span v-else-if="step.status === 'error'">✕</span>
+                <span v-else-if="step.status === 'running'" class="spinner">◌</span>
+                <span v-else>○</span>
+              </div>
+              <div
+                v-if="index < adminStore.createProgress.length - 1"
+                class="step-line"
+                :class="{ 'step-line-done': step.status === 'done' }"
+              />
+            </div>
+            <div class="step-content">
+              <span class="step-label" :class="{ 'step-label-error': step.status === 'error' }">
+                {{ step.label }}
+              </span>
+              <span v-if="step.note" class="step-note">（{{ step.note }}）</span>
+              <span v-if="step.elapsed" class="step-elapsed">{{ step.elapsed }} s</span>
+            </div>
           </div>
         </div>
       </div>
-    </template>
 
-    <!-- 成功视图 -->
-    <template v-else-if="view === 'success'">
-      <div class="success-view">
-        <div class="success-icon">✓</div>
-        <div class="success-title">实例创建成功</div>
-        <div class="success-name">{{ form.name }}</div>
-        <n-alert
-          v-if="feishuPending"
-          type="warning"
-          title="飞书连接待配置，可在实例详情中完成"
-          style="margin-top: 16px"
-        />
+      <!-- 成功视图 -->
+      <div v-else-if="view === 'success'" class="modal-body">
+        <div class="success-view">
+          <div class="success-icon">✓</div>
+          <div class="success-title">实例创建成功</div>
+          <div class="success-name">{{ form.name }}</div>
+          <n-alert
+            v-if="feishuPending"
+            type="warning"
+            title="飞书连接待配置，可在实例详情中完成"
+            style="margin-top: 16px"
+          />
+        </div>
       </div>
-    </template>
 
-    <template #footer>
-      <!-- 表单操作 -->
-      <div v-if="view === 'form'" class="modal-footer">
-        <n-button :disabled="submitting" @click="handleClose(false)">取消</n-button>
-        <n-button type="primary" :loading="submitting" @click="handleSubmit">创建</n-button>
+      <!-- Footer -->
+      <div class="modal-footer">
+        <template v-if="view === 'form'">
+          <n-button
+            type="primary"
+            size="large"
+            block
+            :disabled="!isValid || submitting"
+            :loading="submitting"
+            @click="handleSubmit"
+          >
+            创建
+          </n-button>
+          <p class="form-hint skip-link" @click="handleSkipAndCreate">
+            跳过机器人配置，先直接创建实例
+          </p>
+        </template>
+        <template v-else-if="view === 'progress'">
+          <n-button v-if="hasError" type="primary" block @click="handleRetry">重试</n-button>
+          <n-button v-else block disabled loading>创建中...</n-button>
+        </template>
+        <template v-else-if="view === 'success'">
+          <n-button type="primary" block @click="handleDone">完成</n-button>
+        </template>
       </div>
-      <!-- 进度中操作 -->
-      <div v-else-if="view === 'progress'" class="modal-footer">
-        <n-button v-if="hasError" type="primary" @click="handleRetry">重试</n-button>
-        <n-button v-else disabled loading>创建中...</n-button>
-      </div>
-      <!-- 成功操作 -->
-      <div v-else-if="view === 'success'" class="modal-footer">
-        <n-button type="primary" @click="handleDone">查看实例</n-button>
-      </div>
-    </template>
+    </div>
   </n-modal>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import { NModal, NForm, NFormItem, NInput, NButton, NAlert } from 'naive-ui'
-import type { FormInst, FormRules } from 'naive-ui'
+import { ref, reactive, computed, watch } from 'vue'
+import { NModal, NInput, NButton, NAvatar, NAlert } from 'naive-ui'
 import { useAdminStore } from '@/stores/admin'
-import UserSelect from './UserSelect.vue'
+import { avatarList } from '@/mocks/data'
 
-defineProps<{
+const props = defineProps<{
   show: boolean
 }>()
 
@@ -143,33 +179,25 @@ const emit = defineEmits<{
 }>()
 
 const adminStore = useAdminStore()
-const formRef = ref<FormInst | null>(null)
 const submitting = ref(false)
 const errorMsg = ref('')
 const view = ref<'form' | 'progress' | 'success'>('form')
 
 const form = reactive({
   name: '',
-  ownerId: undefined as string | undefined,
+  avatarUrl: '',
   appId: '',
   appSecret: '',
 })
 
-const rules: FormRules = {
-  name: [
-    { required: true, message: '请输入实例名称', trigger: 'blur' },
-    { min: 2, max: 50, message: '名称长度为 2-50 字符', trigger: 'blur' },
-  ],
-  ownerId: [
-    { required: true, message: '请选择目标用户', trigger: 'change' },
-  ],
-}
-
-const modalTitle = computed(() => {
-  if (view.value === 'progress') return '正在创建实例...'
-  if (view.value === 'success') return '创建完成'
-  return '创建实例'
+// 弹框打开时默认选中第一个头像
+watch(() => props.show, (newShow) => {
+  if (newShow && !form.avatarUrl && avatarList.length > 0) {
+    form.avatarUrl = avatarList[0]
+  }
 })
+
+const isValid = computed(() => form.name.trim().length > 0 && form.avatarUrl !== '')
 
 const hasError = computed(() =>
   adminStore.createProgress.some((s) => s.status === 'error'),
@@ -180,29 +208,22 @@ const feishuPending = computed(() => {
   return feishu?.note === '待配置'
 })
 
-async function handleSubmit() {
-  try {
-    await formRef.value?.validate()
-  } catch {
-    return
-  }
-
+async function doCreate() {
   submitting.value = true
   errorMsg.value = ''
 
   const result = await adminStore.createInstance({
-    name: form.name,
-    ownerId: form.ownerId!,
-    appId: form.appId || undefined,
-    appSecret: form.appSecret || undefined,
+    name: form.name.trim(),
+    avatarUrl: form.avatarUrl,
+    appId: form.appId.trim() || undefined,
+    appSecret: form.appSecret.trim() || undefined,
   })
 
   submitting.value = false
 
   if (result.ok && result.id) {
     view.value = 'progress'
-    adminStore.startProgressPolling(result.id, !!(form.appId && form.appSecret))
-    // 监听完成
+    adminStore.startProgressPolling(result.id, !!(form.appId.trim() && form.appSecret.trim()))
     const checkDone = setInterval(() => {
       if (adminStore.createProgressDone) {
         clearInterval(checkDone)
@@ -212,6 +233,18 @@ async function handleSubmit() {
   } else {
     errorMsg.value = result.error || '创建失败，请稍后重试'
   }
+}
+
+async function handleSubmit() {
+  if (!isValid.value) return
+  await doCreate()
+}
+
+function handleSkipAndCreate() {
+  if (!form.name.trim() || !form.avatarUrl) return
+  form.appId = ''
+  form.appSecret = ''
+  doCreate()
 }
 
 function handleRetry() {
@@ -229,7 +262,7 @@ function handleClose(val: boolean) {
   adminStore.stopProgressPolling()
   view.value = 'form'
   form.name = ''
-  form.ownerId = undefined
+  form.avatarUrl = ''
   form.appId = ''
   form.appSecret = ''
   errorMsg.value = ''
@@ -238,10 +271,110 @@ function handleClose(val: boolean) {
 </script>
 
 <style lang="less" scoped>
+.create-modal {
+  background: @bgWhite;
+  border-radius: @radiusModal;
+  padding: 24px;
+  width: 480px;
+  max-width: 90vw;
+  position: relative;
+}
+
+.modal-header {
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: @textColorTitle;
+}
+
+.modal-subtitle {
+  font-size: 12px;
+  color: @textColorPlaceholder;
+  margin-top: 4px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.modal-body {
+  margin-bottom: 20px;
+}
+
 .modal-footer {
-  display: flex;
-  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: @textColorTitle;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-label-light {
+  font-size: 14px;
+  font-weight: 400;
+  color: @textColorBody;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: @textColorPlaceholder;
+  margin-bottom: 8px;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: 12px;
+  margin-top: 12px;
+}
+
+.avatar-item {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: @primaryColorHover;
+  }
+
+  &.selected {
+    border-color: @primaryColor;
+  }
+}
+
+.skip-link {
+  text-align: center;
+  margin-top: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: @primaryColor;
+    text-decoration-style: solid;
+  }
 }
 
 .steps {

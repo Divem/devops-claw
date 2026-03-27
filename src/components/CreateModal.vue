@@ -24,7 +24,7 @@
           <label class="form-label">设置项目名</label>
           <n-input
             v-model:value="form.name"
-            placeholder="达尔文的项目"
+            placeholder="达尔文的OpenClaw"
             maxlength="30"
             show-count
           />
@@ -36,7 +36,7 @@
             联系管理员，获取飞书机器人信息（选填）
             <a
               class="form-link"
-              href="https://openclaw.feishu.cn/home"
+              href="https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg=="
               target="_blank"
               rel="noopener noreferrer"
             >申请机器人</a>
@@ -113,10 +113,15 @@ const form = reactive({
   appSecret: '',
 })
 
-// 当弹框打开时，默认选中第一个头像
+// 当弹框打开时，默认选中第一个头像，并设置默认项目名
 watch(() => props.show, (newShow) => {
-  if (newShow && !form.avatarUrl && avatarList.length > 0) {
-    form.avatarUrl = avatarList[0]
+  if (newShow) {
+    if (!form.avatarUrl && avatarList.length > 0) {
+      form.avatarUrl = avatarList[0]
+    }
+    if (!form.name.trim()) {
+      form.name = '达尔文的OpenClaw'
+    }
   }
 })
 

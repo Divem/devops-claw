@@ -10,8 +10,8 @@
         <span style="font-size: 64px;">🎉</span>
       </div>
       <div class="modal-footer">
-        <n-button size="large" @click="emit('configOpenClaw')">配置 OpenClaw</n-button>
-        <n-button type="primary" size="large" @click="emit('viewApproval')">查看审批单</n-button>
+        <n-button type="primary" size="large" @click="emit('configOpenClaw')">配置 OpenClaw</n-button>
+        <n-button size="large" @click="openApprovalLink">申请审核</n-button>
       </div>
     </div>
   </n-modal>
@@ -20,7 +20,11 @@
 <script setup lang="ts">
 import { NModal, NButton } from 'naive-ui'
 defineProps<{ show: boolean }>()
-const emit = defineEmits<{ close: []; configOpenClaw: []; viewApproval: [] }>()
+const emit = defineEmits<{ close: []; configOpenClaw: [] }>()
+
+function openApprovalLink() {
+  window.open('https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg==', '_blank')
+}
 </script>
 
 <style lang="less" scoped>

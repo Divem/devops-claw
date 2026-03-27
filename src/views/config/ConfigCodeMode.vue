@@ -15,6 +15,7 @@
     <div class="editor-area-wrapper">
       <EditorArea />
     </div>
+
   </div>
 </template>
 
@@ -62,7 +63,7 @@ function startResize(e: MouseEvent) {
 <style lang="less" scoped>
 .config-code-mode {
   display: flex;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background: #1e1e1e;
   color: #d4d4d4;
