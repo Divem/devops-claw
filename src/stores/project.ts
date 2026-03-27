@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import apiFetch from '@/api/client'
 import type {
   PageState,
   ModalState,
@@ -87,7 +88,7 @@ export const useProjectStore = defineStore('project', () => {
   async function updateBotConfig(payload: UpdateBotConfigPayload): Promise<boolean> {
     if (!project.value) return false
     try {
-      const res = await fetch(`/api/project/${project.value.id}/bot-config`, {
+      const res = await apiFetch(`/api/project/${project.value.id}/bot-config`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

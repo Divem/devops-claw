@@ -5,7 +5,7 @@ export type VmStatus = 'running' | 'stopped' | 'error'
 export type FeishuConnectionStatus = 'connected' | 'pending' | 'disconnected'
 
 /** 实例操作类型 */
-export type InstanceAction = 'start' | 'stop' | 'restart' | 'delete'
+export type InstanceAction = 'start' | 'stop' | 'restart' | 'restart-gateway' | 'repair-config' | 'reset-instance' | 'delete'
 
 /** 操作日志条目 */
 export interface OperationLog {
@@ -14,6 +14,46 @@ export interface OperationLog {
   operator: string
   timestamp: string
   detail?: string
+}
+
+/** 全局配置同步状态 */
+export type GlobalConfigStatus = 'synced' | 'pending' | 'outdated'
+
+/** 配置发布生效策略 */
+export type ConfigPublishStrategy = 'force' | 'conditional' | 'restart'
+
+/** 配置发布应用范围 */
+export type ConfigPublishScope = 'all' | 'running' | 'stopped' | 'selected'
+
+/** 模型供应商 */
+export type ModelProvider = 'anthropic' | 'openai' | 'deepseek' | 'custom'
+
+/** 配置文件条目 */
+export interface ConfigFileEntry {
+  name: string
+  content: string
+}
+
+/** 全局配置 */
+export interface GlobalConfig {
+  /** 模型配置 */
+  model: {
+    provider: ModelProvider
+    apiKey: string
+    baseUrl?: string
+    defaultModel: string
+    maxTokens: number
+    temperature: number
+  }
+  /** 配置文件 */
+  files: ConfigFileEntry[]
+}
+
+/** 全局配置发布请求 */
+export interface GlobalConfigPublishRequest {
+  strategy: ConfigPublishStrategy
+  scope: ConfigPublishScope
+  selectedInstanceIds?: string[]
 }
 
 /** 实例基本信息（列表用） */
@@ -29,6 +69,8 @@ export interface Instance {
   lastActiveAt: string
   appId?: string
   projectId?: string
+  globalConfigStatus?: GlobalConfigStatus
+  lastConfigSyncAt?: string
 }
 
 /** 实例详情（抽屉用） */

@@ -1,13 +1,34 @@
 <template>
   <div class="openclaw-admin">
-    <!-- 全屏 Admin 占位图片 - 仅在控制台模式下显示 -->
-    <div v-if="activeView === 'console'" class="admin-placeholder-overlay">
+    <!-- 全屏 Admin 占位图片 - 仅在控制台模式下且演示开关开启时显示 -->
+    <div v-if="activeView === 'console' && showDemoOverlay" class="admin-placeholder-overlay">
       <img
         src="/images/99openclaw-admin.png"
         alt="Admin Console"
         class="admin-placeholder-image"
       />
     </div>
+
+    <!-- 代码模式演示覆盖层 -->
+    <div v-if="activeView === 'code' && showDemoOverlay" class="code-demo-overlay">
+      <img
+        src="/images/99-openclaw-code.png"
+        alt="代码模式设计参考"
+        class="code-demo-image"
+      />
+    </div>
+
+    <!-- 演示/真实切换开关 -->
+    <button
+      class="demo-toggle"
+      @click="showDemoOverlay = !showDemoOverlay"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+      <span>{{ showDemoOverlay ? '演示' : '真实' }}</span>
+    </button>
 
     <!-- 顶部 Tab 栏 -->
     <header class="admin-topbar">
@@ -152,6 +173,7 @@ type ViewMode = 'console' | 'code' | 'terminal'
 
 const activeMenu = ref('chat')
 const activeView = ref<ViewMode>('console')
+const showDemoOverlay = ref(true)
 const projectConfig = ref<Record<string, any>>({})
 const iframeRef = ref<HTMLIFrameElement | null>(null)
 const iframeLoading = ref(true)
@@ -286,6 +308,49 @@ async function fetchProjectConfig() {
   height: auto;
   max-height: calc(100vh - 48px);
   object-fit: contain;
+}
+
+.code-demo-overlay {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #1e1e1e;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.code-demo-image {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 48px);
+  object-fit: contain;
+}
+
+.demo-toggle {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: @textColorPlaceholder;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: @primaryColor;
+  }
 }
 
 .admin-topbar {

@@ -1,4 +1,5 @@
 import type { Project, MockUser, ProgressStep, StepStatus } from '@/types/project'
+import type { AuthUser, AuthTokens } from '@/types/auth'
 
 export const mockUser: MockUser = {
   id: 'user-001',
@@ -72,6 +73,41 @@ export function updateBotConfig(appId: string, _appSecret: string): Project | nu
   if (!currentProject) return null
   currentProject.appId = appId
   return currentProject
+}
+
+// ==================== Auth Mock ====================
+
+const mockAuthUser: AuthUser = {
+  id: 'user-001',
+  name: '达尔文',
+  avatarUrl: '/avatars/default-user.svg',
+}
+
+function makeMockTokens(): AuthTokens {
+  return {
+    accessToken: 'mock-access-token-' + Date.now(),
+    refreshToken: 'mock-refresh-token-' + Date.now(),
+    expiresAt: Date.now() + 2 * 60 * 60 * 1000, // 2 hours
+  }
+}
+
+export function mockAuthLogin(
+  username: string,
+  password: string,
+): { user: AuthUser; tokens: AuthTokens } | null {
+  // 任意非空用户名/密码均视为成功（demo 模式）
+  if (!username || !password) return null
+  return { user: mockAuthUser, tokens: makeMockTokens() }
+}
+
+export function mockAuthRefresh(refreshToken: string): AuthTokens | null {
+  if (!refreshToken) return null
+  return makeMockTokens()
+}
+
+export function mockAuthMe(authHeader: string | null): AuthUser | null {
+  if (!authHeader?.startsWith('Bearer ')) return null
+  return mockAuthUser
 }
 
 // Gateway 反向代理 mock 响应

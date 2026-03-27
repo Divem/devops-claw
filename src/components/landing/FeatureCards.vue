@@ -63,16 +63,19 @@ const features: Feature[] = [
 }
 
 .feature-card {
-  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
   padding: 40px 32px;
   text-align: center;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  border: 1px solid @borderColor;
-  
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background 0.2s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0px 0px 8px 0px rgba(2, 2, 2, 0.1);
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0px 8px 32px rgba(0, 110, 255, 0.1);
   }
 }
 

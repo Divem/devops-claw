@@ -3,12 +3,14 @@ import type {
   InstanceDetail,
   VmStatus,
   FeishuConnectionStatus,
+  GlobalConfigStatus,
   Approval,
   OperationLog,
 } from '@/types/admin'
 
 const vmStatuses: VmStatus[] = ['running', 'running', 'running', 'running', 'running', 'stopped', 'stopped', 'error', 'error', 'running']
 const feishuStatuses: FeishuConnectionStatus[] = ['connected', 'connected', 'connected', 'pending', 'connected', 'disconnected', 'disconnected', 'disconnected', 'pending', 'connected']
+const globalConfigStatuses: GlobalConfigStatus[] = ['synced', 'synced', 'outdated', 'synced', 'pending', 'synced', 'outdated', 'pending', 'synced', 'synced']
 
 const owners = [
   { id: 'u-001', name: '张三' },
@@ -58,6 +60,10 @@ function generateInstances(): Instance[] {
       lastActiveAt: lastActive.toISOString(),
       appId: `cli_a${String(i + 1).padStart(4, '0')}`,
       projectId: `proj-${String(i + 1).padStart(3, '0')}`,
+      globalConfigStatus: globalConfigStatuses[i],
+      lastConfigSyncAt: globalConfigStatuses[i] === 'synced'
+        ? new Date(Date.now() - Math.random() * 86400000).toISOString()
+        : undefined,
     }
   })
 }
@@ -150,6 +156,15 @@ export function executeInstanceAction(id: string, action: string): Instance | nu
       inst.vmStatus = 'stopped'
       break
     case 'restart':
+      inst.vmStatus = 'running'
+      inst.lastActiveAt = new Date().toISOString()
+      break
+    case 'restart-gateway':
+      inst.lastActiveAt = new Date().toISOString()
+      break
+    case 'repair-config':
+      break
+    case 'reset-instance':
       inst.vmStatus = 'running'
       inst.lastActiveAt = new Date().toISOString()
       break

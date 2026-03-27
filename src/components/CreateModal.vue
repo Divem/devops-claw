@@ -24,7 +24,7 @@
           <label class="form-label">设置项目名</label>
           <n-input
             v-model:value="form.name"
-            placeholder="达尔文的项目"
+            placeholder="达尔文的OpenClaw"
             maxlength="30"
             show-count
           />
@@ -113,10 +113,15 @@ const form = reactive({
   appSecret: '',
 })
 
-// 当弹框打开时，默认选中第一个头像
+// 当弹框打开时，默认选中第一个头像，并设置默认项目名
 watch(() => props.show, (newShow) => {
-  if (newShow && !form.avatarUrl && avatarList.length > 0) {
-    form.avatarUrl = avatarList[0]
+  if (newShow) {
+    if (!form.avatarUrl && avatarList.length > 0) {
+      form.avatarUrl = avatarList[0]
+    }
+    if (!form.name.trim()) {
+      form.name = '达尔文的OpenClaw'
+    }
   }
 })
 

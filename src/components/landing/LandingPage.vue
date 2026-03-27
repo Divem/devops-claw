@@ -1,14 +1,10 @@
 <template>
   <div class="landing-page">
     <!-- 顶部导航 -->
-    <header class="landing-header">
+    <header ref="headerRef" class="landing-header">
       <div class="header-content">
         <div class="header-brand">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/>
-            <path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <span class="header-brand-logo">🦞</span>
           <span class="header-brand-name">DevOps Claw</span>
         </div>
         
@@ -33,14 +29,24 @@
 import HeroSection from './HeroSection.vue'
 import FeatureCards from './FeatureCards.vue'
 import LandingFooter from './LandingFooter.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const emit = defineEmits<{
   startDeploy: []
 }>()
 
+const headerRef = ref<HTMLElement>()
+
 function handleDeploy() {
   emit('startDeploy')
 }
+
+function onScroll() {
+  headerRef.value?.classList.toggle('is-scrolled', window.scrollY > 60)
+}
+
+onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <style lang="less" scoped>
@@ -57,9 +63,9 @@ function handleDeploy() {
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid @borderColor;
+  background: transparent;
+  transition: background 0.3s ease;
+
 }
 
 .header-content {
@@ -76,7 +82,12 @@ function handleDeploy() {
   display: flex;
   align-items: center;
   gap: 8px;
-  
+
+  .header-brand-logo {
+    font-size: 20px;
+    line-height: 1;
+  }
+
   .header-brand-name {
     font-size: 16px;
     font-weight: 500;

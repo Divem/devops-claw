@@ -18,8 +18,9 @@ The system SHALL display navigation items in the left sidebar for accessing diff
 - **THEN** the left sidebar SHALL contain navigation items for:
   - 仪表盘 (Dashboard)
   - 实例管理 (Instance Management)
-  - 机器人管理 (Bot Management)
+  - 全局配置 (Global Config)
   - 审批管理 (Approval Management)
+  - 机器人管理 (Bot Management)
   - 系统设置 (Settings)
 
 ### Requirement: Current navigation item is highlighted

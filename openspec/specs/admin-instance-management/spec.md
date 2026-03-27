@@ -55,7 +55,7 @@
 - **AND** 弹框 SHALL 保持打开状态
 
 ### Requirement: 管理端实例操作
-系统 SHALL 支持对实例进行基础操作（启动、停止、重启、删除）。
+系统 SHALL 支持对实例进行基础操作（启动、停止、重启电脑、删除）及高级操作（重启 Gateway、修复配置、恢复初始设置）。
 
 #### Scenario: 启动实例
 - **WHEN** 管理员点击实例的「启动」操作
@@ -66,16 +66,33 @@
 - **AND** 在停止确认弹框中点击「确认停止」
 - **THEN** 该实例状态 SHALL 变更为「已停止」
 
-#### Scenario: 重启实例
-- **WHEN** 管理员点击实例的「重启」操作
+#### Scenario: 重启电脑
+- **WHEN** 管理员在"更多"菜单中点击"重启电脑"操作
 - **AND** 在重启确认弹框中点击「确认重启」
 - **THEN** 该实例状态 SHALL 先变更为「已停止」
 - **AND** 随后 SHALL 自动变更为「运行中」
 - **AND** 重启期间 SHALL 显示加载状态
+- **AND** 重启确认弹框标题 SHALL 为"重启电脑？"
 
 #### Scenario: 强制删除实例
 - **WHEN** 管理员点击实例的「强制删除」操作
 - **AND** 在删除确认弹框中正确输入实例名称
 - **AND** 点击「确认删除」按钮
 - **THEN** 该实例 SHALL 从列表中移除
-- **AND** 实例相关数据 SHALL 被永久删除
+### Requirement: 实例展示全局配置同步状态
+实例 SHALL 展示其全局配置同步状态，便于管理员了解配置下发情况。
+
+#### Scenario: 实例已同步全局配置
+- **WHEN** 实例已完成全局配置同步
+- **THEN** 实例的 `globalConfigStatus` SHALL 为 `synced`
+- **AND** 实例列表 SHALL 展示「已同步」状态标识
+
+#### Scenario: 实例待同步全局配置
+- **WHEN** 实例有全局配置待下次启动时生效
+- **THEN** 实例的 `globalConfigStatus` SHALL 为 `pending`
+- **AND** 实例列表 SHALL 展示「待同步」状态标识
+
+#### Scenario: 实例配置已过期
+- **WHEN** 全局配置已更新但实例尚未同步
+- **THEN** 实例的 `globalConfigStatus` SHALL 为 `outdated`
+- **AND** 实例列表 SHALL 展示「待更新」状态标识

@@ -65,13 +65,16 @@
           />
         </div>
       </template>
+
+      <!-- 登录弹窗：挂载在顶层，全局可用 -->
+      <LoginModal :show="authStore.showLogin" />
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { NConfigProvider, NMessageProvider, NSpin, NDialogProvider } from 'naive-ui'
 import { themeOverrides } from './theme'
@@ -87,24 +90,45 @@ import CompleteModal from './components/CompleteModal.vue'
 import DeleteConfirm from './components/DeleteConfirm.vue'
 import LandingPage from './components/landing/LandingPage.vue'
 import OpenClawAdmin from './components/OpenClawAdmin.vue'
+import LoginModal from './components/LoginModal.vue'
+import { useAuthStore } from './stores/auth'
+import apiFetch from './api/client'
 import type { ProgressResponse } from './types/project'
 
 const route = useRoute()
 const isAdminRoute = computed(() => route.path.startsWith('/admin') || route.path.match(/^\/projects\/[^/]+\/admin$/))
 
 const store = useProjectStore()
+const authStore = useAuthStore()
 
 // 控制是否显示落地页
 const showLandingPage = ref(true)
 
 // 处理从落地页开始部署
 function handleStartDeploy() {
+  if (!authStore.isAuthenticated) {
+    authStore.showLogin = true
+    // 登录成功后继续部署流程
+    const unwatch = watch(
+      () => authStore.isAuthenticated,
+      (authenticated) => {
+        if (authenticated) {
+          unwatch()
+          showLandingPage.value = false
+        }
+      },
+    )
+    return
+  }
   showLandingPage.value = false
 }
 
 onMounted(async () => {
+  // 恢复登录态
+  await authStore.checkAuth()
+
   try {
-    const res = await fetch('/api/project')
+    const res = await apiFetch('/api/project')
     if (res.ok) {
       store.setProject(await res.json())
     } else {
@@ -129,7 +153,7 @@ function pollProgress(projectId: string) {
 
   pollTimer = setInterval(async () => {
     try {
-      const res = await fetch(`/api/project/${projectId}/progress`)
+      const res = await apiFetch(`/api/project/${projectId}/progress`)
       const data: ProgressResponse = await res.json()
       failCount = 0
 
@@ -141,7 +165,7 @@ function pollProgress(projectId: string) {
         clearInterval(pollTimer!)
         pollTimer = null
         store.showComplete()
-        const projectRes = await fetch('/api/project')
+        const projectRes = await apiFetch('/api/project')
         if (projectRes.ok) {
           store.setProject(await projectRes.json())
         }
@@ -171,7 +195,7 @@ async function handleCreate(payload: { name: string; avatarUrl: string; appId?: 
   // 标记是否跳过了机器人配置
   store.setSkippedBotConfig(!payload.appId || !payload.appSecret)
   try {
-    const res = await fetch('/api/project', {
+    const res = await apiFetch('/api/project', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -195,7 +219,7 @@ function handleSkipToStep(step: import('./types/project').ProgressStep) {
 async function handleDelete() {
   if (!store.project) return
   try {
-    await fetch(`/api/project/${store.project.id}`, { method: 'DELETE' })
+    await apiFetch(`/api/project/${store.project.id}`, { method: 'DELETE' })
     store.closeModal()
     store.setEmpty()
   } catch {

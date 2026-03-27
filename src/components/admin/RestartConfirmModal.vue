@@ -7,10 +7,10 @@
     <div class="restart-modal">
       <div class="restart-header">
         <span class="restart-icon">⚠️</span>
-        <h3 class="restart-title">重启实例？</h3>
+        <h3 class="restart-title">重启电脑？</h3>
       </div>
       <p class="restart-desc">
-        确定要重启实例 <span class="instance-name" :title="instanceName">{{ displayName }}</span> 吗？重启期间服务将暂时不可用
+        确定要重启电脑 <span class="instance-name" :title="instanceName">{{ displayName }}</span> 吗？重启期间服务将暂时不可用
       </p>
       <div class="restart-actions">
         <n-button size="medium" @click="emit('cancel')">取消</n-button>

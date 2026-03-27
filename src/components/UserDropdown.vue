@@ -27,12 +27,14 @@ import { useRouter } from 'vue-router'
 import { NDropdown, NAvatar, NIcon } from 'naive-ui'
 import { ChevronDown } from '@vicons/ionicons5'
 import type { MockUser } from '@/types/project'
+import { useAuthStore } from '@/stores/auth'
 
 const props = defineProps<{
   user: MockUser
 }>()
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const dropdownOptions = computed(() => {
   const options: Array<{ label: string; key: string; icon?: string }> = [
@@ -54,8 +56,9 @@ const dropdownOptions = computed(() => {
 function handleSelect(key: string) {
   if (key === 'admin') {
     router.push('/admin/dashboard')
+  } else if (key === 'logout') {
+    authStore.logout()
   }
-  // TODO: handle other options (profile, logout)
 }
 </script>
 

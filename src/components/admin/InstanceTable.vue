@@ -6,6 +6,7 @@
     :row-key="(row: Instance) => row.id"
     :bordered="false"
     size="medium"
+    @update:sorter="handleSorterChange"
   />
 </template>
 
@@ -13,7 +14,7 @@
 import { h } from 'vue'
 import { NDataTable, NTag, NButton, NAvatar, NDropdown, NSpace } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
-import type { Instance, VmStatus, FeishuConnectionStatus, InstanceAction } from '@/types/admin'
+import type { Instance, VmStatus, FeishuConnectionStatus, GlobalConfigStatus, InstanceAction } from '@/types/admin'
 
 defineProps<{
   instances: Instance[]
@@ -24,6 +25,7 @@ const emit = defineEmits<{
   select: [instance: Instance]
   action: [id: string, action: InstanceAction]
   config: [projectId: string]
+  sort: [key: string, order: 'ascend' | 'descend' | false]
 }>()
 
 const vmStatusMap: Record<VmStatus, { label: string; type: 'success' | 'default' | 'error' }> = {
@@ -36,6 +38,12 @@ const feishuStatusMap: Record<FeishuConnectionStatus, { label: string; type: 'su
   connected: { label: '已连接', type: 'success' },
   pending: { label: '待配置', type: 'warning' },
   disconnected: { label: '断开', type: 'error' },
+}
+
+const globalConfigStatusMap: Record<GlobalConfigStatus, { label: string; type: 'success' | 'warning' | 'default' }> = {
+  synced: { label: '已同步', type: 'success' },
+  pending: { label: '待同步', type: 'warning' },
+  outdated: { label: '待更新', type: 'default' },
 }
 
 function formatRelativeTime(isoString: string): string {
@@ -55,10 +63,16 @@ function formatDate(isoString: string): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
+function handleSorterChange(sorter: { columnKey: string; order: 'ascend' | 'descend' | false }) {
+  emit('sort', sorter.columnKey, sorter.order)
+}
+
 const columns: DataTableColumns<Instance> = [
   {
     title: '实例名称',
     key: 'name',
+    width: 220,
+    ellipsis: { tooltip: true },
     render(row) {
       return h(
         'div',
@@ -81,7 +95,7 @@ const columns: DataTableColumns<Instance> = [
   {
     title: '虚拟机状态',
     key: 'vmStatus',
-    width: 110,
+    width: 90,
     render(row) {
       const s = vmStatusMap[row.vmStatus]
       return h(NTag, { type: s.type, size: 'small', round: true }, () => s.label)
@@ -90,9 +104,19 @@ const columns: DataTableColumns<Instance> = [
   {
     title: '飞书连接',
     key: 'feishuStatus',
-    width: 110,
+    width: 90,
     render(row) {
       const s = feishuStatusMap[row.feishuStatus]
+      return h(NTag, { type: s.type, size: 'small', round: true }, () => s.label)
+    },
+  },
+  {
+    title: '配置状态',
+    key: 'globalConfigStatus',
+    width: 90,
+    render(row) {
+      if (!row.globalConfigStatus) return h('span', { style: 'color:#aaa' }, '-')
+      const s = globalConfigStatusMap[row.globalConfigStatus]
       return h(NTag, { type: s.type, size: 'small', round: true }, () => s.label)
     },
   },
@@ -100,6 +124,8 @@ const columns: DataTableColumns<Instance> = [
     title: '创建时间',
     key: 'createdAt',
     width: 160,
+    sorter: true,
+    defaultSortOrder: false,
     render(row) {
       return formatDate(row.createdAt)
     },
@@ -108,6 +134,8 @@ const columns: DataTableColumns<Instance> = [
     title: '最后活跃',
     key: 'lastActiveAt',
     width: 110,
+    sorter: true,
+    defaultSortOrder: false,
     render(row) {
       return formatRelativeTime(row.lastActiveAt)
     },
@@ -115,27 +143,40 @@ const columns: DataTableColumns<Instance> = [
   {
     title: '操作',
     key: 'actions',
-    width: 140,
+    width: 280,
     render(row) {
       const isRunning = row.vmStatus === 'running'
       const options = [
-        { label: '重启', key: 'restart' },
-        ...(row.projectId ? [{ label: '配置', key: 'config' }] : []),
-        { label: '强制删除', key: 'delete' },
+        {
+          type: 'group',
+          label: 'OpenClaw',
+          key: 'group-openclaw',
+          children: [
+            { label: '重启 Gateway', key: 'restart-gateway' },
+            { label: '修复配置', key: 'repair-config' },
+            { label: '恢复默认配置', key: 'reset-instance' },
+          ],
+        },
+        {
+          type: 'group',
+          label: '电脑',
+          key: 'group-computer',
+          children: [
+            isRunning
+              ? { label: '停止', key: 'stop' }
+              : { label: '启动', key: 'start' },
+            { label: '重启电脑', key: 'restart' },
+            { label: '强制删除实例', key: 'delete' },
+          ],
+        },
       ]
       return h(NSpace, { size: 8 }, () => [
-        isRunning
-          ? h(NButton, { size: 'small', quaternary: true, type: 'warning', onClick: () => emit('action', row.id, 'stop') }, () => '停止')
-          : h(NButton, { size: 'small', quaternary: true, type: 'success', onClick: () => emit('action', row.id, 'start') }, () => '启动'),
+        ...(row.projectId ? [h(NButton, { size: 'small', quaternary: true, onClick: () => emit('config', row.projectId) }, () => 'OpenClaw 控制台')] : []),
         h(NDropdown, {
           options,
           trigger: 'click',
           onSelect: (key: string) => {
-            if (key === 'config' && row.projectId) {
-              emit('config', row.projectId)
-            } else {
-              emit('action', row.id, key as InstanceAction)
-            }
+            emit('action', row.id, key as InstanceAction)
           },
         }, () => h(NButton, { size: 'small', quaternary: true }, () => '更多')),
       ])
