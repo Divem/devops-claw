@@ -1,55 +1,75 @@
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
     <n-message-provider>
-      <div class="app">
-        <AppHeader />
-        <main class="app-main">
-          <HeroSection />
-          <n-spin v-if="store.pageState === 'loading'" size="large" />
-          <CreateGuide
-            v-else-if="store.pageState === 'empty'"
-            @create="store.openCreateModal()"
-          />
-          <ProjectCard
-            v-else-if="store.pageState === 'has_project' && store.project"
-            :project="store.project"
-            @open-project="handleOpenProject"
-            @chat="handleChat"
-            @delete="store.openDeleteModal()"
-          />
-          <FeatureList />
-        </main>
-        <footer class="app-footer"><span>企业内部 OpenClaw 托管平台</span></footer>
-        <CreateModal
-          :show="store.modalState === 'create'"
-          @close="store.closeModal()"
-          @submit="handleCreate"
-        />
-        <ProgressModal
-          :show="store.modalState === 'progress'"
-          :steps="store.steps"
-          @retry="handleRetry"
+      <!-- Admin: handled by vue-router -->
+      <router-view v-if="isAdminRoute" />
+
+      <!-- Employee side: keep existing pageState logic -->
+      <template v-else>
+        <!-- 落地页 -->
+        <LandingPage
+          v-if="showLandingPage"
+          @start-deploy="handleStartDeploy"
         />
 
-        <CompleteModal
-          :show="store.modalState === 'complete'"
-          @close="store.closeModal()"
-          @open-project="handleOpenProject"
-          @view-approval="store.closeModal()"
+        <!-- 员工 Gateway 配置页面 -->
+        <OpenClawAdmin
+          v-else-if="store.pageState === 'admin' && store.project"
+          :project="store.project"
+          @back="store.goHome()"
         />
 
-        <DeleteConfirm
-          :show="store.modalState === 'delete'"
-          @cancel="store.closeModal()"
-          @confirm="handleDelete"
-        />
-      </div>
+        <!-- 应用主界面 -->
+        <div v-else class="app">
+          <AppHeader />
+          <main class="app-main">
+            <HeroSection />
+            <n-spin v-if="store.pageState === 'loading'" size="large" />
+            <CreateGuide
+              v-else-if="store.pageState === 'empty'"
+              @create="store.openCreateModal()"
+            />
+            <ProjectCard
+              v-else-if="store.pageState === 'has_project' && store.project"
+              :project="store.project"
+              @config-open-claw="handleConfigOpenClaw"
+              @delete="store.openDeleteModal()"
+            />
+            <FeatureList />
+          </main>
+          <footer class="app-footer"><span>企业内部 OpenClaw 托管平台</span></footer>
+          <CreateModal
+            :show="store.modalState === 'create'"
+            @close="store.closeModal()"
+            @submit="handleCreate"
+          />
+          <ProgressModal
+            :show="store.modalState === 'progress'"
+            :steps="store.steps"
+            @retry="handleRetry"
+          />
+
+          <CompleteModal
+            :show="store.modalState === 'complete'"
+            @close="store.closeModal()"
+            @config-open-claw="handleConfigOpenClaw"
+            @view-approval="store.closeModal()"
+          />
+
+          <DeleteConfirm
+            :show="store.modalState === 'delete'"
+            @cancel="store.closeModal()"
+            @confirm="handleDelete"
+          />
+        </div>
+      </template>
     </n-message-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { NConfigProvider, NMessageProvider, NSpin } from 'naive-ui'
 import { themeOverrides } from './theme'
 import AppHeader from './components/AppHeader.vue'
@@ -62,9 +82,24 @@ import CreateModal from './components/CreateModal.vue'
 import ProgressModal from './components/ProgressModal.vue'
 import CompleteModal from './components/CompleteModal.vue'
 import DeleteConfirm from './components/DeleteConfirm.vue'
+import LandingPage from './components/landing/LandingPage.vue'
+import OpenClawAdmin from './components/OpenClawAdmin.vue'
 import type { ProgressResponse } from './types/project'
 
+const route = useRoute()
+const isAdminRoute = computed(() => route.path.startsWith('/admin'))
+
 const store = useProjectStore()
+
+// 控制是否显示落地页
+const showLandingPage = ref(true)
+
+// 处理从落地页开始部署
+function handleStartDeploy() {
+  showLandingPage.value = false
+  // 打开创建弹窗
+  store.openCreateModal()
+}
 
 onMounted(async () => {
   try {
@@ -79,16 +114,9 @@ onMounted(async () => {
   }
 })
 
-function handleOpenProject() {
-  if (store.project?.gatewayUrl) {
-    window.open(store.project.gatewayUrl, '_blank')
-  }
-}
-
-function handleChat() {
-  if (store.project?.feishuChatUrl) {
-    window.open(store.project.feishuChatUrl, '_blank')
-  }
+function handleConfigOpenClaw() {
+  store.closeModal()
+  store.showAdmin()
 }
 
 let pollTimer: ReturnType<typeof setInterval> | null = null
@@ -137,7 +165,7 @@ function handleRetry() {
   pollProgress(store.project.id)
 }
 
-async function handleCreate(payload: { name: string; botName: string; avatarUrl: string }) {
+async function handleCreate(payload: { name: string; avatarUrl: string; appId?: string; appSecret?: string }) {
   store.startProgress()
   try {
     const res = await fetch('/api/project', {

@@ -5,20 +5,13 @@
       <span class="header-title">DevOps OpenClaw</span>
     </div>
     <div class="header-right">
-      <n-avatar
-        round
-        size="small"
-        :src="mockUser.avatarUrl"
-        :fallback-src="undefined"
-      >
-        {{ mockUser.name.charAt(0) }}
-      </n-avatar>
+      <UserDropdown :user="mockUser" />
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { NAvatar } from 'naive-ui'
+import UserDropdown from './UserDropdown.vue'
 import { mockUser } from '@/mocks/data'
 </script>
 
