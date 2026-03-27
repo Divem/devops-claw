@@ -4,8 +4,18 @@ import {
   createProject,
   getProgress,
   deleteProject,
+  updateBotConfig,
   avatarList,
+  getDashboardData,
 } from './data'
+import { getGatewayProxyResponse } from './data'
+import {
+  getInstances,
+  getInstanceDetail,
+  executeInstanceAction,
+  getApprovals,
+  approveApproval,
+} from './adminData'
 
 export const handlers = [
   http.get('/api/project', async () => {
@@ -40,8 +50,102 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 })
   }),
 
+  http.put('/api/project/:id/bot-config', async ({ request }) => {
+    await delay(300)
+    const body = (await request.json()) as { appId: string; appSecret: string }
+    const project = updateBotConfig(body.appId, body.appSecret)
+    return HttpResponse.json(project)
+  }),
+
   http.get('/api/avatars', async () => {
     await delay(200)
     return HttpResponse.json(avatarList)
+  }),
+
+  // Gateway 反向代理
+  http.get('/api/projects/:id/gateway/*', async () => {
+    await delay(300)
+    const project = getProject()
+    // 权限校验：mock 下仅检查项目是否存在
+    if (!project) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    // 实际项目中还需校验当前用户是否为项目所有者
+    const response = getGatewayProxyResponse()
+    return new HttpResponse(response.body, {
+      status: response.status,
+      headers: { 'Content-Type': 'text/html' },
+    })
+  }),
+
+  http.head('/api/projects/:id/gateway/*', async () => {
+    await delay(100)
+    const project = getProject()
+    if (!project) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return new HttpResponse(null, { status: 200 })
+  }),
+
+  // 管理后台仪表盘数据
+  http.get('/api/admin/dashboard', async () => {
+    await delay(300)
+    const data = getDashboardData()
+    return HttpResponse.json(data)
+  }),
+
+  // 管理后台 - 实例列表
+  http.get('/api/admin/instances', async ({ request }) => {
+    await delay(300)
+    const url = new URL(request.url)
+    const result = getInstances({
+      search: url.searchParams.get('search') || undefined,
+      status: url.searchParams.get('status') || undefined,
+      sort: url.searchParams.get('sort') || undefined,
+      order: url.searchParams.get('order') || undefined,
+      page: Number(url.searchParams.get('page')) || undefined,
+      pageSize: Number(url.searchParams.get('pageSize')) || undefined,
+    })
+    return HttpResponse.json(result)
+  }),
+
+  // 管理后台 - 实例详情
+  http.get('/api/admin/instances/:id', async ({ params }) => {
+    await delay(200)
+    const detail = getInstanceDetail(params.id as string)
+    if (!detail) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(detail)
+  }),
+
+  // 管理后台 - 实例操作
+  http.post('/api/admin/instances/:id/action', async ({ params, request }) => {
+    await delay(500)
+    const body = (await request.json()) as { action: string }
+    const result = executeInstanceAction(params.id as string, body.action)
+    if (!result) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(result)
+  }),
+
+  // 管理后台 - 审批列表
+  http.get('/api/admin/approvals', async ({ request }) => {
+    await delay(300)
+    const url = new URL(request.url)
+    const status = url.searchParams.get('status') || undefined
+    const result = getApprovals(status)
+    return HttpResponse.json(result)
+  }),
+
+  // 管理后台 - 标记审批完成
+  http.post('/api/admin/approvals/:id/approve', async ({ params }) => {
+    await delay(500)
+    const result = approveApproval(params.id as string)
+    if (!result) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(result)
   }),
 ]
