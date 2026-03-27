@@ -80,6 +80,30 @@
       :detail="adminStore.selectedInstance"
       @update:show="(v: boolean) => { if (!v) adminStore.closeDrawer() }"
     />
+
+    <!-- 重启确认弹框 -->
+    <RestartConfirmModal
+      :show="showRestartModal"
+      :instance-name="pendingRestartInstance?.name ?? ''"
+      @confirm="handleRestartConfirm"
+      @cancel="handleRestartCancel"
+    />
+
+    <!-- 停止确认弹框 -->
+    <StopConfirmModal
+      :show="showStopModal"
+      :instance-name="pendingStopInstance?.name ?? ''"
+      @confirm="handleStopConfirm"
+      @cancel="handleStopCancel"
+    />
+
+    <!-- 删除确认弹框 -->
+    <DeleteInstanceConfirmModal
+      :show="showDeleteModal"
+      :instance-name="pendingDeleteInstance?.name ?? ''"
+      @confirm="handleDeleteConfirm"
+      @cancel="handleDeleteCancel"
+    />
   </div>
 </template>
 
@@ -92,11 +116,20 @@ import { useAdminStore } from '@/stores/admin'
 import InstanceTable from '@/components/admin/InstanceTable.vue'
 import InstanceDrawer from '@/components/admin/InstanceDrawer.vue'
 import InstanceCreateModal from '@/components/admin/InstanceCreateModal.vue'
+import RestartConfirmModal from '@/components/admin/RestartConfirmModal.vue'
+import StopConfirmModal from '@/components/admin/StopConfirmModal.vue'
+import DeleteInstanceConfirmModal from '@/components/admin/DeleteInstanceConfirmModal.vue'
 import type { Instance, InstanceAction, VmStatus } from '@/types/admin'
 
 const adminStore = useAdminStore()
 const route = useRoute()
 const createModalVisible = ref(false)
+const showRestartModal = ref(false)
+const pendingRestartInstance = ref<Instance | null>(null)
+const showStopModal = ref(false)
+const pendingStopInstance = ref<Instance | null>(null)
+const showDeleteModal = ref(false)
+const pendingDeleteInstance = ref<Instance | null>(null)
 
 const statusOptions = [
   { label: '运行中', value: 'running' },
@@ -133,7 +166,67 @@ function handleSelect(instance: Instance) {
 }
 
 function handleAction(id: string, action: InstanceAction) {
+  const instance = adminStore.instances.find(i => i.id === id)
+  if (!instance) return
+
+  if (action === 'restart') {
+    pendingRestartInstance.value = instance
+    showRestartModal.value = true
+    return
+  }
+
+  if (action === 'stop') {
+    pendingStopInstance.value = instance
+    showStopModal.value = true
+    return
+  }
+
+  if (action === 'delete') {
+    pendingDeleteInstance.value = instance
+    showDeleteModal.value = true
+    return
+  }
+
   adminStore.executeAction(id, action)
+}
+
+function handleRestartConfirm() {
+  if (pendingRestartInstance.value) {
+    adminStore.executeAction(pendingRestartInstance.value.id, 'restart')
+    pendingRestartInstance.value = null
+  }
+  showRestartModal.value = false
+}
+
+function handleRestartCancel() {
+  pendingRestartInstance.value = null
+  showRestartModal.value = false
+}
+
+function handleStopConfirm() {
+  if (pendingStopInstance.value) {
+    adminStore.executeAction(pendingStopInstance.value.id, 'stop')
+    pendingStopInstance.value = null
+  }
+  showStopModal.value = false
+}
+
+function handleStopCancel() {
+  pendingStopInstance.value = null
+  showStopModal.value = false
+}
+
+function handleDeleteConfirm() {
+  if (pendingDeleteInstance.value) {
+    adminStore.executeAction(pendingDeleteInstance.value.id, 'delete')
+    pendingDeleteInstance.value = null
+  }
+  showDeleteModal.value = false
+}
+
+function handleDeleteCancel() {
+  pendingDeleteInstance.value = null
+  showDeleteModal.value = false
 }
 
 function handleConfig(projectId: string) {

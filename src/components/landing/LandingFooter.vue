@@ -27,9 +27,9 @@
 
 <script setup lang="ts">
 const navLinks = [
-  { text: '文档', href: '#' },
+  { text: '文档', href: '/html/prd.html' },
   { text: 'API', href: '#' },
-  { text: '社区', href: '#' },
+  { text: '社区', href: 'https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=f52t3159-244b-45e5-b687-05239c7db526' },
   { text: '状态页', href: '#' },
   { text: '更新日志', href: '#' },
 ]

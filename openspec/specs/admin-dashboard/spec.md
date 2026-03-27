@@ -1,46 +1,24 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
-### Requirement: Admin dashboard displays instance statistics
-The system SHALL display instance statistics on the admin dashboard including total instances, running instances, and pending approval count.
+### Requirement: 审批管理页面 Header 布局
 
-#### Scenario: Admin views dashboard
-- **WHEN** an admin user navigates to the admin dashboard
-- **THEN** the dashboard SHALL display a statistics section with:
-  - Total number of OpenClaw instances
-  - Number of running instances
-  - Number of instances pending approval
+审批管理页面的 header SHALL 完整显示"审批管理"标题，tabs 组件 SHALL 使用紧凑样式，不挤压标题空间。
 
-### Requirement: Admin dashboard displays resource usage overview
-The system SHALL display resource usage overview including CPU, memory, and storage utilization across all instances.
+#### Scenario: 标题完整显示
 
-#### Scenario: Admin views resource overview
-- **WHEN** an admin user views the dashboard
-- **THEN** the dashboard SHALL display resource usage charts showing:
-  - Overall CPU utilization percentage
-  - Overall memory utilization percentage
-  - Overall storage utilization percentage
+- **WHEN** 用户进入审批管理页面
+- **THEN** "审批管理"标题 SHALL 完整显示在一行内，不换行不截断
 
-### Requirement: Admin dashboard displays creation trend chart
-The system SHALL display a trend chart showing instance creation activity over the past 7 days.
+#### Scenario: Tabs 紧凑显示
 
-#### Scenario: Admin views trend chart
-- **WHEN** an admin user views the dashboard
-- **THEN** the dashboard SHALL display a line/bar chart showing the number of instances created per day for the last 7 days
+- **WHEN** 审批管理页面加载完成
+- **THEN** 待审批/已审批 tabs SHALL 使用 line 样式，占据更少的水平空间
 
-### Requirement: Admin dashboard displays todo items
-The system SHALL display a list of pending todo items for the admin including instance approvals and alerts.
+### Requirement: InstanceDrawer 抽屉宽度
 
-#### Scenario: Admin has pending tasks
-- **WHEN** an admin user views the dashboard
-- **THEN** the dashboard SHALL display a "待办事项" section listing:
-  - Instances awaiting approval
-  - Instances with errors requiring attention
-  - Recent alerts or notifications
+实例详情抽屉 SHALL 使用 640px 宽度，为详情内容提供充足的展示空间。
 
-### Requirement: Dashboard uses mock data initially
-The system SHALL use mock data for dashboard statistics until real backend APIs are available.
+#### Scenario: 抽屉以 640px 宽度打开
 
-#### Scenario: Dashboard loads
-- **WHEN** the admin dashboard page loads
-- **THEN** it SHALL display data from mock API responses
-- **AND** the UI SHALL be structured to support real API integration
+- **WHEN** 用户在实例管理页面点击某个实例查看详情
+- **THEN** 右侧抽屉 SHALL 以 640px 宽度滑出展示实例详情

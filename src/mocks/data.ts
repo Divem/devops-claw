@@ -28,7 +28,7 @@ export function createProject(name: string, avatarUrl: string, botName?: string)
     avatarUrl,
     status: 'creating',
     gatewayUrl: 'https://gateway.example.com/dashboard',
-    feishuChatUrl: 'https://applink.feishu.cn/client/chat/open',
+    feishuChatUrl: 'https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg==',
     createdAt: new Date().toISOString(),
     botConfigured: !!botName,
   }

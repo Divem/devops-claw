@@ -142,11 +142,11 @@ export const handlers = [
   // 管理后台 - 创建实例
   http.post('/api/admin/instances', async ({ request }) => {
     await delay(800)
-    const body = (await request.json()) as { name: string; ownerId: string; appId?: string; appSecret?: string }
-    if (!body.name || !body.ownerId) {
+    const body = (await request.json()) as { name: string; avatarUrl: string; appId?: string; appSecret?: string }
+    if (!body.name || !body.avatarUrl) {
       return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
     }
-    const inst = createInstance(body.name, body.ownerId, body.appId, body.appSecret)
+    const inst = createInstance(body.name, body.avatarUrl, body.appId, body.appSecret)
     return HttpResponse.json(inst, { status: 201 })
   }),
 

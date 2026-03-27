@@ -160,15 +160,15 @@ export function executeInstanceAction(id: string, action: string): Instance | nu
   return inst
 }
 
-export function createInstance(name: string, ownerId: string, appId?: string, appSecret?: string): Instance {
-  const owner = owners.find((o) => o.id === ownerId) || { id: ownerId, name: '未知用户' }
+export function createInstance(name: string, avatarUrl: string, appId?: string, appSecret?: string): Instance {
+  const adminOwner = owners[0]
   const idx = instances.length
   const newInst: Instance = {
     id: `inst-${String(idx + 1).padStart(3, '0')}-${Date.now()}`,
     name,
-    avatarUrl: `/avatars/avatar-${(idx % 12) + 1}.svg`,
-    ownerName: owner.name,
-    ownerId: owner.id,
+    avatarUrl,
+    ownerName: adminOwner.name,
+    ownerId: adminOwner.id,
     vmStatus: 'running',
     feishuStatus: appId && appSecret ? 'connected' : 'pending',
     createdAt: new Date().toISOString(),
@@ -331,7 +331,7 @@ export function getProjectById(projectId: string): import('@/types/project').Pro
     avatarUrl: instance.avatarUrl,
     status: instance.vmStatus === 'running' ? 'deployed' : 'error',
     gatewayUrl: 'https://gateway.example.com/dashboard',
-    feishuChatUrl: 'https://applink.feishu.cn/client/chat/open',
+    feishuChatUrl: 'https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg==',
     createdAt: instance.createdAt,
     botConfigured: instance.feishuStatus === 'connected',
     appId: instance.appId,

@@ -273,7 +273,7 @@ async function fetchProjectConfig() {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 100;
   background: #f5f5f5;
   display: flex;
   justify-content: center;

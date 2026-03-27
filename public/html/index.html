@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Claw - 企业级 OpenClaw 部署方案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #006eff;
+            --primary-light: #e6f2ff;
+            --success: #67C23A;
+            --warning: #ff8800;
+            --danger: #f23030;
+            --text-title: #1a1a1a;
+            --text-body: #333333;
+            --text-secondary: #666666;
+            --bg-white: #ffffff;
+            --bg-page: #f5f5f5;
+            --border: #e5e5e5;
+            --brand-teal: #00D6B9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-body);
+            background: var(--bg-page);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-title);
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        .nav a.active {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0052cc;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-body);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-page);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 24px 100px;
+            text-align: center;
+            background: linear-gradient(180deg, #ffffff 0%, #f7f7f7 100%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 13px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-cta .btn {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 40px 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #ffffff 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Capabilities Section */
+        .capabilities {
+            padding: 100px 24px;
+            background: var(--bg-white);
+        }
+
+        .capabilities-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .capability-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+
+        .capability-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .capability-row.reverse {
+            direction: rtl;
+        }
+
+        .capability-row.reverse > * {
+            direction: ltr;
+        }
+
+        .capability-visual {
+            background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .console-preview {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            color: #fff;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        .console-header {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .console-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .console-dot.red { background: #ff5f57; }
+        .console-dot.yellow { background: #febc2e; }
+        .console-dot.green { background: #28c840; }
+
+        .console-line {
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .console-line.prompt::before {
+            content: '$ ';
+            color: var(--brand-teal);
+        }
+
+        .console-line.success {
+            color: var(--success);
+        }
+
+        .capability-text h3 {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 20px;
+        }
+
+        .capability-text p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .capability-list {
+            list-style: none;
+        }
+
+        .capability-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-body);
+        }
+
+        .capability-list li::before {
+            content: '✓';
+            width: 22px;
+            height: 22px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Architecture Section */
+        .architecture {
+            padding: 100px 24px;
+            background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+        }
+
+        .architecture-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .architecture-diagram {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 60px;
+            border: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .arch-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 32px;
+            background: var(--bg-page);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .arch-layer:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .arch-layer-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .arch-layer-content h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 6px;
+        }
+
+        .arch-layer-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .arch-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        /* Security Section */
+        .security {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .security-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 20px;
+        }
+
+        .security-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+            border: 2px solid var(--danger);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .security-content h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .security-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            padding: 100px 24px;
+            background: var(--bg-white);
+        }
+
+        .use-cases-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .case-card {
+            background: var(--bg-page);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .case-card:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        .case-card:hover h4,
+        .case-card:hover p {
+            color: white;
+        }
+
+        .case-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .case-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .case-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .pricing-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 40px 32px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 110, 255, 0.1);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pricing-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .pricing-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .pricing-price {
+            margin-bottom: 32px;
+        }
+
+        .pricing-price .currency {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-title);
+        }
+
+        .pricing-price .amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .pricing-price .period {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-body);
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 100px 24px;
+            background: var(--bg-white);
+        }
+
+        .faq-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-list {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding-right: 40px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 24px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #0052cc 100%);
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta .btn {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            background: #f0f0f0;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: rgba(255, 255, 255, 0.65);
+            padding: 60px 24px 24px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 16px;
+        }
+
+        .footer-brand .logo-text {
+            color: white;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 20px;
+            transition: color 0.2s;
+        }
+
+        .footer-social a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid,
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .capability-row {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .section-header h2 {
+                font-size: 28px;
+            }
+
+            .features-grid,
+            .pricing-grid,
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .architecture-diagram {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/>
+                    <path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">DevOps Claw</span>
+            </div>
+            <nav class="nav">
+                <a href="#features">功能特性</a>
+                <a href="#capabilities">核心能力</a>
+                <a href="#security">安全保障</a>
+                <a href="#pricing">定价方案</a>
+                <a href="#faq">常见问题</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn btn-secondary">登录</a>
+                <a href="#cta" class="btn btn-primary">开始使用</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">企业级 OpenClaw 部署方案</div>
+        <h1>在您的企业内网<br>安全运行 <span>OpenClaw</span></h1>
+        <p class="hero-subtitle">
+            原版 OpenClaw 的企业级部署方案。一键上云，能力无删减；有记忆、有个性，能以您的身份读 DevOps、做任务、排日程。数据不出企业，零配置接入——完整的 OpenClaw，安全地用。
+        </p>
+        <div class="hero-cta">
+            <a href="#cta" class="btn btn-primary">
+                免费试用
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a href="#features" class="btn btn-secondary">了解更多</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">100+</div>
+                <div class="stat-label">企业客户</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">服务可用性</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">&lt;5min</div>
+                <div class="stat-label">部署时间</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">技术支持</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>好上手，超能干，更放心</h2>
+            <p>告别繁琐的环境搭建和配置流程，一键部署到云端，零配置接入即时通讯</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>一键部署，所见即所得</h3>
+                <p>告别繁琐的环境搭建和配置流程。一键部署到云端，零配置接入即时通讯，打开就能用，让团队快速开始使用 AI 助手。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🦞</div>
+                <h3>原生体验，能力无损</h3>
+                <p>提供原版 OpenClaw 完整能力，独特个性、记忆、多 Agent 编排，内置官方集成插件，不阉割任何功能。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>企业级安全，数据不离场</h3>
+                <p>数据全程在企业内网流转，权限可控、授权透明、安全合规，满足企业数据隐私和合规要求。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👤</div>
+                <h3>个性化记忆</h3>
+                <p>AI 助手拥有长期记忆能力，记住您的偏好、习惯和上下文，提供越用越聪明的个性化服务。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>多 Agent 编排</h3>
+                <p>支持多个 AI Agent 协同工作，自动分配任务、协调流程，构建复杂的自动化工作流。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔌</div>
+                <h3>官方集成插件</h3>
+                <p>内置丰富的官方插件生态，无缝集成 GitLab、Jenkins、Kubernetes 等 DevOps 工具链。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section id="capabilities" class="capabilities">
+        <div class="capabilities-content">
+            <div class="section-header">
+                <h2>完整的管理能力</h2>
+                <p>提供控制台、代码模式、终端多种管理方式，满足不同场景的管理需求</p>
+            </div>
+
+            <div class="capability-row">
+                <div class="capability-visual">
+                    <div class="console-preview">
+                        <div class="console-header">
+                            <div class="console-dot red"></div>
+                            <div class="console-dot yellow"></div>
+                            <div class="console-dot green"></div>
+                        </div>
+                        <div class="console-line prompt">devops-claw deploy --project my-bot</div>
+                        <div class="console-line">✓ 正在检查环境...</div>
+                        <div class="console-line">✓ 构建镜像完成</div>
+                        <div class="console-line">✓ 启动容器实例</div>
+                        <div class="console-line success">✓ 部署成功！访问: https://claw.mycompany.com</div>
+                        <div class="console-line prompt">devops-claw status</div>
+                        <div class="console-line">实例状态: 🟢 运行中</div>
+                        <div class="console-line">CPU: 12% | 内存: 256MB | 运行时长: 3d 5h</div>
+                    </div>
+                </div>
+                <div class="capability-text">
+                    <h3>一键部署，极速启动</h3>
+                    <p>告别繁琐的手动配置，一条命令即可完成 OpenClaw 实例的部署和配置。支持本地 Docker、Kubernetes 集群、云服务器等多种部署环境。</p>
+                    <ul class="capability-list">
+                        <li>自动化环境检测和依赖安装</li>
+                        <li>智能配置推荐和优化</li>
+                        <li>支持滚动更新和灰度发布</li>
+                        <li>完整的部署日志和状态追踪</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="capability-row reverse">
+                <div class="capability-visual">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div style="background: #006eff; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">12</div>
+                            <div style="font-size: 13px; opacity: 0.9;">实例总数</div>
+                        </div>
+                        <div style="background: #67C23A; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">10</div>
+                            <div style="font-size: 13px; opacity: 0.9;">运行中</div>
+                        </div>
+                        <div style="background: #909399; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">1</div>
+                            <div style="font-size: 13px; opacity: 0.9;">已停止</div>
+                        </div>
+                        <div style="background: #f23030; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">1</div>
+                            <div style="font-size: 13px; opacity: 0.9;">异常</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="capability-text">
+                    <h3>集中管理，一目了然</h3>
+                    <p>强大的管理控制台，实时监控所有 OpenClaw 实例的运行状态。可视化的仪表盘、资源监控、日志管理，让运维工作更加高效。</p>
+                    <ul class="capability-list">
+                        <li>多实例集中管理和监控</li>
+                        <li>实时资源使用和性能指标</li>
+                        <li>智能告警和异常通知</li>
+                        <li>详细的操作日志和审计追踪</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="capability-row">
+                <div class="capability-visual">
+                    <div style="background: #1e1e1e; border-radius: 8px; padding: 20px; font-family: 'Consolas', monospace; font-size: 13px; color: #d4d4d4;">
+                        <div style="color: #6a9955;"># OpenClaw 配置文件</div>
+                        <div><span style="color: #569cd6;">name</span>: <span style="color: #ce9178;">"my-devops-bot"</span></div>
+                        <div><span style="color: #569cd6;">version</span>: <span style="color: #ce9178;">"1.0.0"</span></div>
+                        <div style="margin-top: 12px;"><span style="color: #569cd6;">memory</span>:</div>
+                        <div style="padding-left: 16px;"><span style="color: #9cdcfe;">enabled</span>: <span style="color: #569cd6;">true</span></div>
+                        <div style="padding-left: 16px;"><span style="color: #9cdcfe;">storage</span>: <span style="color: #ce9178;">"redis"</span></div>
+                        <div style="margin-top: 12px;"><span style="color: #569cd6;">agents</span>:</div>
+                        <div style="padding-left: 16px;">- <span style="color: #9cdcfe;">name</span>: <span style="color: #ce9178;">"deploy"</span></div>
+                        <div style="padding-left: 32px;"><span style="color: #9cdcfe;">plugin</span>: <span style="color: #ce9178;">"gitlab"</span></div>
+                        <div style="padding-left: 16px;">- <span style="color: #9cdcfe;">name</span>: <span style="color: #ce9178;">"monitor"</span></div>
+                        <div style="padding-left: 32px;"><span style="color: #9cdcfe;">plugin</span>: <span style="color: #ce9178;">"prometheus"</span></div>
+                    </div>
+                </div>
+                <div class="capability-text">
+                    <h3>代码模式，灵活配置</h3>
+                    <p>对于高级用户，提供完整的代码编辑能力。使用 Monaco 编辑器编写配置文件，支持语法高亮、智能提示、版本控制等专业功能。</p>
+                    <ul class="capability-list">
+                        <li>YAML/JSON 配置文件编辑</li>
+                        <li>语法高亮和实时校验</li>
+                        <li>版本历史和变更对比</li>
+                        <li>一键导入导出配置</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="architecture">
+        <div class="architecture-content">
+            <div class="section-header">
+                <h2>架构设计</h2>
+                <p>分层架构设计，灵活可扩展，满足不同规模企业的需求</p>
+            </div>
+            <div class="architecture-diagram">
+                <div class="arch-layers">
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">👥</div>
+                        <div class="arch-layer-content">
+                            <h4>用户接入层</h4>
+                            <p>支持飞书、钉钉、企业微信、Slack 等多种 IM 平台接入，统一的消息网关处理</p>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">🎛️</div>
+                        <div class="arch-layer-content">
+                            <h4>核心引擎层</h4>
+                            <p>OpenClaw 核心运行时，Agent 编排、对话管理、记忆存储、权限控制</p>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">🔌</div>
+                        <div class="arch-layer-content">
+                            <h4>插件生态层</h4>
+                            <p>丰富的官方和第三方插件，GitLab、Jenkins、K8s、Prometheus 等 DevOps 工具集成</p>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">💾</div>
+                        <div class="arch-layer-content">
+                            <h4>数据存储层</h4>
+                            <p>支持多种存储后端，Redis、PostgreSQL、MongoDB，灵活适配企业现有基础设施</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="security">
+        <div class="section-header">
+            <h2>企业级安全保障</h2>
+            <p>数据不出企业，全程可控可审计，满足最严格的合规要求</p>
+        </div>
+        <div class="security-grid">
+            <div class="security-card">
+                <div class="security-icon">🏢</div>
+                <div class="security-content">
+                    <h4>私有化部署</h4>
+                    <p>完全部署在企业自有服务器或私有云，所有数据不出企业内网，从根源上杜绝数据泄露风险。</p>
+                </div>
+            </div>
+            <div class="security-card">
+                <div class="security-icon">🔐</div>
+                <div class="security-content">
+                    <h4>细粒度权限控制</h4>
+                    <p>基于 RBAC 的权限管理系统，支持实例级别、功能级别、数据级别的精细化权限配置。</p>
+                </div>
+            </div>
+            <div class="security-card">
+                <div class="security-icon">📋</div>
+                <div class="security-content">
+                    <h4>完整审计日志</h4>
+                    <p>记录所有用户操作、系统变更、数据访问，支持日志导出和对接企业 SIEM 系统。</p>
+                </div>
+            </div>
+            <div class="security-card">
+                <div class="security-icon">🔒</div>
+                <div class="security-content">
+                    <h4>传输加密</h4>
+                    <p>全链路 HTTPS 加密传输，支持 mTLS 双向认证，确保数据传输安全。</p>
+                </div>
+            </div>
+            <div class="security-card">
+                <div class="security-icon">✅</div>
+                <div class="security-content">
+                    <h4>合规认证</h4>
+                    <p>已通过 ISO 27001、SOC 2 Type II 等国际安全认证，符合 GDPR、等保要求。</p>
+                </div>
+            </div>
+            <div class="security-card">
+                <div class="security-icon">🛡️</div>
+                <div class="security-content">
+                    <h4>安全更新</h4>
+                    <p>及时的安全补丁推送，漏洞快速响应机制，确保系统始终处于安全状态。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases">
+        <div class="use-cases-content">
+            <div class="section-header">
+                <h2>应用场景</h2>
+                <p>适用于各种 DevOps 和团队协作场景</p>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-icon">🚀</div>
+                    <h4>CI/CD 助手</h4>
+                    <p>自动触发构建、部署，查询流水线状态</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📊</div>
+                    <h4>监控告警</h4>
+                    <p>智能分析监控数据，自动告警通知</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">🐛</div>
+                    <h4>故障排查</h4>
+                    <p>协助分析日志，定位问题根因</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📅</div>
+                    <h4>任务管理</h4>
+                    <p>创建任务、分配工单、跟踪进度</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📚</div>
+                    <h4>知识库问答</h4>
+                    <p>基于企业文档的智能问答</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">🔧</div>
+                    <h4>运维自动化</h4>
+                    <p>批量操作、定时任务、脚本执行</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">👥</div>
+                    <h4>团队协作</h4>
+                    <p>会议纪要保持、待办事项提醒</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📈</div>
+                    <h4>数据分析</h4>
+                    <p>生成报表、数据可视化、趋势分析</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing">
+        <div class="section-header">
+            <h2>定价方案</h2>
+            <p>灵活的定价策略，满足不同规模企业的需求</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>社区版</h3>
+                <p class="pricing-desc">适合个人开发者和小型团队</p>
+                <div class="pricing-price">
+                    <span class="currency">¥</span>
+                    <span class="amount">0</span>
+                    <span class="period">/月</span>
+                </div>
+                <ul class="pricing-features">
+                    <li>单实例部署</li>
+                    <li>基础 OpenClaw 功能</li>
+                    <li>社区支持</li>
+                    <li>开源许可证</li>
+                </ul>
+                <a href="#" class="btn btn-secondary">免费下载</a>
+            </div>
+            <div class="pricing-card popular">
+                <div class="popular-badge">最受欢迎</div>
+                <h3>专业版</h3>
+                <p class="pricing-desc">适合中小型企业和团队</p>
+                <div class="pricing-price">
+                    <span class="currency">¥</span>
+                    <span class="amount">999</span>
+                    <span class="period">/月</span>
+                </div>
+                <ul class="pricing-features">
+                    <li>最多 10 个实例</li>
+                    <li>完整的 OpenClaw 功能</li>
+                    <li>管理控制台</li>
+                    <li>邮件技术支持</li>
+                    <li>官方插件库</li>
+                </ul>
+                <a href="#cta" class="btn btn-primary">立即开始</a>
+            </div>
+            <div class="pricing-card">
+                <h3>企业版</h3>
+                <p class="pricing-desc">适合大型企业和组织</p>
+                <div class="pricing-price">
+                    <span class="currency">¥</span>
+                    <span class="amount">定制</span>
+                </div>
+                <ul class="pricing-features">
+                    <li>无限实例数量</li>
+                    <li>高可用集群部署</li>
+                    <li>SSO/SAML 集成</li>
+                    <li>7×24 专属支持</li>
+                    <li>自定义插件开发</li>
+                    <li>现场培训和咨询</li>
+                </ul>
+                <a href="#cta" class="btn btn-secondary">联系销售</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq">
+        <div class="faq-content">
+            <div class="section-header">
+                <h2>常见问题</h2>
+                <p>关于 DevOps Claw 的常见问题解答</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        DevOps Claw 与原版 OpenClaw 有什么区别？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        DevOps Claw 是原版 OpenClaw 的企业级部署方案，保留了 OpenClaw 的所有核心功能。在此基础上，我们提供了更简单的部署方式、更强大的管理控制台、更完善的企业级安全功能，以及专业的技术支持服务。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        部署需要多长时间？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        使用我们的一键部署工具，通常在 5 分钟内即可完成完整的环境搭建和实例启动。对于 Kubernetes 环境，我们也提供了 Helm Chart，可以快速集成到现有集群中。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        支持哪些即时通讯平台？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        目前我们支持飞书、钉钉、企业微信、Slack、Discord 等主流 IM 平台。我们会持续增加对更多平台的支持，您也可以基于我们的 SDK 开发自定义适配器。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        如何确保数据安全？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        DevOps Claw 采用私有化部署模式，所有数据存储在企业自有服务器上，不出企业内网。同时我们提供完整的权限控制、审计日志、传输加密等安全功能，并通过了多项国际安全认证。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        是否支持自定义插件开发？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        是的，我们提供完整的插件开发 SDK 和文档，支持使用 Python、JavaScript 等语言开发自定义插件。企业版用户还可以获得我们的插件开发支持和审核服务。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        提供免费试用吗？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        是的，我们提供 14 天的专业版免费试用，无需信用卡。试用期间您可以体验所有专业版功能，我们的技术团队也会协助您完成部署和配置。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta">
+        <h2>准备好开始使用了吗？</h2>
+        <p>加入 100+ 企业，让 AI 助手为您的 DevOps 团队赋能</p>
+        <a href="#" class="btn btn-white">免费试用 14 天</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/>
+                            <path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="logo-text">DevOps Claw</span>
+                    </div>
+                    <p>企业级 OpenClaw 部署方案，让 AI 助手安全地运行在您的企业内网。</p>
+                </div>
+                <div class="footer-column">
+                    <h4>产品</h4>
+                    <ul>
+                        <li><a href="#features">功能特性</a></li>
+                        <li><a href="#pricing">定价方案</a></li>
+                        <li><a href="#">更新日志</a></li>
+                        <li><a href="#">路线图</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>文档</h4>
+                    <ul>
+                        <li><a href="#">快速开始</a></li>
+                        <li><a href="#">部署指南</a></li>
+                        <li><a href="#">API 文档</a></li>
+                        <li><a href="#">插件开发</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>支持</h4>
+                    <ul>
+                        <li><a href="#">帮助中心</a></li>
+                        <li><a href="#">社区论坛</a></li>
+                        <li><a href="#">联系销售</a></li>
+                        <li><a href="#">状态页</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright © 2026 DevOps Claw Team. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#">📧</a>
+                    <a href="#">💬</a>
+                    <a href="#">🐦</a>
+                    <a href="#">💻</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const icon = this.querySelector('span');
+                if (answer.style.display === 'none' || !answer.style.display) {
+                    answer.style.display = 'block';
+                    icon.textContent = '−';
+                } else {
+                    answer.style.display = 'none';
+                    icon.textContent = '+';
+                }
+            });
+        });
+
+        // Initialize FAQ answers as visible
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

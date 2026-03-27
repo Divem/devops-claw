@@ -34,7 +34,7 @@
       <template v-else>
         <!-- 没有机器人时的引导 -->
         <div v-if="!project.appId" class="info-row empty-bot-guide">
-          <span class="guide-text">没有机器人?<a href="https://www.feishu.cn/" target="_blank" rel="noopener noreferrer" class="guide-link">点击申请机器人</a></span>
+          <span class="guide-text">没有机器人?<a href="https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg==" target="_blank" rel="noopener noreferrer" class="guide-link">点击申请机器人</a></span>
         </div>
 
         <div class="info-row edit-mode">

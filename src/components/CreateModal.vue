@@ -36,7 +36,7 @@
             联系管理员，获取飞书机器人信息（选填）
             <a
               class="form-link"
-              href="https://openclaw.feishu.cn/home"
+              href="https://www.feishu.cn/invitation/page/add_contact/?token=5a6r88f7-ecea-41fc-8b04-83c9e0c97240&unique_id=ziH9F8eSCNUbK0VkAMJEOg=="
               target="_blank"
               rel="noopener noreferrer"
             >申请机器人</a>

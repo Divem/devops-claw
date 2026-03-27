@@ -56,7 +56,6 @@
             :show="store.modalState === 'complete'"
             @close="store.closeModal()"
             @config-open-claw="handleConfigOpenClaw"
-            @view-approval="store.closeModal()"
           />
 
           <DeleteConfirm

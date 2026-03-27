@@ -61,7 +61,7 @@ export interface InstanceListResponse {
 /** 创建实例请求 */
 export interface CreateInstanceRequest {
   name: string
-  ownerId: string
+  avatarUrl: string
   appId?: string
   appSecret?: string
 }

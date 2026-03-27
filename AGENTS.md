@@ -72,6 +72,7 @@ import type { Project } from '@/types/project'
 - Variables defined in `@/assets/styles/variables.less`
 - Tailwind v4 for utility classes
 - Design tokens: Brand color `#006eff`, Tailwind primary `#0960bd`
+- 完整设计规范参考: [docs/design-token.md](./docs/design-token.md)
 
 ### Error Handling
 
