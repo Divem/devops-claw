@@ -10,6 +10,15 @@ import type {
   Approval,
   ApprovalStatus,
 } from '@/types/admin'
+import {
+  getInstances,
+  getInstanceDetail,
+  executeInstanceAction,
+  createInstance as mockCreateInstance,
+  getInstanceCreateProgress,
+  getApprovals,
+  approveApproval,
+} from '@/mocks/adminData'
 
 export const useAdminStore = defineStore('admin', () => {
   // --- 实例管理 ---
@@ -31,20 +40,16 @@ export const useAdminStore = defineStore('admin', () => {
   async function fetchInstances() {
     instanceLoading.value = true
     try {
-      const params = new URLSearchParams()
-      if (filters.search) params.set('search', filters.search)
-      if (filters.status.length) params.set('status', filters.status.join(','))
-      params.set('sort', filters.sort)
-      params.set('order', filters.order)
-      params.set('page', String(instancePage.value))
-      params.set('pageSize', String(instancePageSize.value))
-
-      const res = await fetch(`/api/admin/instances?${params}`)
-      if (res.ok) {
-        const data = await res.json()
-        instances.value = data.items
-        instanceTotal.value = data.total
-      }
+      const data = getInstances({
+        search: filters.search || undefined,
+        status: filters.status.length ? filters.status.join(',') : undefined,
+        sort: filters.sort,
+        order: filters.order,
+        page: instancePage.value,
+        pageSize: instancePageSize.value,
+      })
+      instances.value = data.items
+      instanceTotal.value = data.total
     } finally {
       instanceLoading.value = false
     }
@@ -52,9 +57,9 @@ export const useAdminStore = defineStore('admin', () => {
 
   async function fetchInstanceDetail(id: string) {
     try {
-      const res = await fetch(`/api/admin/instances/${id}`)
-      if (res.ok) {
-        selectedInstance.value = await res.json()
+      const detail = getInstanceDetail(id)
+      if (detail) {
+        selectedInstance.value = detail
         drawerVisible.value = true
       }
     } catch {
@@ -64,12 +69,8 @@ export const useAdminStore = defineStore('admin', () => {
 
   async function executeAction(id: string, action: InstanceAction) {
     try {
-      const res = await fetch(`/api/admin/instances/${id}/action`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action }),
-      })
-      if (res.ok) {
+      const result = executeInstanceAction(id, action)
+      if (result) {
         await fetchInstances()
         if (selectedInstance.value?.id === id) {
           if (action === 'delete') {
@@ -79,7 +80,7 @@ export const useAdminStore = defineStore('admin', () => {
           }
         }
       }
-      return res.ok
+      return !!result
     } catch {
       return false
     }
@@ -87,17 +88,8 @@ export const useAdminStore = defineStore('admin', () => {
 
   async function createInstance(req: CreateInstanceRequest): Promise<{ ok: boolean; id?: string; error?: string }> {
     try {
-      const res = await fetch('/api/admin/instances', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(req),
-      })
-      if (res.ok) {
-        const data = await res.json()
-        return { ok: true, id: data.id }
-      }
-      const data = await res.json().catch(() => ({}))
-      return { ok: false, error: data.message || '创建失败，请稍后重试' }
+      const data = mockCreateInstance(req.name, req.avatarUrl, req.appId, req.appSecret)
+      return { ok: true, id: data.id }
     } catch {
       return { ok: false, error: '创建失败，请稍后重试' }
     }
@@ -118,15 +110,12 @@ export const useAdminStore = defineStore('admin', () => {
 
     pollingTimer = setInterval(async () => {
       try {
-        const res = await fetch(`/api/admin/instances/${id}/progress?hasAppId=${hasAppId}`)
-        if (res.ok) {
-          const data = await res.json()
-          createProgress.value = data.steps
-          if (data.done) {
-            createProgressDone.value = true
-            stopProgressPolling()
-            await fetchInstances()
-          }
+        const data = getInstanceCreateProgress(id, hasAppId)
+        createProgress.value = data.steps
+        if (data.done) {
+          createProgressDone.value = true
+          stopProgressPolling()
+          await fetchInstances()
         }
       } catch {
         // 静默失败，继续轮询
@@ -155,11 +144,7 @@ export const useAdminStore = defineStore('admin', () => {
     approvalLoading.value = true
     try {
       const s = status ?? approvalTab.value
-      const query = s === 'all' ? '' : `?status=${s}`
-      const res = await fetch(`/api/admin/approvals${query}`)
-      if (res.ok) {
-        approvals.value = await res.json()
-      }
+      approvals.value = getApprovals(s === 'all' ? undefined : s)
     } finally {
       approvalLoading.value = false
     }
@@ -167,10 +152,8 @@ export const useAdminStore = defineStore('admin', () => {
 
   async function approveInstance(id: string): Promise<boolean> {
     try {
-      const res = await fetch(`/api/admin/approvals/${id}/approve`, {
-        method: 'POST',
-      })
-      if (res.ok) {
+      const result = approveApproval(id)
+      if (result) {
         await fetchApprovals()
         return true
       }

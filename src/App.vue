@@ -67,7 +67,7 @@
       </template>
 
       <!-- 登录弹窗：挂载在顶层，全局可用 -->
-      <LoginModal :show="authStore.showLogin" />
+      <LoginModal :show="authStore.showLogin" @close="authStore.showLogin = false" />
       </n-message-provider>
     </n-dialog-provider>
   </n-config-provider>
@@ -92,7 +92,12 @@ import LandingPage from './components/landing/LandingPage.vue'
 import OpenClawAdmin from './components/OpenClawAdmin.vue'
 import LoginModal from './components/LoginModal.vue'
 import { useAuthStore } from './stores/auth'
-import apiFetch from './api/client'
+import {
+  getProject,
+  createProject,
+  getProgress,
+  deleteProject,
+} from './mocks/data'
 import type { ProgressResponse } from './types/project'
 
 const route = useRoute()
@@ -128,9 +133,10 @@ onMounted(async () => {
   await authStore.checkAuth()
 
   try {
-    const res = await apiFetch('/api/project')
-    if (res.ok) {
-      store.setProject(await res.json())
+    const project = getProject()
+    if (project) {
+      store.setProject(project)
+      showLandingPage.value = false
     } else {
       store.setEmpty()
     }
@@ -147,14 +153,13 @@ function handleConfigOpenClaw() {
 let pollTimer: ReturnType<typeof setInterval> | null = null
 let failCount = 0
 
-function pollProgress(projectId: string) {
+function pollProgress() {
   failCount = 0
   if (pollTimer) clearInterval(pollTimer)
 
   pollTimer = setInterval(async () => {
     try {
-      const res = await apiFetch(`/api/project/${projectId}/progress`)
-      const data: ProgressResponse = await res.json()
+      const data: ProgressResponse = getProgress()
       failCount = 0
 
       for (const step of data.steps) {
@@ -165,9 +170,9 @@ function pollProgress(projectId: string) {
         clearInterval(pollTimer!)
         pollTimer = null
         store.showComplete()
-        const projectRes = await apiFetch('/api/project')
-        if (projectRes.ok) {
-          store.setProject(await projectRes.json())
+        const project = getProject()
+        if (project) {
+          store.setProject(project)
         }
       }
     } catch {
@@ -187,22 +192,16 @@ function pollProgress(projectId: string) {
 function handleRetry() {
   if (!store.project) return
   store.startProgress()
-  pollProgress(store.project.id)
+  pollProgress()
 }
 
 async function handleCreate(payload: { name: string; avatarUrl: string; appId?: string; appSecret?: string }) {
   store.startProgress()
-  // 标记是否跳过了机器人配置
   store.setSkippedBotConfig(!payload.appId || !payload.appSecret)
   try {
-    const res = await apiFetch('/api/project', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-    const project = await res.json()
+    const project = createProject(payload.name, payload.avatarUrl, payload.appId)
     store.setProject(project)
-    pollProgress(project.id)
+    pollProgress()
   } catch {
     store.updateStep('vm', 'error')
   }
@@ -219,7 +218,7 @@ function handleSkipToStep(step: import('./types/project').ProgressStep) {
 async function handleDelete() {
   if (!store.project) return
   try {
-    await apiFetch(`/api/project/${store.project.id}`, { method: 'DELETE' })
+    deleteProject()
     store.closeModal()
     store.setEmpty()
   } catch {

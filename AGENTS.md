@@ -140,9 +140,27 @@ src/
 tests/           # Test files (*.test.ts)
 ```
 
-## Mock Service Worker
+## Mock & 无后端部署
 
-MSW configured for development. Mock handlers in `src/mocks/`. Worker auto-starts in dev mode via `main.ts`.
+当前项目没有后端服务，所有 API 通过前端 mock 函数实现（`src/mocks/data.ts`、`src/mocks/adminData.ts`、`src/mocks/imageData.ts`）。
+
+**硬性要求：所有新增 API 调用必须提供前端 mock 实现。**
+
+- 新增 store 或组件中的数据获取，必须同步在 `src/mocks/` 中添加对应的 mock 函数
+- 调用方式：直接 import mock 函数，不使用 `fetch('/api/...')`
+- 认证模块已改为纯前端验证（用户名密码不为空即可登录）
+- 部署环境为 nginx + HTTP，不支持 HTTPS，因此 MSW Service Worker 不可用
+
+### Mock 文件结构
+
+```
+src/mocks/
+  data.ts          # 员工端：项目 CRUD、进度、机器人配置、仪表盘
+  adminData.ts     # 管理后台：实例管理、审批、用户搜索
+  imageData.ts     # 镜像管理
+  handlers.ts      # MSW handlers（仅 dev 模式使用，生产环境不生效）
+  browser.ts       # MSW browser setup
+```
 
 ## OpenSpec Workflow
 

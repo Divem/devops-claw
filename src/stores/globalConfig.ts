@@ -77,7 +77,7 @@ export const useGlobalConfigStore = defineStore('globalConfig', () => {
     }
   }
 
-  async function publishConfig(request: GlobalConfigPublishRequest) {
+  async function publishConfig(_request: GlobalConfigPublishRequest) {
     isPublishing.value = true
     error.value = null
     try {

@@ -489,6 +489,370 @@
             background: #0052cc;
             transform: translateY(-2px);
         }
+        .prd-mockup {
+            background: var(--bg-page);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+            overflow-x: auto;
+        }
+        .prd-mockup-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .prd-mockup-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        .prd-mockup-browser {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-white);
+        }
+        .prd-mockup-browser-bar {
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .prd-mockup-browser-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .prd-mockup-browser-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: block;
+        }
+        .prd-mockup-browser-dots span:nth-child(1) { background: #ff5f57; }
+        .prd-mockup-browser-dots span:nth-child(2) { background: #ffbd2e; }
+        .prd-mockup-browser-dots span:nth-child(3) { background: #28ca41; }
+        .prd-mockup-browser-url {
+            flex: 1;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+        .prd-mockup-browser-content {
+            padding: 0;
+            min-height: 200px;
+        }
+        .prd-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: default;
+            white-space: nowrap;
+        }
+        .prd-btn-primary { background: var(--primary); color: white; }
+        .prd-btn-secondary { background: var(--bg-white); color: var(--text-body); border: 1px solid var(--border); }
+        .prd-btn-danger { background: var(--danger); color: white; }
+        .prd-btn-success { background: var(--success); color: white; }
+        .prd-btn-sm { padding: 3px 10px; font-size: 12px; }
+        .prd-btn-lg { padding: 10px 24px; font-size: 15px; }
+        .prd-input {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-body);
+            min-width: 200px;
+        }
+        .prd-input-placeholder { color: var(--text-muted); }
+        .prd-input-lg { padding: 12px 16px; font-size: 15px; min-width: 280px; }
+        .prd-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .prd-card-shadow {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+        }
+        .prd-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .prd-tag-success { background: #f0f9eb; color: var(--success); }
+        .prd-tag-warning { background: #fff7e6; color: var(--warning); }
+        .prd-tag-danger { background: #fef0f0; color: var(--danger); }
+        .prd-tag-info { background: var(--primary-light); color: var(--primary); }
+        .prd-tag-muted { background: var(--bg-page); color: var(--text-muted); }
+        .prd-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .prd-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .prd-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .prd-flex { display: flex; }
+        .prd-flex-center { display: flex; align-items: center; justify-content: center; }
+        .prd-flex-between { display: flex; align-items: center; justify-content: space-between; }
+        .prd-flex-col { display: flex; flex-direction: column; }
+        .prd-flex-wrap { flex-wrap: wrap; }
+        .prd-gap-8 { gap: 8px; }
+        .prd-gap-12 { gap: 12px; }
+        .prd-gap-16 { gap: 16px; }
+        .prd-gap-24 { gap: 24px; }
+        .prd-avatar {
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+        .prd-avatar-sm { width: 28px; height: 28px; font-size: 11px; }
+        .prd-avatar-md { width: 40px; height: 40px; font-size: 16px; }
+        .prd-avatar-lg { width: 56px; height: 56px; font-size: 22px; }
+        .prd-avatar-xl { width: 72px; height: 72px; font-size: 28px; }
+        .prd-modal-overlay {
+            position: relative;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .prd-modal {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 24px;
+            min-width: 320px;
+            max-width: 520px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        .prd-drawer {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            width: 360px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        .prd-progress-bar {
+            height: 8px;
+            background: var(--bg-page);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .prd-progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .prd-progress-bar-fill-blue { background: var(--primary); }
+        .prd-progress-bar-fill-green { background: var(--success); }
+        .prd-progress-bar-fill-yellow { background: var(--warning); }
+        .prd-progress-bar-fill-red { background: var(--danger); }
+        .prd-sidebar {
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 0;
+            min-width: 160px;
+            flex-shrink: 0;
+        }
+        .prd-sidebar-item {
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: default;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .prd-sidebar-item-active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+            border-right: 2px solid var(--primary);
+        }
+        .prd-terminal {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 13px;
+            color: #d4d4d4;
+            line-height: 1.8;
+        }
+        .prd-terminal-prompt { color: #6a9955; }
+        .prd-terminal-cmd { color: #dcdcaa; }
+        .prd-terminal-key { color: #9cdcfe; }
+        .prd-terminal-val { color: #ce9178; }
+        .prd-terminal-comment { color: #6a9955; }
+        .prd-toolbar {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .prd-toolbar-sep {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+        }
+        .prd-toolbar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-title);
+        }
+        .prd-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .prd-table th {
+            background: var(--bg-sidebar);
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-title);
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+        .prd-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-body);
+        }
+        .prd-table tr:hover td { background: var(--primary-light); }
+        .prd-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .prd-step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .prd-step-done { background: var(--success); color: white; }
+        .prd-step-active { background: var(--primary); color: white; }
+        .prd-step-pending { background: var(--bg-page); color: var(--text-muted); border: 1px solid var(--border); }
+        .prd-step-line {
+            width: 2px;
+            height: 24px;
+            margin-left: 13px;
+        }
+        .prd-step-line-done { background: var(--success); }
+        .prd-step-line-active { background: var(--border); }
+        .prd-placeholder-img {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #f0f4ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary);
+            opacity: 0.3;
+        }
+        .prd-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 16px 0;
+        }
+        .prd-text-xs { font-size: 12px; }
+        .prd-text-sm { font-size: 13px; }
+        .prd-text-muted { color: var(--text-muted); }
+        .prd-text-secondary { color: var(--text-secondary); }
+        .prd-text-center { text-align: center; }
+        .prd-mt-8 { margin-top: 8px; }
+        .prd-mt-16 { margin-top: 16px; }
+        .prd-mt-24 { margin-top: 24px; }
+        .prd-mb-8 { margin-bottom: 8px; }
+        .prd-mb-16 { margin-bottom: 16px; }
+        .prd-p-0 { padding: 0; }
+        .prd-p-16 { padding: 16px; }
+        .prd-p-24 { padding: 24px; }
+        .prd-w-full { width: 100%; }
+        .prd-border-b { border-bottom: 1px solid var(--border); }
+        .prd-rounded { border-radius: 8px; }
+        .prd-select {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: var(--text-body);
+        }
+        .prd-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-body);
+        }
+        .prd-checkbox-box {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .prd-form-group { margin-bottom: 16px; }
+        .prd-form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-title);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .prd-form-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        @media (max-width: 1024px) {
+            .prd-grid-3 { grid-template-columns: 1fr; }
+            .prd-grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .prd-grid-2 { grid-template-columns: 1fr; }
+            .prd-grid-4 { grid-template-columns: 1fr; }
+            .prd-drawer { width: 100%; margin-left: 0; }
+        }
     </style>
 </head>
 <body>
@@ -506,7 +870,7 @@
             <div class="header-actions">
                 <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
                 <a href="#" class="btn btn-secondary" onclick="window.print()">🖨️ 打印</a>
-                <a href="index.html" class="btn btn-primary">🏠 产品介绍</a>
+                <a href="/" class="btn btn-primary">🏠 产品原型</a>
             </div>
         </div>
     </header>
@@ -815,6 +1179,57 @@ sequenceDiagram
                 <h2>6. 员工端功能需求</h2>
 
                 <h3>6.0 产品落地页</h3>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 产品落地页 (Landing Page)</div>
+                    <div class="prd-mockup-browser">
+                        <div class="prd-mockup-browser-bar">
+                            <div class="prd-mockup-browser-dots"><span></span><span></span><span></span></div>
+                            <div class="prd-mockup-browser-url">https://openclaw.company.com/</div>
+                        </div>
+                        <div class="prd-mockup-browser-content">
+                            <div style="padding: 40px 32px; text-align: center; background: linear-gradient(180deg, #f0f7ff 0%, var(--bg-white) 100%);">
+                                <div class="prd-flex-center prd-gap-16" style="margin-bottom: 24px;">
+                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/><path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round"/><path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round"/></svg>
+                                    <span style="font-size: 20px; font-weight: 700; color: var(--text-title);">DevOps OpenClaw</span>
+                                </div>
+                                <h3 style="font-size: 28px; font-weight: 700; color: var(--text-title); margin-bottom: 12px;">企业 AI 助手，一键部署</h3>
+                                <p style="font-size: 16px; color: var(--text-secondary); max-width: 480px; margin: 0 auto 24px;">模仿飞书 OpenClaw 的产品体验，为企业员工提供专属的 AI 助手托管平台</p>
+                                <div class="prd-flex-center prd-gap-12" style="justify-content: center;">
+                                    <span class="prd-btn prd-btn-primary prd-btn-lg">立即开始</span>
+                                    <span class="prd-btn prd-btn-secondary prd-btn-lg">了解更多</span>
+                                </div>
+                            </div>
+                            <div style="padding: 32px;">
+                                <div class="prd-grid-3" style="max-width: 640px; margin: 0 auto;">
+                                    <div class="prd-card prd-card-shadow prd-text-center">
+                                        <div style="font-size: 32px; margin-bottom: 12px;">🚀</div>
+                                        <div style="font-weight: 600; color: var(--text-title); margin-bottom: 6px; font-size: 14px;">一键部署</div>
+                                        <div class="prd-text-xs prd-text-muted">3 分钟完成 OpenClaw 实例创建</div>
+                                    </div>
+                                    <div class="prd-card prd-card-shadow prd-text-center">
+                                        <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
+                                        <div style="font-weight: 600; color: var(--text-title); margin-bottom: 6px; font-size: 14px;">飞书原生集成</div>
+                                        <div class="prd-text-xs prd-text-muted">通过飞书机器人实时对话交互</div>
+                                    </div>
+                                    <div class="prd-card prd-card-shadow prd-text-center">
+                                        <div style="font-size: 32px; margin-bottom: 12px;">🔒</div>
+                                        <div style="font-weight: 600; color: var(--text-title); margin-bottom: 6px; font-size: 14px;">数据安全</div>
+                                        <div class="prd-text-xs prd-text-muted">企业内网部署，数据不出边界</div>
+                                    </div>
+                                </div>
+                                <div class="prd-flex-center prd-gap-24" style="margin-top: 32px; justify-content: center;">
+                                    <div class="prd-text-center"><div style="font-size: 24px; font-weight: 700; color: var(--primary);">100+</div><div class="prd-text-xs prd-text-muted">企业客户</div></div>
+                                    <div style="width: 1px; height: 40px; background: var(--border);"></div>
+                                    <div class="prd-text-center"><div style="font-size: 24px; font-weight: 700; color: var(--primary);">99.9%</div><div class="prd-text-xs prd-text-muted">可用性</div></div>
+                                    <div style="width: 1px; height: 40px; background: var(--border);"></div>
+                                    <div class="prd-text-center"><div style="font-size: 24px; font-weight: 700; color: var(--primary);">&lt;5min</div><div class="prd-text-xs prd-text-muted">部署时间</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <h4>6.0.1 页面访问</h4>
                 <p>产品对外宣传页面，展示核心价值主张，引导用户开始使用。</p>
 
@@ -884,6 +1299,34 @@ sequenceDiagram
                 <h3>6.2 功能规格详细说明</h3>
                 
                 <h4>6.2.1 首页空状态引导</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 首页空状态引导</div>
+                    <div class="prd-mockup-browser">
+                        <div class="prd-mockup-browser-bar">
+                            <div class="prd-mockup-browser-dots"><span></span><span></span><span></span></div>
+                            <div class="prd-mockup-browser-url">https://openclaw.company.com/</div>
+                        </div>
+                        <div class="prd-mockup-browser-content">
+                            <div class="prd-toolbar" style="justify-content: space-between;">
+                                <div class="prd-flex prd-gap-12" style="align-items: center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/><path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2"/><path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2"/></svg>
+                                    <span class="prd-toolbar-title">DevOps OpenClaw</span>
+                                </div>
+                                <div class="prd-flex prd-gap-8">
+                                    <span class="prd-avatar prd-avatar-sm" style="background: #5b8ff9;">A</span>
+                                </div>
+                            </div>
+                            <div style="padding: 80px 32px; text-align: center;">
+                                <div class="prd-placeholder-img" style="width: 120px; height: 120px; margin: 0 auto 24px; border-radius: 50%;">🤖</div>
+                                <h3 style="font-size: 20px; color: var(--text-title); margin-bottom: 8px;">还没有 OpenClaw 项目</h3>
+                                <p class="prd-text-muted" style="margin-bottom: 24px;">创建您的第一个 AI 助手实例，通过飞书机器人智能对话</p>
+                                <span class="prd-btn prd-btn-primary prd-btn-lg">立即部署</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户首次登录系统</li>
@@ -923,6 +1366,73 @@ sequenceDiagram
                 </table>
 
                 <h4>6.2.2 项目列表展示</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 项目列表（含多种状态）</div>
+                    <div class="prd-toolbar" style="justify-content: space-between;">
+                        <div class="prd-flex prd-gap-12" style="align-items: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/><path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2"/><path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2"/></svg>
+                            <span class="prd-toolbar-title">我的项目</span>
+                        </div>
+                        <span class="prd-btn prd-btn-primary prd-btn-sm">+ 创建</span>
+                    </div>
+                    <div style="padding: 24px 0 0;">
+                        <div class="prd-grid-3">
+                            <div class="prd-card prd-card-shadow">
+                                <div class="prd-flex prd-gap-12 prd-mb-16">
+                                    <span class="prd-avatar prd-avatar-lg" style="background: #5b8ff9;">A</span>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-title); margin-bottom: 4px;">my-devops-bot</div>
+                                        <div class="prd-text-xs prd-text-muted">2026-03-25 创建</div>
+                                    </div>
+                                </div>
+                                <div class="prd-flex-between prd-mb-16">
+                                    <span class="prd-tag prd-tag-success">已部署</span>
+                                </div>
+                                <div class="prd-divider"></div>
+                                <div class="prd-flex prd-gap-8 prd-mt-8">
+                                    <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex:1;">配置 OpenClaw</span>
+                                    <span class="prd-btn prd-btn-secondary prd-btn-sm">···</span>
+                                </div>
+                            </div>
+                            <div class="prd-card prd-card-shadow">
+                                <div class="prd-flex prd-gap-12 prd-mb-16">
+                                    <span class="prd-avatar prd-avatar-lg" style="background: #ff85c0;">B</span>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-title); margin-bottom: 4px;">test-assistant</div>
+                                        <div class="prd-text-xs prd-text-muted">2026-03-27 创建</div>
+                                    </div>
+                                </div>
+                                <div class="prd-flex-between prd-mb-16">
+                                    <span class="prd-tag prd-tag-warning">审批中</span>
+                                </div>
+                                <div class="prd-divider"></div>
+                                <div class="prd-flex prd-gap-8 prd-mt-8">
+                                    <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex:1;">配置 OpenClaw</span>
+                                    <span class="prd-btn prd-btn-secondary prd-btn-sm">···</span>
+                                </div>
+                            </div>
+                            <div class="prd-card prd-card-shadow">
+                                <div class="prd-flex prd-gap-12 prd-mb-16">
+                                    <span class="prd-avatar prd-avatar-lg" style="background: #7262fd;">C</span>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-title); margin-bottom: 4px;">team-ai-helper</div>
+                                        <div class="prd-text-xs prd-text-muted">2026-03-28 创建</div>
+                                    </div>
+                                </div>
+                                <div class="prd-flex-between prd-mb-16">
+                                    <span class="prd-tag prd-tag-info">创建中</span>
+                                </div>
+                                <div class="prd-divider"></div>
+                                <div class="prd-flex prd-gap-8 prd-mt-8">
+                                    <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex:1; opacity: 0.5;">配置 OpenClaw</span>
+                                    <span class="prd-btn prd-btn-secondary prd-btn-sm">···</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户已创建至少一个项目</li>
@@ -972,6 +1482,34 @@ sequenceDiagram
                 </table>
 
                 <h4>6.2.3 创建项目 - 步骤一：设置项目名</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 创建步骤一（设置项目名弹窗）</div>
+                    <div class="prd-modal-overlay">
+                        <div class="prd-modal">
+                            <div class="prd-flex prd-gap-8 prd-mb-16" style="align-items: center;">
+                                <span class="prd-step-num prd-step-active">1</span>
+                                <span style="font-size: 12px; color: var(--text-muted);">设置项目名</span>
+                                <span style="width: 32px; height: 1px; background: var(--border); display: inline-block;"></span>
+                                <span class="prd-step-num prd-step-pending">2</span>
+                                <span style="font-size: 12px; color: var(--text-muted);">配置飞书渠道</span>
+                            </div>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-title); margin-bottom: 20px;">创建 OpenClaw</h4>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">项目名称</label>
+                                <div class="prd-input prd-input-lg prd-w-full">
+                                    <span class="prd-input-placeholder">请输入项目名称</span>
+                                </div>
+                                <div class="prd-form-hint">支持中文、英文、数字、下划线，2-50 个字符</div>
+                            </div>
+                            <div class="prd-flex-between prd-mt-24">
+                                <span class="prd-btn prd-btn-secondary">取消</span>
+                                <span class="prd-btn prd-btn-primary">下一步</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户在首页点击"立即部署"或"创建"按钮</li>
@@ -1022,6 +1560,48 @@ sequenceDiagram
                 </table>
 
                 <h4>6.2.4 创建项目 - 步骤二：配置飞书渠道</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 创建步骤二（配置飞书渠道弹窗）</div>
+                    <div class="prd-modal-overlay">
+                        <div class="prd-modal" style="max-width: 560px;">
+                            <div class="prd-flex prd-gap-8 prd-mb-16" style="align-items: center;">
+                                <span class="prd-step-num prd-step-done">&#10003;</span>
+                                <span style="font-size: 12px; color: var(--success);">设置项目名</span>
+                                <span style="width: 32px; height: 1px; background: var(--success); display: inline-block;"></span>
+                                <span class="prd-step-num prd-step-active">2</span>
+                                <span style="font-size: 12px; color: var(--primary);">配置飞书渠道</span>
+                            </div>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">选择头像</label>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <span class="prd-avatar prd-avatar-xl" style="background: #5b8ff9; border: 2px solid var(--primary);">A</span>
+                                    <span class="prd-avatar prd-avatar-xl" style="background: #ff85c0;">B</span>
+                                    <span class="prd-avatar prd-avatar-xl" style="background: #7262fd;">C</span>
+                                    <span class="prd-avatar prd-avatar-xl" style="background: #30bf78;">D</span>
+                                    <span class="prd-avatar prd-avatar-xl" style="background: #ffa940;">E</span>
+                                    <span class="prd-avatar prd-avatar-xl" style="background: #36cfc9;">F</span>
+                                </div>
+                            </div>
+                            <div class="prd-card" style="background: var(--bg-page); border: 1px dashed var(--border);">
+                                <div class="prd-flex-between" style="align-items: center;">
+                                    <span style="font-size: 13px; font-weight: 500; color: var(--text-title);">机器人配置（可选）</span>
+                                    <span style="font-size: 12px; color: var(--primary);">展开 ▾</span>
+                                </div>
+                                <div class="prd-text-xs prd-text-muted" style="margin-top: 4px;">跳过此步骤，稍后可配置</div>
+                            </div>
+                            <div class="prd-checkbox prd-mt-16">
+                                <span class="prd-checkbox-box"></span>
+                                <span class="prd-text-sm">跳过此步骤，稍后配置</span>
+                            </div>
+                            <div class="prd-flex-between prd-mt-24">
+                                <span class="prd-btn prd-btn-secondary">返回上一步</span>
+                                <span class="prd-btn prd-btn-primary">创建</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户成功完成步骤一（输入有效项目名）</li>
@@ -1075,6 +1655,39 @@ sequenceDiagram
                 </table>
 
                 <h4>6.2.5 创建进度展示</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 创建进度（三步流程）</div>
+                    <div class="prd-flex prd-gap-16" style="align-items: flex-start; justify-content: center; padding: 20px 0;">
+                        <div class="prd-text-center">
+                            <span class="prd-step-num prd-step-done" style="width: 36px; height: 36px; font-size: 16px;">&#10003;</span>
+                            <div class="prd-text-sm prd-mt-8" style="font-weight: 500;">启动云端电脑</div>
+                            <div class="prd-text-xs prd-text-muted">已完成 · 28s</div>
+                        </div>
+                        <div style="width: 60px; height: 2px; background: var(--success); margin-top: 18px;"></div>
+                        <div class="prd-text-center">
+                            <span class="prd-step-num prd-step-done" style="width: 36px; height: 36px; font-size: 16px;">&#10003;</span>
+                            <div class="prd-text-sm prd-mt-8" style="font-weight: 500;">启动 OpenClaw</div>
+                            <div class="prd-text-xs prd-text-muted">已完成 · 45s</div>
+                        </div>
+                        <div style="width: 60px; height: 2px; background: var(--border); margin-top: 18px;"></div>
+                        <div class="prd-text-center">
+                            <span class="prd-step-num prd-step-active" style="width: 36px; height: 36px; font-size: 16px;">3</span>
+                            <div class="prd-text-sm prd-mt-8" style="font-weight: 500;">连接飞书</div>
+                            <div class="prd-text-xs prd-text-muted" style="color: var(--primary);">进行中 · 12s...</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-page); border-radius: 8px; padding: 16px 20px; margin-top: 16px;">
+                        <div class="prd-flex-between">
+                            <span class="prd-text-sm prd-text-muted">总体进度</span>
+                            <span class="prd-text-sm" style="color: var(--primary);">2/3 步骤完成</span>
+                        </div>
+                        <div class="prd-progress-bar prd-mt-8">
+                            <div class="prd-progress-bar-fill prd-progress-bar-fill-blue" style="width: 66%;"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户点击"创建"按钮提交表单</li>
@@ -1131,6 +1744,25 @@ sequenceDiagram
                 </table>
 
                 <h4>6.2.6 创建完成弹窗</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 创建完成成功弹窗</div>
+                    <div class="prd-modal-overlay">
+                        <div class="prd-modal prd-text-center">
+                            <div style="width: 56px; height: 56px; border-radius: 50%; background: #f0f9eb; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px;">✓</div>
+                            <h4 style="font-size: 18px; color: var(--text-title); margin-bottom: 8px;">部署完成</h4>
+                            <p class="prd-text-sm prd-text-muted" style="margin-bottom: 24px;">飞书机器人正在等待管理员审批<br>审批通过后即可通过飞书对话</p>
+                            <div class="prd-flex prd-gap-12" style="justify-content: center;">
+                                <span class="prd-btn prd-btn-primary">打开 OpenClaw 项目</span>
+                                <span class="prd-btn prd-btn-secondary">查看审批单</span>
+                            </div>
+                            <div class="prd-mt-16">
+                                <span class="prd-btn prd-btn-secondary" style="font-size: 12px; color: var(--text-muted);">稍后再说</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>创建流程全部步骤成功完成</li>
@@ -1189,6 +1821,30 @@ sequenceDiagram
             <section id="project-config">
                 <h3>6.3 项目配置管理详细规格</h3>
                 <h4>6.3.1 顶部工具栏</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 项目配置顶部工具栏</div>
+                    <div class="prd-toolbar">
+                        <span class="prd-btn prd-btn-secondary prd-btn-sm">&#8592; 返回</span>
+                        <div class="prd-toolbar-sep"></div>
+                        <div class="prd-flex prd-gap-8" style="align-items: center;">
+                            <span class="prd-avatar prd-avatar-sm" style="background: #5b8ff9;">A</span>
+                            <span class="prd-toolbar-title">my-devops-bot</span>
+                            <span class="prd-tag prd-tag-success">运行中</span>
+                        </div>
+                        <div style="margin-left: auto;"></div>
+                        <div class="prd-flex" style="background: var(--bg-page); border-radius: 6px; padding: 2px; gap: 2px;">
+                            <span class="prd-btn prd-btn-sm" style="background: var(--primary); color: white; border-radius: 5px;">控制台</span>
+                            <span class="prd-btn prd-btn-sm" style="color: var(--text-secondary);">代码</span>
+                            <span class="prd-btn prd-btn-sm" style="color: var(--text-secondary);">终端</span>
+                        </div>
+                        <span class="prd-btn prd-btn-secondary prd-btn-sm">机器人信息 ▾</span>
+                    </div>
+                    <div class="prd-mt-8" style="font-size: 12px; color: var(--text-muted); padding-left: 4px;">
+                        视图切换按钮组：控制台（默认）/ 代码 / 终端，当前选中高亮显示
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户从首页点击"配置 OpenClaw"</li>
@@ -1291,6 +1947,32 @@ sequenceDiagram
                 </table>
 
                 <h4>6.3.3 控制台模式</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 控制台模式（左侧导航 + 右侧 iframe）</div>
+                    <div class="prd-flex" style="min-height: 320px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
+                        <div class="prd-sidebar" style="border-radius: 0; min-width: 140px;">
+                            <div class="prd-sidebar-item prd-sidebar-item-active">&#128268; 控制台</div>
+                            <div class="prd-sidebar-item">💬 聊天</div>
+                            <div class="prd-sidebar-item">📊 概览</div>
+                            <div class="prd-sidebar-item">🔗 通道</div>
+                            <div class="prd-sidebar-item">🖥️ 实例</div>
+                            <div class="prd-sidebar-item">📝 会话</div>
+                            <div class="prd-sidebar-item">📈 使用情况</div>
+                            <div class="prd-sidebar-item">⏰ 定时任务</div>
+                            <div class="prd-sidebar-item">&#128221; 配置</div>
+                            <div class="prd-sidebar-item">📋 日志</div>
+                            <div class="prd-sidebar-item">📖 文档</div>
+                        </div>
+                        <div style="flex: 1; background: var(--bg-white); padding: 20px;">
+                            <div class="prd-text-sm prd-text-muted" style="margin-bottom: 12px;">iframe 嵌入 Gateway Dashboard</div>
+                            <div class="prd-placeholder-img" style="height: 240px; border-radius: 8px; border: 1px solid var(--border);">
+                                <span style="font-size: 14px; opacity: 0.6; color: var(--text-muted);">Gateway Dashboard 内容区域</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>功能描述：</strong>通过 iframe 嵌入 OpenClaw Gateway Dashboard，提供原生的 OpenClaw 管理界面。</p>
                 
                 <p><strong>左侧导航菜单：</strong></p>
@@ -1400,6 +2082,55 @@ sequenceDiagram
                 </table>
 
                 <h4>6.3.5 代码模式</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 代码模式（文件树 + Monaco 编辑器）</div>
+                    <div class="prd-flex" style="min-height: 340px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
+                        <div style="width: 200px; background: #252526; border-radius: 0; padding: 8px 0; flex-shrink: 0;">
+                            <div style="padding: 4px 16px; font-size: 11px; color: #bbbbbb; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">资源管理器</div>
+                            <div style="padding: 4px 16px; display: flex; align-items: center; gap: 6px; background: #37373d; color: #cccccc; font-size: 13px;">
+                                <span style="color: #e8ab53;">📂</span> openclaw-config
+                            </div>
+                            <div style="padding-left: 20px;">
+                                <div style="padding: 4px 16px; color: #cccccc; font-size: 13px; background: #094771;">📄 openclaw.json</div>
+                                <div style="padding: 4px 16px; color: #cccccc; font-size: 13px;">📄 channels.json</div>
+                                <div style="padding: 4px 16px; color: #cccccc; font-size: 13px;">📄 memory.json</div>
+                            </div>
+                            <div style="padding: 4px 16px; display: flex; align-items: center; gap: 6px; color: #cccccc; font-size: 13px;">
+                                <span style="color: #e8ab53;">📂</span> .openclaw
+                            </div>
+                            <div style="padding: 4px 16px; display: flex; align-items: center; gap: 6px; color: #cccccc; font-size: 13px;">
+                                <span style="color: #e8ab53;">📂</span> skills
+                            </div>
+                        </div>
+                        <div style="width: 4px; background: #252526; cursor: col-resize;"></div>
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <div class="prd-flex" style="background: #252526; border-bottom: 1px solid #3c3c3c;">
+                                <div style="padding: 6px 16px; background: #1e1e1e; font-size: 12px; color: #ffffff; border-right: 1px solid #3c3c3c; display: flex; align-items: center; gap: 6px;">
+                                    <span style="color: #519aba;">📄</span> openclaw.json
+                                    <span style="margin-left: 8px; cursor: pointer; color: #888;">×</span>
+                                </div>
+                            </div>
+                            <div class="prd-terminal" style="flex: 1; border-radius: 0; margin: 0; font-size: 12px; line-height: 1.6;">
+                                <span class="prd-terminal-key">"model"</span>: <span class="prd-terminal-val">"anthropic/claude-sonnet"</span>,<br>
+                                <span class="prd-terminal-key">"temperature"</span>: <span class="prd-terminal-val">0.7</span>,<br>
+                                <span class="prd-terminal-key">"maxTokens"</span>: <span class="prd-terminal-val">4096</span>,<br>
+                                <span class="prd-terminal-key">"channels"</span>: [<br>
+                                &nbsp;&nbsp;{<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="prd-terminal-key">"type"</span>: <span class="prd-terminal-val">"feishu"</span>,<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="prd-terminal-key">"appId"</span>: <span class="prd-terminal-val">"cli_a8***f9"</span><br>
+                                &nbsp;&nbsp;}<br>
+                                ]
+                            </div>
+                            <div class="prd-flex-between" style="background: #007acc; padding: 4px 16px; font-size: 11px; color: white;">
+                                <span>Ln 3, Col 1</span>
+                                <span>JSON</span>
+                                <span>UTF-8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>功能描述：</strong>左侧文件资源管理器展示项目配置文件树，右侧编辑器区域支持多标签页代码编辑，基于 Monaco Editor 实现。</p>
                 
                 <p><strong>组件结构：</strong></p>
@@ -1474,6 +2205,35 @@ sequenceDiagram
                 </ol>
 
                 <h4>6.3.6 终端模式</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 终端模式（深色界面 + 系统信息 + YAML 配置）</div>
+                    <div class="prd-terminal" style="font-size: 13px;">
+                        <div class="prd-mb-16">
+                            <span class="prd-terminal-comment"># OpenClaw System Info</span><br>
+                            <span class="prd-terminal-prompt">openclaw@vm-001</span>:<span style="color: #569cd6;">~</span>$ neofetch<br><br>
+                            <span style="color: #cccccc;">System load.... </span><span class="prd-terminal-val">0.42</span><br>
+                            <span style="color: #cccccc;">Memory usage.. </span><span class="prd-terminal-val">2.1GB / 8GB (26%)</span><br>
+                            <span style="color: #cccccc;">Config size.... </span><span class="prd-terminal-val">12.4KB</span><br>
+                            <span style="color: #cccccc;">Last modified.. </span><span class="prd-terminal-val">2026-03-28 14:30:00</span>
+                        </div>
+                        <div style="height: 1px; background: #3c3c3c; margin: 16px 0;"></div>
+                        <div>
+                            <span class="prd-terminal-comment"># cat config.yaml</span><br>
+                            <span class="prd-terminal-key">model</span>: <span class="prd-terminal-val">anthropic/claude-sonnet</span><br>
+                            <span class="prd-terminal-key">temperature</span>: <span class="prd-terminal-val">0.7</span><br>
+                            <span class="prd-terminal-key">maxTokens</span>: <span class="prd-terminal-val">4096</span><br>
+                            <span class="prd-terminal-key">memory</span>:<br>
+                            &nbsp;&nbsp;<span class="prd-terminal-key">enabled</span>: <span class="prd-terminal-val">true</span><br>
+                            &nbsp;&nbsp;<span class="prd-terminal-key">strategy</span>: <span class="prd-terminal-val">hybrid</span><br>
+                            &nbsp;&nbsp;<span class="prd-terminal-key">retentionDays</span>: <span class="prd-terminal-val">90</span><br>
+                            <span class="prd-terminal-key">channels</span>:<br>
+                            &nbsp;&nbsp;- <span class="prd-terminal-key">type</span>: <span class="prd-terminal-val">feishu</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="prd-terminal-key">appId</span>: <span class="prd-terminal-val">cli_a8**********f9</span>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>功能描述：</strong>模拟终端界面展示系统信息和配置，以 YAML 格式展示 openclaw.json 配置。</p>
                 
                 <p><strong>展示内容：</strong></p>
@@ -1539,6 +2299,45 @@ sequenceDiagram
                 <h3>7.2 功能规格详细说明</h3>
 
                 <h4>7.2.1 仪表盘 - 统计卡片网格</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 仪表盘统计卡片</div>
+                    <div class="prd-grid-4">
+                        <div class="prd-card prd-card-shadow" style="border-left: 3px solid var(--primary);">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm prd-text-muted">实例总数</span>
+                                <span style="font-size: 20px; color: var(--primary);">📊</span>
+                            </div>
+                            <div style="font-size: 28px; font-weight: 700; color: var(--text-title);">24</div>
+                            <div class="prd-text-xs prd-text-muted">全部实例</div>
+                        </div>
+                        <div class="prd-card prd-card-shadow" style="border-left: 3px solid var(--success);">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm prd-text-muted">运行中</span>
+                                <span style="font-size: 20px; color: var(--success);">✅</span>
+                            </div>
+                            <div style="font-size: 28px; font-weight: 700; color: var(--text-title);">18</div>
+                            <div class="prd-text-xs prd-text-muted">正常运行</div>
+                        </div>
+                        <div class="prd-card prd-card-shadow" style="border-left: 3px solid var(--text-muted);">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm prd-text-muted">已停止</span>
+                                <span style="font-size: 20px; color: var(--text-muted);">⏸️</span>
+                            </div>
+                            <div style="font-size: 28px; font-weight: 700; color: var(--text-title);">5</div>
+                            <div class="prd-text-xs prd-text-muted">已停止实例</div>
+                        </div>
+                        <div class="prd-card prd-card-shadow" style="border-left: 3px solid var(--danger); background: #fef0f0;">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm" style="color: var(--danger);">异常</span>
+                                <span style="font-size: 20px; color: var(--danger);">⚠️</span>
+                            </div>
+                            <div style="font-size: 28px; font-weight: 700; color: var(--danger);">1</div>
+                            <div class="prd-text-xs" style="color: var(--danger);">需要处理</div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>管理员登录后默认进入</li>
@@ -1591,6 +2390,42 @@ sequenceDiagram
                 </table>
 
                 <h4>7.2.2 仪表盘 - 资源使用进度条</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 资源使用进度条</div>
+                    <div class="prd-grid-2" style="max-width: 500px;">
+                        <div class="prd-card">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm">CPU 使用率</span>
+                                <span class="prd-text-sm" style="color: var(--primary); font-weight: 600;">42%</span>
+                            </div>
+                            <div class="prd-progress-bar"><div class="prd-progress-bar-fill prd-progress-bar-fill-blue" style="width: 42%;"></div></div>
+                        </div>
+                        <div class="prd-card">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm">内存使用率</span>
+                                <span class="prd-text-sm" style="color: var(--warning); font-weight: 600;">68%</span>
+                            </div>
+                            <div class="prd-progress-bar"><div class="prd-progress-bar-fill prd-progress-bar-fill-yellow" style="width: 68%;"></div></div>
+                        </div>
+                        <div class="prd-card">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm">存储使用率</span>
+                                <span class="prd-text-sm" style="color: var(--danger); font-weight: 600;">85%</span>
+                            </div>
+                            <div class="prd-progress-bar"><div class="prd-progress-bar-fill prd-progress-bar-fill-red" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="prd-card">
+                            <div class="prd-flex-between prd-mb-8">
+                                <span class="prd-text-sm">网络带宽</span>
+                                <span class="prd-text-sm" style="color: var(--primary); font-weight: 600;">23%</span>
+                            </div>
+                            <div class="prd-progress-bar"><div class="prd-progress-bar-fill prd-progress-bar-fill-blue" style="width: 23%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="prd-text-xs prd-text-muted prd-mt-16" style="padding-left: 4px;">颜色规则：蓝色 (&lt;60%) / 黄色 (60-80%) / 红色 (&gt;80%)</div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>仪表盘页面加载</li>
@@ -1645,6 +2480,35 @@ sequenceDiagram
                 </table>
 
                 <h4>7.2.3 仪表盘 - 创建趋势图</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 创建趋势图</div>
+                    <div class="prd-card">
+                        <div class="prd-flex-between prd-mb-16">
+                            <span style="font-weight: 600; font-size: 14px; color: var(--text-title);">创建趋势</span>
+                            <div class="prd-flex" style="background: var(--bg-page); border-radius: 6px; padding: 2px; gap: 2px;">
+                                <span class="prd-btn prd-btn-sm" style="font-size: 12px;">7天</span>
+                                <span class="prd-btn prd-btn-sm prd-btn-primary" style="font-size: 12px; border-radius: 5px;">30天</span>
+                                <span class="prd-btn prd-btn-sm" style="font-size: 12px;">90天</span>
+                            </div>
+                        </div>
+                        <div style="height: 180px; position: relative; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100%; display: flex; align-items: flex-end; padding: 12px; gap: 4px;">
+                                <div style="flex:1; background: var(--primary-light); border-radius: 3px 3px 0 0; height: 30%;"></div>
+                                <div style="flex:1; background: var(--primary-light); border-radius: 3px 3px 0 0; height: 50%;"></div>
+                                <div style="flex:1; background: var(--primary-light); border-radius: 3px 3px 0 0; height: 20%;"></div>
+                                <div style="flex:1; background: var(--primary-light); border-radius: 3px 3px 0 0; height: 70%;"></div>
+                                <div style="flex:1; background: var(--primary-light); border-radius: 3px 3px 0 0; height: 45%;"></div>
+                                <div style="flex:1; background: var(--primary); border-radius: 3px 3px 0 0; height: 90%;"></div>
+                                <div style="flex:1; background: var(--primary-light); border-radius: 3px 3px 0 0; height: 35%;"></div>
+                            </div>
+                            <div style="position: absolute; bottom: 28px; right: 40px; background: white; border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-size: 11px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <span style="color: var(--text-muted);">03-27</span>: <strong style="color: var(--primary);">5 个</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>仪表盘页面加载</li>
@@ -1695,6 +2559,41 @@ sequenceDiagram
                 </table>
 
                 <h4>7.2.4 仪表盘 - 待办事项列表</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 待办事项列表</div>
+                    <div class="prd-card">
+                        <div class="prd-flex-between prd-mb-16">
+                            <span style="font-weight: 600; font-size: 14px; color: var(--text-title);">待办事项</span>
+                            <span class="prd-tag prd-tag-warning">3 条待处理</span>
+                        </div>
+                        <div class="prd-flex prd-gap-12 prd-mb-12 prd-card" style="background: var(--bg-page); padding: 12px; align-items: center;">
+                            <span style="font-size: 18px;">🔔</span>
+                            <div style="flex: 1;">
+                                <div class="prd-text-sm" style="font-weight: 500;">待审批：new-bot (张三)</div>
+                                <div class="prd-text-xs prd-text-muted">等待管理员配置长连接</div>
+                            </div>
+                            <span class="prd-btn prd-btn-primary prd-btn-sm">去处理</span>
+                        </div>
+                        <div class="prd-flex prd-gap-12 prd-mb-12 prd-card" style="background: #fef0f0; border-color: var(--danger); padding: 12px; align-items: center;">
+                            <span style="font-size: 18px;">⚠️</span>
+                            <div style="flex: 1;">
+                                <div class="prd-text-sm" style="font-weight: 500; color: var(--danger);">实例异常：old-bot (李四)</div>
+                                <div class="prd-text-xs prd-text-muted">Gateway 服务无响应</div>
+                            </div>
+                            <span class="prd-btn prd-btn-danger prd-btn-sm">查看</span>
+                        </div>
+                        <div class="prd-flex prd-gap-12 prd-card" style="background: var(--bg-page); padding: 12px; align-items: center;">
+                            <span style="font-size: 18px;">🔄</span>
+                            <div style="flex: 1;">
+                                <div class="prd-text-sm" style="font-weight: 500;">待审批：test-helper (王五)</div>
+                                <div class="prd-text-xs prd-text-muted">等待管理员配置长连接</div>
+                            </div>
+                            <span class="prd-btn prd-btn-primary prd-btn-sm">去处理</span>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>仪表盘页面加载</li>
@@ -1759,6 +2658,65 @@ sequenceDiagram
                 <h3>7.4 实例管理详细规格</h3>
                 
                 <h4>7.4.1 实例列表</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 实例管理列表</div>
+                    <div class="prd-flex-between prd-mb-16">
+                        <div class="prd-flex prd-gap-8">
+                            <div class="prd-input" style="min-width: 200px;"><span class="prd-input-placeholder">🔍 搜索实例名称或员工...</span></div>
+                            <span class="prd-select"><span class="prd-text-sm">全部状态 ▾</span></span>
+                        </div>
+                        <span class="prd-btn prd-btn-primary prd-btn-sm">+ 创建实例</span>
+                    </div>
+                    <table class="prd-table">
+                        <thead>
+                            <tr>
+                                <th>实例名称</th>
+                                <th>所属员工</th>
+                                <th>虚拟机状态</th>
+                                <th>飞书连接</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="prd-flex prd-gap-8" style="align-items: center;"><span class="prd-avatar prd-avatar-sm" style="background: #5b8ff9;">A</span><span>my-devops-bot</span></div></td>
+                                <td>张三</td>
+                                <td><span class="prd-tag prd-tag-success">运行中</span></td>
+                                <td><span class="prd-tag prd-tag-success">已连接</span></td>
+                                <td class="prd-text-xs prd-text-muted">2026-03-25</td>
+                                <td><div class="prd-flex prd-gap-4"><span class="prd-btn prd-btn-secondary prd-btn-sm">详情</span><span class="prd-btn prd-btn-secondary prd-btn-sm">更多 ▾</span></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="prd-flex prd-gap-8" style="align-items: center;"><span class="prd-avatar prd-avatar-sm" style="background: #ff85c0;">B</span><span>test-assistant</span></div></td>
+                                <td>李四</td>
+                                <td><span class="prd-tag prd-tag-muted">已停止</span></td>
+                                <td><span class="prd-tag prd-tag-muted">已断开</span></td>
+                                <td class="prd-text-xs prd-text-muted">2026-03-27</td>
+                                <td><div class="prd-flex prd-gap-4"><span class="prd-btn prd-btn-secondary prd-btn-sm">详情</span><span class="prd-btn prd-btn-secondary prd-btn-sm">更多 ▾</span></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="prd-flex prd-gap-8" style="align-items: center;"><span class="prd-avatar prd-avatar-sm" style="background: #7262fd;">C</span><span>team-ai-helper</span></div></td>
+                                <td>王五</td>
+                                <td><span class="prd-tag prd-tag-danger">异常</span></td>
+                                <td><span class="prd-tag prd-tag-warning">重连中</span></td>
+                                <td class="prd-text-xs prd-text-muted">2026-03-28</td>
+                                <td><div class="prd-flex prd-gap-4"><span class="prd-btn prd-btn-secondary prd-btn-sm">详情</span><span class="prd-btn prd-btn-secondary prd-btn-sm">更多 ▾</span></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="prd-flex-between prd-mt-16 prd-text-xs prd-text-muted">
+                        <span>共 24 条记录</span>
+                        <div class="prd-flex prd-gap-8">
+                            <span class="prd-btn prd-btn-secondary prd-btn-sm">&laquo;</span>
+                            <span class="prd-btn prd-btn-sm prd-btn-primary" style="border-radius: 5px;">1</span>
+                            <span class="prd-btn prd-btn-secondary prd-btn-sm">2</span>
+                            <span class="prd-btn prd-btn-secondary prd-btn-sm">&raquo;</span>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>管理员点击导航"实例管理"</li>
@@ -1812,6 +2770,55 @@ sequenceDiagram
                 </table>
 
                 <h4>7.4.2 实例详情抽屉</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 实例详情抽屉（右侧滑出）</div>
+                    <div class="prd-flex" style="position: relative;">
+                        <div style="flex: 1; opacity: 0.3;">
+                            <div class="prd-card prd-text-muted" style="text-align: center; padding: 40px;">实例列表内容（遮罩）</div>
+                        </div>
+                        <div class="prd-drawer" style="margin-left: 0; box-shadow: -4px 0 16px rgba(0,0,0,0.08);">
+                            <div class="prd-flex-between prd-mb-16">
+                                <span style="font-weight: 600; font-size: 15px; color: var(--text-title);">实例详情</span>
+                                <span style="color: var(--text-muted); cursor: pointer;">×</span>
+                            </div>
+                            <div class="prd-flex prd-gap-12 prd-mb-16" style="align-items: center;">
+                                <span class="prd-avatar prd-avatar-lg" style="background: #5b8ff9;">A</span>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-title);">my-devops-bot</div>
+                                    <span class="prd-tag prd-tag-success prd-mt-8">运行中</span>
+                                </div>
+                            </div>
+                            <div class="prd-divider"></div>
+                            <div class="prd-mt-16">
+                                <div class="prd-text-xs prd-text-muted prd-mb-8">基本信息</div>
+                                <div class="prd-grid-2 prd-text-sm" style="gap: 8px;">
+                                    <div><span class="prd-text-muted">员工：</span>张三</div>
+                                    <div><span class="prd-text-muted">AppID：</span>cli_a8***f9</div>
+                                    <div><span class="prd-text-muted">创建：</span>2026-03-25</div>
+                                    <div><span class="prd-text-muted">运行：</span>3 天 2 小时</div>
+                                </div>
+                            </div>
+                            <div class="prd-divider prd-mt-16"></div>
+                            <div class="prd-mt-16">
+                                <div class="prd-text-xs prd-text-muted prd-mb-8">虚拟机信息</div>
+                                <div class="prd-grid-2 prd-text-sm" style="gap: 8px;">
+                                    <div><span class="prd-text-muted">IP：</span>10.0.1.42</div>
+                                    <div><span class="prd-text-muted">CPU：</span>2 核</div>
+                                    <div><span class="prd-text-muted">内存：</span>4GB</div>
+                                    <div><span class="prd-text-muted">Gateway：</span><span class="prd-tag prd-tag-success">正常</span></div>
+                                </div>
+                            </div>
+                            <div class="prd-divider prd-mt-16"></div>
+                            <div class="prd-flex prd-gap-8 prd-mt-16">
+                                <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex: 1;">重启</span>
+                                <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex: 1;">重启 GW</span>
+                                <span class="prd-btn prd-btn-danger prd-btn-sm">停止</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>用户点击实例名称或"查看详情"按钮</li>
@@ -2094,6 +3101,51 @@ sequenceDiagram
                 </table>
 
                 <h4>7.5.5 审批卡片组件（ApprovalCard）</h4>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 审批卡片（待审批状态）</div>
+                    <div class="prd-grid-2" style="max-width: 600px;">
+                        <div class="prd-card prd-card-shadow">
+                            <div class="prd-flex prd-gap-12 prd-mb-12">
+                                <span class="prd-avatar prd-avatar-md" style="background: #5b8ff9;">张</span>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px; color: var(--text-title);">张三</div>
+                                    <div class="prd-text-xs prd-text-muted">2026-03-27 14:30 提交</div>
+                                </div>
+                            </div>
+                            <div class="prd-divider"></div>
+                            <div class="prd-mt-12 prd-mb-12">
+                                <div class="prd-text-sm prd-mb-4"><span class="prd-text-muted">实例：</span><span style="font-weight: 500;">my-devops-bot</span></div>
+                                <div class="prd-text-sm"><span class="prd-text-muted">AppID：</span><code style="font-size: 12px;">cli_a8***f9</code></div>
+                                <div class="prd-mt-8"><span class="prd-tag prd-tag-warning">待审批</span></div>
+                            </div>
+                            <div class="prd-flex prd-gap-8">
+                                <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex: 1;">去配置</span>
+                                <span class="prd-btn prd-btn-primary prd-btn-sm" style="flex: 1;">标记完成</span>
+                            </div>
+                        </div>
+                        <div class="prd-card prd-card-shadow" style="opacity: 0.7;">
+                            <div class="prd-flex prd-gap-12 prd-mb-12">
+                                <span class="prd-avatar prd-avatar-md" style="background: #7262fd;">王</span>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px; color: var(--text-title);">王五</div>
+                                    <div class="prd-text-xs prd-text-muted">2026-03-28 09:15 提交</div>
+                                </div>
+                            </div>
+                            <div class="prd-divider"></div>
+                            <div class="prd-mt-12 prd-mb-12">
+                                <div class="prd-text-sm prd-mb-4"><span class="prd-text-muted">实例：</span><span style="font-weight: 500;">team-ai-helper</span></div>
+                                <div class="prd-text-sm"><span class="prd-text-muted">AppID：</span><code style="font-size: 12px;">cli_b2***e7</code></div>
+                                <div class="prd-mt-8"><span class="prd-tag prd-tag-success">已审批</span></div>
+                            </div>
+                            <div class="prd-flex prd-gap-8">
+                                <span class="prd-btn prd-btn-secondary prd-btn-sm" style="flex: 1; opacity: 0.5;">去配置</span>
+                                <span class="prd-btn prd-btn-sm" style="flex: 1; opacity: 0.5;">已完成</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>触发条件：</strong></p>
                 <ul>
                     <li>审批列表数据加载完成后渲染</li>
@@ -2185,6 +3237,59 @@ sequenceDiagram
 
             <section id="global-config-section">
                 <h3>7.6 全局配置详细规格</h3>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 全局配置（模型/Memory/发布策略）</div>
+                    <div class="prd-card" style="max-width: 560px;">
+                        <div style="font-weight: 600; font-size: 15px; color: var(--text-title); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--primary);">模型配置</div>
+                        <div class="prd-grid-2" style="gap: 12px;">
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">供应商</label>
+                                <div class="prd-select prd-w-full"><span class="prd-text-sm">Anthropic</span></div>
+                            </div>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">默认模型</label>
+                                <div class="prd-select prd-w-full"><span class="prd-text-sm">claude-sonnet-4-20250514</span></div>
+                            </div>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">API Key</label>
+                                <div class="prd-input prd-w-full"><span style="color: var(--text-muted);">sk-ant-***************xyz</span></div>
+                            </div>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">温度</label>
+                                <div class="prd-input prd-w-full"><span class="prd-text-sm">0.7</span></div>
+                            </div>
+                        </div>
+                        <div style="font-weight: 600; font-size: 15px; color: var(--text-title); margin: 20px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">Memory 配置</div>
+                        <div class="prd-grid-2" style="gap: 12px;">
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">启用</label>
+                                <div class="prd-checkbox"><span class="prd-checkbox-box" style="background: var(--primary); border-color: var(--primary); color: white; font-size: 10px;">&#10003;</span><span class="prd-text-sm">已开启</span></div>
+                            </div>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">策略</label>
+                                <div class="prd-select prd-w-full"><span class="prd-text-sm">混合策略</span></div>
+                            </div>
+                        </div>
+                        <div style="font-weight: 600; font-size: 15px; color: var(--text-title); margin: 20px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">发布策略</div>
+                        <div class="prd-grid-2" style="gap: 12px;">
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">应用范围</label>
+                                <div class="prd-select prd-w-full"><span class="prd-text-sm">全部实例</span></div>
+                            </div>
+                            <div class="prd-form-group">
+                                <label class="prd-form-label">生效策略</label>
+                                <div class="prd-select prd-w-full"><span class="prd-text-sm">条件生效</span></div>
+                            </div>
+                        </div>
+                        <div class="prd-divider prd-mt-16"></div>
+                        <div class="prd-flex-between prd-mt-16">
+                            <span class="prd-btn prd-btn-secondary">重置</span>
+                            <span class="prd-btn prd-btn-primary">保存配置</span>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>功能描述：</strong>管理后台全局系统配置页面，用于配置 OpenClaw 镜像地址、Feishu 连接参数、模型参数等全局参数。</p>
                 <p><strong>页面 URL：</strong><code>/admin/global-config</code> | <strong>权限要求：</strong>仅超级管理员可访问</p>
 
@@ -2276,6 +3381,27 @@ sequenceDiagram
 
             <section id="auth-section">
                 <h3>7.7 认证系统</h3>
+
+                <div class="prd-mockup">
+                    <div class="prd-mockup-title">页面原型 - 全局登录弹窗</div>
+                    <div class="prd-modal-overlay">
+                        <div class="prd-modal prd-text-center" style="min-width: 340px;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="margin-bottom: 12px;"><path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/><path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round"/><path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round"/></svg>
+                            <h4 style="font-size: 18px; font-weight: 600; color: var(--text-title); margin-bottom: 4px;">登录 DevOps OpenClaw</h4>
+                            <p class="prd-text-sm prd-text-muted" style="margin-bottom: 24px;">请输入您的账号信息</p>
+                            <div class="prd-form-group" style="text-align: left;">
+                                <label class="prd-form-label">用户名</label>
+                                <div class="prd-input prd-w-full"><span class="prd-input-placeholder">请输入用户名</span></div>
+                            </div>
+                            <div class="prd-form-group" style="text-align: left;">
+                                <label class="prd-form-label">密码</label>
+                                <div class="prd-input prd-w-full"><span class="prd-input-placeholder">请输入密码</span></div>
+                            </div>
+                            <span class="prd-btn prd-btn-primary prd-btn-lg prd-w-full prd-mt-8">登 录</span>
+                        </div>
+                    </div>
+                </div>
+
                 <p><strong>功能描述：</strong>全局登录弹窗，基于 JWT 的 Token 管理机制，自动 Token 刷新和请求重试。</p>
                 
                 <p><strong>登录流程：</strong></p>

@@ -37,7 +37,8 @@
   },
   "msw": {
     "workerDirectory": [
-      "public"
+      "public",
+      "dist"
     ]
   }
 }

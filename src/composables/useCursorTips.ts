@@ -60,6 +60,7 @@ export function useCursorTips(options: CursorTipsOptions) {
 
   function showTips() {
     if (tips.length === 0) return
+    currentTipIndex.value = (currentTipIndex.value + 1) % tips.length
     isVisible.value = true
     startSwitchTimer()
   }
@@ -67,7 +68,6 @@ export function useCursorTips(options: CursorTipsOptions) {
   function hideTips() {
     isVisible.value = false
     clearSwitchTimer()
-    currentTipIndex.value = 0
   }
 
   function startPauseTimer() {

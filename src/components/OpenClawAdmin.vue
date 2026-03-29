@@ -79,7 +79,7 @@
             :key="item.key"
             class="nav-item"
             :class="{ active: activeMenu === item.key }"
-            @click="activeMenu = item.key"
+            @click="handleNavClick(item)"
           >
             <span class="nav-icon">{{ item.icon }}</span>
             <span class="nav-label">{{ item.label }}</span>
@@ -166,7 +166,7 @@ const menuItems = [
   { key: 'schedules', label: '定时任务', icon: '⏰', path: '/schedules' },
   { key: 'config', label: '配置', icon: '⚙️', path: '/code' },
   { key: 'logs', label: '日志', icon: '📋', path: '/logs' },
-  { key: 'docs', label: '文档', icon: '📖', path: '/docs' },
+  { key: 'docs', label: '文档', icon: '📖', path: '/docs', external: true } as const,
 ]
 
 type ViewMode = 'console' | 'code' | 'terminal'
@@ -186,14 +186,16 @@ const statusMap: Record<ProjectStatus, { label: string; type: 'success' | 'warni
   error: { label: '异常', type: 'error' },
 }
 
-const statusConfig = computed(() => statusMap[props.project.status])
+const statusConfig = computed(() => statusMap[props.project.status] ?? { label: '未知', type: 'info' as const })
 
 const iframeSrc = computed(() => {
-  const projectId = props.project.id
+  const projectId = props.project?.id
+  if (!projectId) return ''
   if (activeView.value === 'code') {
     return `/api/projects/${projectId}/gateway/code`
   }
   const item = menuItems.find((m) => m.key === activeMenu.value)
+  if (item?.external) return ''
   const path = item?.path ?? '/chat'
   return `/api/projects/${projectId}/gateway${path}`
 })
@@ -206,6 +208,17 @@ function setCodeMode() {
 function setConsoleMode() {
   activeView.value = 'console'
   iframeLoading.value = true
+}
+
+function handleNavClick(item: (typeof menuItems)[number]) {
+  if (item.external && item.path) {
+    const projectId = props.project?.id
+    if (projectId) {
+      window.open(`/api/projects/${projectId}/gateway${item.path}`, '_blank')
+    }
+    return
+  }
+  activeMenu.value = item.key
 }
 
 function setTerminalMode() {
@@ -237,21 +250,7 @@ async function checkGateway() {
 }
 
 onMounted(() => {
-  // 获取项目配置
   fetchProjectConfig()
-  
-  checkTimer = setInterval(async () => {
-    if (!iframeLoading.value && !gatewayAvailable.value) {
-      try {
-        const res = await fetch(`/api/projects/${props.project.id}/gateway/health`, { method: 'HEAD' })
-        if (res.ok) {
-          checkGateway()
-        }
-      } catch {
-        // ignore
-      }
-    }
-  }, 10000)
 })
 
 onUnmounted(() => {
@@ -266,13 +265,13 @@ watch(activeMenu, () => {
 })
 
 async function fetchProjectConfig() {
+  if (!props.project?.id) return
   try {
-    const response = await fetch(`/api/projects/${props.project.id}/config`)
-    if (response.ok) {
-      projectConfig.value = await response.json()
+    projectConfig.value = {
+      model: { provider: 'anthropic', defaultModel: 'claude-sonnet-4-20250514' },
+      gateway: { url: 'https://gateway.example.com', status: 'running' },
     }
   } catch {
-    // 静默失败，使用空配置
     projectConfig.value = {}
   }
 }

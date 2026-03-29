@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { defineComponent, h, ref } from 'vue'
+import { defineComponent, h } from 'vue'
 import { setActivePinia, createPinia } from 'pinia'
 import InstanceCreateModal from '@/components/admin/InstanceCreateModal.vue'
 

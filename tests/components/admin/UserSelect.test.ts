@@ -7,7 +7,7 @@ vi.mock('naive-ui', () => ({
   NAutoComplete: defineComponent({
     props: ['value', 'options', 'loading', 'placeholder', 'clearable'],
     emits: ['update:value', 'select', 'clear'],
-    setup(props, { slots, emit }) {
+    setup(props, { emit }) {
       return () => h('div', { 'data-testid': 'autocomplete', 'data-loading': props.loading },
         h('input', {
           value: props.value,
@@ -21,8 +21,8 @@ vi.mock('naive-ui', () => ({
   NTag: defineComponent({
     props: ['size', 'closable'],
     emits: ['close'],
-    setup(props, { slots, emit }) {
-      return () => h('span', { 'data-testid': 'tag', onClick: () => emit('close') }, slots.default?.())
+    setup(_, { emit }) {
+      return () => h('span', { 'data-testid': 'tag', onClick: () => emit('close') })
     },
   }),
 }))

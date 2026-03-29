@@ -235,6 +235,15 @@ export const handlers = [
     return HttpResponse.json(project)
   }),
 
+  // 项目配置接口
+  http.get('/api/projects/:id/config', async () => {
+    await delay(200)
+    return HttpResponse.json({
+      model: { provider: 'anthropic', defaultModel: 'claude-sonnet-4-20250514' },
+      gateway: { url: 'https://gateway.example.com', status: 'running' },
+    })
+  }),
+
   // 管理后台 - 镜像列表
   http.get('/api/admin/images', async ({ request }) => {
     await delay(300)
@@ -258,7 +267,7 @@ export const handlers = [
     if (!body.type || !body.name || !body.version) {
       return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
     }
-    const img = createImage({ ...body, type: body.type as 'vm' | 'openclaw' })
+    const img = createImage({ ...body, type: body.type as 'vm' | 'openclaw', imageUrl: `https://example.com/${body.name}-${body.version}.qcow2` })
     return HttpResponse.json(img, { status: 201 })
   }),
 

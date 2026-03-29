@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Claw - 企业级 OpenClaw 部署方案</title>
+    <title>DevOps Claw - 平台介绍</title>
     <style>
         * {
             margin: 0;
@@ -61,9 +61,9 @@
             gap: 10px;
         }
 
-        .logo svg {
-            width: 32px;
-            height: 32px;
+        .logo-icon {
+            font-size: 28px;
+            line-height: 1;
         }
 
         .logo-text {
@@ -86,11 +86,6 @@
 
         .nav a:hover {
             color: var(--primary);
-        }
-
-        .nav a.active {
-            color: var(--primary);
-            font-weight: 500;
         }
 
         .header-actions {
@@ -479,11 +474,84 @@
             color: var(--primary);
         }
 
-        /* Security Section */
-        .security {
+        /* Deploy Flow Section */
+        .deploy-flow {
             padding: 100px 24px;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .flow-step {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            position: relative;
+            text-align: center;
+        }
+
+        .flow-step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .flow-step-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+
+        .flow-step h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .flow-step p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .flow-step .role-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .role-tag.admin {
+            background: #fff5f5;
+            color: var(--danger);
+        }
+
+        .role-tag.user {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Security Section */
+        .security {
+            padding: 100px 24px;
+            background: var(--bg-white);
         }
 
         .security-grid {
@@ -494,7 +562,7 @@
         }
 
         .security-card {
-            background: var(--bg-white);
+            background: var(--bg-page);
             border-radius: 12px;
             padding: 32px;
             border: 1px solid var(--border);
@@ -505,8 +573,8 @@
         .security-icon {
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-            border: 2px solid var(--danger);
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+            border: 2px solid var(--primary);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -531,7 +599,6 @@
         /* Use Cases */
         .use-cases {
             padding: 100px 24px;
-            background: var(--bg-white);
         }
 
         .use-cases-content {
@@ -547,11 +614,12 @@
         }
 
         .case-card {
-            background: var(--bg-page);
+            background: var(--bg-white);
             border-radius: 12px;
             padding: 32px 24px;
             text-align: center;
             transition: all 0.3s;
+            border: 1px solid var(--border);
         }
 
         .case-card:hover {
@@ -582,105 +650,6 @@
             font-size: 14px;
             color: var(--text-secondary);
             transition: color 0.3s;
-        }
-
-        /* Pricing */
-        .pricing {
-            padding: 100px 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 40px;
-        }
-
-        .pricing-card {
-            background: var(--bg-white);
-            border-radius: 16px;
-            padding: 40px 32px;
-            border: 1px solid var(--border);
-            position: relative;
-        }
-
-        .pricing-card.popular {
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0, 110, 255, 0.1);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .pricing-card h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text-title);
-            margin-bottom: 8px;
-        }
-
-        .pricing-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-
-        .pricing-price {
-            margin-bottom: 32px;
-        }
-
-        .pricing-price .currency {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-title);
-        }
-
-        .pricing-price .amount {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--text-title);
-        }
-
-        .pricing-price .period {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 32px;
-        }
-
-        .pricing-features li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: var(--text-body);
-        }
-
-        .pricing-features li::before {
-            content: '✓';
-            color: var(--success);
-            font-weight: 600;
-        }
-
-        .pricing-card .btn {
-            width: 100%;
-            justify-content: center;
         }
 
         /* FAQ */
@@ -833,25 +802,9 @@
             font-size: 13px;
         }
 
-        .footer-social {
-            display: flex;
-            gap: 16px;
-        }
-
-        .footer-social a {
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 20px;
-            transition: color 0.2s;
-        }
-
-        .footer-social a:hover {
-            color: white;
-        }
-
         /* Responsive */
         @media (max-width: 1024px) {
-            .features-grid,
-            .pricing-grid {
+            .features-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -869,6 +822,10 @@
             }
 
             .security-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-steps {
                 grid-template-columns: 1fr;
             }
         }
@@ -901,7 +858,6 @@
             }
 
             .features-grid,
-            .pricing-grid,
             .cases-grid {
                 grid-template-columns: 1fr;
             }
@@ -927,37 +883,32 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/>
-                    <path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <span class="logo-icon">🦞</span>
                 <span class="logo-text">DevOps Claw</span>
             </div>
             <nav class="nav">
-                <a href="#features">功能特性</a>
-                <a href="#capabilities">核心能力</a>
-                <a href="#security">安全保障</a>
-                <a href="#pricing">定价方案</a>
+                <a href="#overview">项目简介</a>
+                <a href="#features">核心功能</a>
+                <a href="#architecture">系统架构</a>
+                <a href="#deployment">使用流程</a>
                 <a href="#faq">常见问题</a>
             </nav>
             <div class="header-actions">
-                <a href="#" class="btn btn-secondary">登录</a>
-                <a href="#cta" class="btn btn-primary">开始使用</a>
+                <a href="/" class="btn btn-primary">进入平台</a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-badge">企业级 OpenClaw 部署方案</div>
-        <h1>在您的企业内网<br>安全运行 <span>OpenClaw</span></h1>
+    <section id="overview" class="hero">
+        <div class="hero-badge">内部平台 - DevOps Claw</div>
+        <h1>DevOps Claw<br><span>企业 AI 助手托管平台</span></h1>
         <p class="hero-subtitle">
-            原版 OpenClaw 的企业级部署方案。一键上云，能力无删减；有记忆、有个性，能以您的身份读 DevOps、做任务、排日程。数据不出企业，零配置接入——完整的 OpenClaw，安全地用。
+            公司内部的 OpenClaw（开源 AI 助手平台）托管服务。让每位员工都能一键创建专属 AI 助手，接入飞书，拥有记忆和个性，安全地运行在企业内网中。
         </p>
         <div class="hero-cta">
-            <a href="#cta" class="btn btn-primary">
-                免费试用
+            <a href="/" class="btn btn-primary">
+                进入平台
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
@@ -966,20 +917,20 @@
         </div>
         <div class="hero-stats">
             <div class="stat">
-                <div class="stat-value">100+</div>
-                <div class="stat-label">企业客户</div>
+                <div class="stat-value">一键部署</div>
+                <div class="stat-label">自动化 VM + OpenClaw 安装</div>
             </div>
             <div class="stat">
-                <div class="stat-value">99.9%</div>
-                <div class="stat-label">服务可用性</div>
+                <div class="stat-value">飞书集成</div>
+                <div class="stat-label">WebSocket 长连接，直接对话</div>
             </div>
             <div class="stat">
-                <div class="stat-value">&lt;5min</div>
-                <div class="stat-label">部署时间</div>
+                <div class="stat-value">企业内网</div>
+                <div class="stat-label">数据不出公司，安全可控</div>
             </div>
             <div class="stat">
-                <div class="stat-value">24/7</div>
-                <div class="stat-label">技术支持</div>
+                <div class="stat-value">完整功能</div>
+                <div class="stat-label">原版 OpenClaw，能力无损</div>
             </div>
         </div>
     </section>
@@ -987,49 +938,49 @@
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="section-header">
-            <h2>好上手，超能干，更放心</h2>
-            <p>告别繁琐的环境搭建和配置流程，一键部署到云端，零配置接入即时通讯</p>
+            <h2>核心功能</h2>
+            <p>基于开源 OpenClaw，提供企业级托管能力</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">🚀</div>
-                <h3>一键部署，所见即所得</h3>
-                <p>告别繁琐的环境搭建和配置流程。一键部署到云端，零配置接入即时通讯，打开就能用，让团队快速开始使用 AI 助手。</p>
+                <h3>一键创建 AI 助手</h3>
+                <p>员工无需了解技术细节，在平台上填写名称即可一键创建专属 OpenClaw 实例。系统自动完成 VM 分配、OpenClaw 安装和 Gateway 启动。</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🦞</div>
-                <h3>原生体验，能力无损</h3>
-                <p>提供原版 OpenClaw 完整能力，独特个性、记忆、多 Agent 编排，内置官方集成插件，不阉割任何功能。</p>
+                <h3>原版 OpenClaw 体验</h3>
+                <p>每个实例都是完整的 OpenClaw，拥有独特个性、长期记忆、多 Agent 编排能力，以及内置的官方集成插件，不阉割任何功能。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>飞书深度集成</h3>
+                <p>通过飞书 WebSocket 长连接，你的 AI 助手可以直接在飞书群聊或私聊中使用，就像和同事聊天一样自然。</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🔒</div>
-                <h3>企业级安全，数据不离场</h3>
-                <p>数据全程在企业内网流转，权限可控、授权透明、安全合规，满足企业数据隐私和合规要求。</p>
+                <h3>数据不出企业</h3>
+                <p>所有 AI 助手实例运行在公司内网，对话数据、记忆数据全程在企业内部流转，满足数据安全和合规要求。</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">👤</div>
-                <h3>个性化记忆</h3>
-                <p>AI 助手拥有长期记忆能力，记住您的偏好、习惯和上下文，提供越用越聪明的个性化服务。</p>
+                <div class="feature-icon">🔧</div>
+                <h3>DevOps 工具链集成</h3>
+                <p>内置 GitLab、Jenkins、Kubernetes、Prometheus 等 DevOps 工具插件，让 AI 助手真正融入日常开发运维流程。</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>多 Agent 编排</h3>
-                <p>支持多个 AI Agent 协同工作，自动分配任务、协调流程，构建复杂的自动化工作流。</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔌</div>
-                <h3>官方集成插件</h3>
-                <p>内置丰富的官方插件生态，无缝集成 GitLab、Jenkins、Kubernetes 等 DevOps 工具链。</p>
+                <div class="feature-icon">📊</div>
+                <h3>管理控制台</h3>
+                <p>管理员可通过后台统一监控所有实例状态、管理凭证池、审批长连接申请、配置资源配额，运维工作一目了然。</p>
             </div>
         </div>
     </section>
 
     <!-- Capabilities Section -->
-    <section id="capabilities" class="capabilities">
+    <section class="capabilities">
         <div class="capabilities-content">
             <div class="section-header">
-                <h2>完整的管理能力</h2>
-                <p>提供控制台、代码模式、终端多种管理方式，满足不同场景的管理需求</p>
+                <h2>平台能力</h2>
+                <p>面向员工和管理员的双端设计，满足不同角色的使用需求</p>
             </div>
 
             <div class="capability-row">
@@ -1040,24 +991,23 @@
                             <div class="console-dot yellow"></div>
                             <div class="console-dot green"></div>
                         </div>
-                        <div class="console-line prompt">devops-claw deploy --project my-bot</div>
-                        <div class="console-line">✓ 正在检查环境...</div>
-                        <div class="console-line">✓ 构建镜像完成</div>
-                        <div class="console-line">✓ 启动容器实例</div>
-                        <div class="console-line success">✓ 部署成功！访问: https://claw.mycompany.com</div>
-                        <div class="console-line prompt">devops-claw status</div>
-                        <div class="console-line">实例状态: 🟢 运行中</div>
-                        <div class="console-line">CPU: 12% | 内存: 256MB | 运行时长: 3d 5h</div>
+                        <div class="console-line prompt">claw create --name "我的助手" --personality "严谨"</div>
+                        <div class="console-line">✓ 正在分配 VM 资源...</div>
+                        <div class="console-line">✓ 安装 OpenClaw 运行环境</div>
+                        <div class="console-line">✓ 启动 Gateway 服务</div>
+                        <div class="console-line success">✓ 创建成功！访问: https://claw.internal/my-assistant</div>
+                        <div class="console-line prompt">claw list</div>
+                        <div class="console-line">实例列表: 我的助手 🟢 运行中 | 运行时长: 2d 3h</div>
                     </div>
                 </div>
                 <div class="capability-text">
-                    <h3>一键部署，极速启动</h3>
-                    <p>告别繁琐的手动配置，一条命令即可完成 OpenClaw 实例的部署和配置。支持本地 Docker、Kubernetes 集群、云服务器等多种部署环境。</p>
+                    <h3>员工端：一键创建，即刻使用</h3>
+                    <p>员工在前台页面填写基本信息即可创建专属 AI 助手，系统自动完成所有底层部署工作。创建后可直接在飞书中与助手对话，也可以通过 Gateway Dashboard 进行个性化配置。</p>
                     <ul class="capability-list">
-                        <li>自动化环境检测和依赖安装</li>
-                        <li>智能配置推荐和优化</li>
-                        <li>支持滚动更新和灰度发布</li>
-                        <li>完整的部署日志和状态追踪</li>
+                        <li>Web 表单一键创建，无需技术背景</li>
+                        <li>自动 VM 分配与 OpenClaw 安装</li>
+                        <li>飞书对话集成，开箱即用</li>
+                        <li>Gateway Dashboard 个性化配置</li>
                     </ul>
                 </div>
             </div>
@@ -1066,12 +1016,12 @@
                 <div class="capability-visual">
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
                         <div style="background: #006eff; color: white; padding: 24px; border-radius: 8px; text-align: center;">
-                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">12</div>
-                            <div style="font-size: 13px; opacity: 0.9;">实例总数</div>
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">24</div>
+                            <div style="font-size: 13px; opacity: 0.9;">运行实例</div>
                         </div>
                         <div style="background: #67C23A; color: white; padding: 24px; border-radius: 8px; text-align: center;">
-                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">10</div>
-                            <div style="font-size: 13px; opacity: 0.9;">运行中</div>
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">22</div>
+                            <div style="font-size: 13px; opacity: 0.9;">正常</div>
                         </div>
                         <div style="background: #909399; color: white; padding: 24px; border-radius: 8px; text-align: center;">
                             <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">1</div>
@@ -1079,18 +1029,18 @@
                         </div>
                         <div style="background: #f23030; color: white; padding: 24px; border-radius: 8px; text-align: center;">
                             <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">1</div>
-                            <div style="font-size: 13px; opacity: 0.9;">异常</div>
+                            <div style="font-size: 13px; opacity: 0.9;">待处理</div>
                         </div>
                     </div>
                 </div>
                 <div class="capability-text">
-                    <h3>集中管理，一目了然</h3>
-                    <p>强大的管理控制台，实时监控所有 OpenClaw 实例的运行状态。可视化的仪表盘、资源监控、日志管理，让运维工作更加高效。</p>
+                    <h3>管理端：集中管控，全局可视</h3>
+                    <p>管理员通过后台控制台统一监控所有 AI 助手实例的运行状态、资源使用情况，管理凭证池和 API Key，审批飞书长连接申请，并配置各团队的资源配额。</p>
                     <ul class="capability-list">
-                        <li>多实例集中管理和监控</li>
-                        <li>实时资源使用和性能指标</li>
-                        <li>智能告警和异常通知</li>
-                        <li>详细的操作日志和审计追踪</li>
+                        <li>实例监控与资源使用统计</li>
+                        <li>凭证池管理与 API Key 分配</li>
+                        <li>飞书长连接审批流程</li>
+                        <li>团队资源配额配置</li>
                     </ul>
                 </div>
             </div>
@@ -1098,27 +1048,23 @@
             <div class="capability-row">
                 <div class="capability-visual">
                     <div style="background: #1e1e1e; border-radius: 8px; padding: 20px; font-family: 'Consolas', monospace; font-size: 13px; color: #d4d4d4;">
-                        <div style="color: #6a9955;"># OpenClaw 配置文件</div>
-                        <div><span style="color: #569cd6;">name</span>: <span style="color: #ce9178;">"my-devops-bot"</span></div>
-                        <div><span style="color: #569cd6;">version</span>: <span style="color: #ce9178;">"1.0.0"</span></div>
-                        <div style="margin-top: 12px;"><span style="color: #569cd6;">memory</span>:</div>
-                        <div style="padding-left: 16px;"><span style="color: #9cdcfe;">enabled</span>: <span style="color: #569cd6;">true</span></div>
-                        <div style="padding-left: 16px;"><span style="color: #9cdcfe;">storage</span>: <span style="color: #ce9178;">"redis"</span></div>
-                        <div style="margin-top: 12px;"><span style="color: #569cd6;">agents</span>:</div>
-                        <div style="padding-left: 16px;">- <span style="color: #9cdcfe;">name</span>: <span style="color: #ce9178;">"deploy"</span></div>
-                        <div style="padding-left: 32px;"><span style="color: #9cdcfe;">plugin</span>: <span style="color: #ce9178;">"gitlab"</span></div>
-                        <div style="padding-left: 16px;">- <span style="color: #9cdcfe;">name</span>: <span style="color: #ce9178;">"monitor"</span></div>
-                        <div style="padding-left: 32px;"><span style="color: #9cdcfe;">plugin</span>: <span style="color: #ce9178;">"prometheus"</span></div>
+                        <div style="color: #6a9955;"># DevOps Claw 产品关系</div>
+                        <div style="margin-top: 12px;"><span style="color: #569cd6;">OpenClaw</span> <span style="color: #9cdcfe;">(开源项目)</span></div>
+                        <div style="padding-left: 16px;">└── <span style="color: #569cd6;">飞书 OpenClaw</span> <span style="color: #9cdcfe;">(飞书托管)</span></div>
+                        <div style="padding-left: 32px;">└── <span style="color: #569cd6;">DevOps Claw</span> <span style="color: #9cdcfe;">(本项目 · 内部自建)</span></div>
+                        <div style="margin-top: 12px;"><span style="color: #9cdcfe;">定位:</span> <span style="color: #ce9178;">企业内部 AI 助手托管平台</span></div>
+                        <div><span style="color: #9cdcfe;">参考:</span> <span style="color: #ce9178;">模仿飞书 OpenClaw 的产品体验</span></div>
+                        <div><span style="color: #9cdcfe;">部署:</span> <span style="color: #ce9178;">内网 VM + Kubernetes + 飞书 OAuth</span></div>
                     </div>
                 </div>
                 <div class="capability-text">
-                    <h3>代码模式，灵活配置</h3>
-                    <p>对于高级用户，提供完整的代码编辑能力。使用 Monaco 编辑器编写配置文件，支持语法高亮、智能提示、版本控制等专业功能。</p>
+                    <h3>产品定位与背景</h3>
+                    <p>DevOps Claw 的定位是公司内部的 OpenClaw 托管服务，产品灵感来自飞书 OpenClaw（飞书版托管方案）。我们的目标是让每位员工都能像使用飞书 OpenClaw 一样，轻松拥有专属 AI 助手，同时确保所有数据留在公司内部。</p>
                     <ul class="capability-list">
-                        <li>YAML/JSON 配置文件编辑</li>
-                        <li>语法高亮和实时校验</li>
-                        <li>版本历史和变更对比</li>
-                        <li>一键导入导出配置</li>
+                        <li>OpenClaw → 飞书 OpenClaw → DevOps Claw</li>
+                        <li>模仿飞书 OpenClaw 的产品体验</li>
+                        <li>适配公司现有的基础设施和安全要求</li>
+                        <li>面向内部员工，完全免费</li>
                     </ul>
                 </div>
             </div>
@@ -1126,43 +1072,35 @@
     </section>
 
     <!-- Architecture Section -->
-    <section class="architecture">
+    <section id="architecture" class="architecture">
         <div class="architecture-content">
             <div class="section-header">
-                <h2>架构设计</h2>
-                <p>分层架构设计，灵活可扩展，满足不同规模企业的需求</p>
+                <h2>系统架构</h2>
+                <p>三层架构设计，前后端分离，灵活可扩展</p>
             </div>
             <div class="architecture-diagram">
                 <div class="arch-layers">
                     <div class="arch-layer">
                         <div class="arch-layer-icon">👥</div>
                         <div class="arch-layer-content">
-                            <h4>用户接入层</h4>
-                            <p>支持飞书、钉钉、企业微信、Slack 等多种 IM 平台接入，统一的消息网关处理</p>
+                            <h4>员工端前台</h4>
+                            <p>一键创建 OpenClaw、项目管理、跳转 Gateway Dashboard / 飞书聊天。基于 Vue 3 + TypeScript + Tailwind CSS 构建。</p>
                         </div>
                     </div>
                     <div class="arch-arrow">↓</div>
                     <div class="arch-layer">
                         <div class="arch-layer-icon">🎛️</div>
                         <div class="arch-layer-content">
-                            <h4>核心引擎层</h4>
-                            <p>OpenClaw 核心运行时，Agent 编排、对话管理、记忆存储、权限控制</p>
+                            <h4>管理端后台</h4>
+                            <p>实例监控、凭证池管理（API Key / Token）、飞书长连接审批、团队资源配额配置、操作审计日志。</p>
                         </div>
                     </div>
                     <div class="arch-arrow">↓</div>
                     <div class="arch-layer">
-                        <div class="arch-layer-icon">🔌</div>
+                        <div class="arch-layer-icon">⚙️</div>
                         <div class="arch-layer-content">
-                            <h4>插件生态层</h4>
-                            <p>丰富的官方和第三方插件，GitLab、Jenkins、K8s、Prometheus 等 DevOps 工具集成</p>
-                        </div>
-                    </div>
-                    <div class="arch-arrow">↓</div>
-                    <div class="arch-layer">
-                        <div class="arch-layer-icon">💾</div>
-                        <div class="arch-layer-content">
-                            <h4>数据存储层</h4>
-                            <p>支持多种存储后端，Redis、PostgreSQL、MongoDB，灵活适配企业现有基础设施</p>
+                            <h4>后端服务</h4>
+                            <p>编排引擎（VM 生命周期管理）、飞书集成服务（OAuth / WebSocket）、监控服务、API Gateway。统一对外提供 RESTful API。</p>
                         </div>
                     </div>
                 </div>
@@ -1170,54 +1108,33 @@
         </div>
     </section>
 
-    <!-- Security Section -->
-    <section id="security" class="security">
+    <!-- Deploy Flow Section -->
+    <section id="deployment" class="deploy-flow">
         <div class="section-header">
-            <h2>企业级安全保障</h2>
-            <p>数据不出企业，全程可控可审计，满足最严格的合规要求</p>
+            <h2>使用流程</h2>
+            <p>三步完成从创建到对话的全流程</p>
         </div>
-        <div class="security-grid">
-            <div class="security-card">
-                <div class="security-icon">🏢</div>
-                <div class="security-content">
-                    <h4>私有化部署</h4>
-                    <p>完全部署在企业自有服务器或私有云，所有数据不出企业内网，从根源上杜绝数据泄露风险。</p>
-                </div>
+        <div class="flow-steps">
+            <div class="flow-step">
+                <div class="flow-step-number">1</div>
+                <div class="flow-step-icon">🔑</div>
+                <h4>管理员准备凭证</h4>
+                <p>管理员在后台配置 API Key、Token 等凭证，添加到凭证池中，确保创建实例时有可用的凭证资源。</p>
+                <span class="role-tag admin">管理员操作</span>
             </div>
-            <div class="security-card">
-                <div class="security-icon">🔐</div>
-                <div class="security-content">
-                    <h4>细粒度权限控制</h4>
-                    <p>基于 RBAC 的权限管理系统，支持实例级别、功能级别、数据级别的精细化权限配置。</p>
-                </div>
+            <div class="flow-step">
+                <div class="flow-step-number">2</div>
+                <div class="flow-step-icon">⚡</div>
+                <h4>员工一键创建</h4>
+                <p>员工在前台页面填写 AI 助手名称和偏好，点击创建。系统自动完成 VM 分配、OpenClaw 安装和 Gateway 启动。</p>
+                <span class="role-tag user">员工操作</span>
             </div>
-            <div class="security-card">
-                <div class="security-icon">📋</div>
-                <div class="security-content">
-                    <h4>完整审计日志</h4>
-                    <p>记录所有用户操作、系统变更、数据访问，支持日志导出和对接企业 SIEM 系统。</p>
-                </div>
-            </div>
-            <div class="security-card">
-                <div class="security-icon">🔒</div>
-                <div class="security-content">
-                    <h4>传输加密</h4>
-                    <p>全链路 HTTPS 加密传输，支持 mTLS 双向认证，确保数据传输安全。</p>
-                </div>
-            </div>
-            <div class="security-card">
-                <div class="security-icon">✅</div>
-                <div class="security-content">
-                    <h4>合规认证</h4>
-                    <p>已通过 ISO 27001、SOC 2 Type II 等国际安全认证，符合 GDPR、等保要求。</p>
-                </div>
-            </div>
-            <div class="security-card">
-                <div class="security-icon">🛡️</div>
-                <div class="security-content">
-                    <h4>安全更新</h4>
-                    <p>及时的安全补丁推送，漏洞快速响应机制，确保系统始终处于安全状态。</p>
-                </div>
+            <div class="flow-step">
+                <div class="flow-step-number">3</div>
+                <div class="flow-step-icon">💬</div>
+                <h4>管理员配置飞书连接</h4>
+                <p>管理员审批飞书长连接申请，配置 WebSocket 对接后，员工即可在飞书中直接与 AI 助手对话。</p>
+                <span class="role-tag admin">管理员操作</span>
             </div>
         </div>
     </section>
@@ -1226,14 +1143,14 @@
     <section class="use-cases">
         <div class="use-cases-content">
             <div class="section-header">
-                <h2>应用场景</h2>
-                <p>适用于各种 DevOps 和团队协作场景</p>
+                <h2>适用场景</h2>
+                <p>AI 助手可以在日常工作中为你做什么</p>
             </div>
             <div class="cases-grid">
                 <div class="case-card">
                     <div class="case-icon">🚀</div>
                     <h4>CI/CD 助手</h4>
-                    <p>自动触发构建、部署，查询流水线状态</p>
+                    <p>自动触发构建部署，查询流水线状态</p>
                 </div>
                 <div class="case-card">
                     <div class="case-icon">📊</div>
@@ -1243,17 +1160,17 @@
                 <div class="case-card">
                     <div class="case-icon">🐛</div>
                     <h4>故障排查</h4>
-                    <p>协助分析日志，定位问题根因</p>
+                    <p>协助分析日志，快速定位问题根因</p>
                 </div>
                 <div class="case-card">
                     <div class="case-icon">📅</div>
-                    <h4>任务管理</h4>
-                    <p>创建任务、分配工单、跟踪进度</p>
+                    <h4>日程管理</h4>
+                    <p>安排日程、创建任务、跟踪进度</p>
                 </div>
                 <div class="case-card">
                     <div class="case-icon">📚</div>
                     <h4>知识库问答</h4>
-                    <p>基于企业文档的智能问答</p>
+                    <p>基于公司文档的智能问答</p>
                 </div>
                 <div class="case-card">
                     <div class="case-icon">🔧</div>
@@ -1261,9 +1178,9 @@
                     <p>批量操作、定时任务、脚本执行</p>
                 </div>
                 <div class="case-card">
-                    <div class="case-icon">👥</div>
-                    <h4>团队协作</h4>
-                    <p>会议纪要保持、待办事项提醒</p>
+                    <div class="case-icon">📝</div>
+                    <h4>会议纪要</h4>
+                    <p>自动整理会议记录，生成待办事项</p>
                 </div>
                 <div class="case-card">
                     <div class="case-icon">📈</div>
@@ -1274,63 +1191,42 @@
         </div>
     </section>
 
-    <!-- Pricing -->
-    <section id="pricing" class="pricing">
-        <div class="section-header">
-            <h2>定价方案</h2>
-            <p>灵活的定价策略，满足不同规模企业的需求</p>
-        </div>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3>社区版</h3>
-                <p class="pricing-desc">适合个人开发者和小型团队</p>
-                <div class="pricing-price">
-                    <span class="currency">¥</span>
-                    <span class="amount">0</span>
-                    <span class="period">/月</span>
-                </div>
-                <ul class="pricing-features">
-                    <li>单实例部署</li>
-                    <li>基础 OpenClaw 功能</li>
-                    <li>社区支持</li>
-                    <li>开源许可证</li>
-                </ul>
-                <a href="#" class="btn btn-secondary">免费下载</a>
+    <!-- Security Section -->
+    <section class="security">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="section-header">
+                <h2>安全保障</h2>
+                <p>数据不出企业，全程可控可审计</p>
             </div>
-            <div class="pricing-card popular">
-                <div class="popular-badge">最受欢迎</div>
-                <h3>专业版</h3>
-                <p class="pricing-desc">适合中小型企业和团队</p>
-                <div class="pricing-price">
-                    <span class="currency">¥</span>
-                    <span class="amount">999</span>
-                    <span class="period">/月</span>
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon">🏢</div>
+                    <div class="security-content">
+                        <h4>内网隔离部署</h4>
+                        <p>所有 AI 助手实例运行在公司内网 VM 中，数据不经过外部网络，从根源上杜绝数据泄露风险。</p>
+                    </div>
                 </div>
-                <ul class="pricing-features">
-                    <li>最多 10 个实例</li>
-                    <li>完整的 OpenClaw 功能</li>
-                    <li>管理控制台</li>
-                    <li>邮件技术支持</li>
-                    <li>官方插件库</li>
-                </ul>
-                <a href="#cta" class="btn btn-primary">立即开始</a>
-            </div>
-            <div class="pricing-card">
-                <h3>企业版</h3>
-                <p class="pricing-desc">适合大型企业和组织</p>
-                <div class="pricing-price">
-                    <span class="currency">¥</span>
-                    <span class="amount">定制</span>
+                <div class="security-card">
+                    <div class="security-icon">🔐</div>
+                    <div class="security-content">
+                        <h4>统一认证接入</h4>
+                        <p>通过飞书 OAuth 统一认证，员工使用飞书账号登录，无需额外注册，身份认证安全可靠。</p>
+                    </div>
                 </div>
-                <ul class="pricing-features">
-                    <li>无限实例数量</li>
-                    <li>高可用集群部署</li>
-                    <li>SSO/SAML 集成</li>
-                    <li>7×24 专属支持</li>
-                    <li>自定义插件开发</li>
-                    <li>现场培训和咨询</li>
-                </ul>
-                <a href="#cta" class="btn btn-secondary">联系销售</a>
+                <div class="security-card">
+                    <div class="security-icon">📋</div>
+                    <div class="security-content">
+                        <h4>操作审计日志</h4>
+                        <p>记录所有用户操作和系统变更，管理员可追溯实例创建、凭证使用、配置变更等关键操作。</p>
+                    </div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🛡️</div>
+                    <div class="security-content">
+                        <h4>凭证安全管理</h4>
+                        <p>API Key 和 Token 通过凭证池统一管理，支持轮换和回收，避免凭证泄露风险。</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1340,61 +1236,61 @@
         <div class="faq-content">
             <div class="section-header">
                 <h2>常见问题</h2>
-                <p>关于 DevOps Claw 的常见问题解答</p>
+                <p>关于 DevOps Claw 的内部常见问题解答</p>
             </div>
             <div class="faq-list">
                 <div class="faq-item">
                     <div class="faq-question">
-                        DevOps Claw 与原版 OpenClaw 有什么区别？
+                        DevOps Claw 是什么？和飞书 OpenClaw 有什么关系？
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        DevOps Claw 是原版 OpenClaw 的企业级部署方案，保留了 OpenClaw 的所有核心功能。在此基础上，我们提供了更简单的部署方式、更强大的管理控制台、更完善的企业级安全功能，以及专业的技术支持服务。
+                        DevOps Claw 是公司内部自建的 OpenClaw（开源 AI 助手平台）托管服务，产品灵感来自飞书 OpenClaw。简单理解：OpenClaw 是开源项目，飞书 OpenClaw 是飞书提供的托管版本，DevOps Claw 是我们公司内部搭建的版本。区别在于所有数据运行在公司内网，安全可控。
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        部署需要多长时间？
+                        如何创建自己的 AI 助手？
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        使用我们的一键部署工具，通常在 5 分钟内即可完成完整的环境搭建和实例启动。对于 Kubernetes 环境，我们也提供了 Helm Chart，可以快速集成到现有集群中。
+                        登录平台后，在首页点击"创建助手"按钮，填写助手名称和基本配置即可。系统会自动完成 VM 分配、OpenClaw 安装等底层操作，通常几分钟内就能完成。创建成功后，你可以通过 Gateway Dashboard 进行个性化配置。
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        支持哪些即时通讯平台？
+                        创建 AI 助手需要管理员审批吗？
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        目前我们支持飞书、钉钉、企业微信、Slack、Discord 等主流 IM 平台。我们会持续增加对更多平台的支持，您也可以基于我们的 SDK 开发自定义适配器。
+                        实例创建本身是自动化的，不需要审批。但如果你想将 AI 助手接入飞书对话，需要管理员审批飞书长连接申请并完成 WebSocket 对接配置。这是为了确保飞书集成的安全性和规范性。
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        如何确保数据安全？
+                        我的对话数据安全吗？
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        DevOps Claw 采用私有化部署模式，所有数据存储在企业自有服务器上，不出企业内网。同时我们提供完整的权限控制、审计日志、传输加密等安全功能，并通过了多项国际安全认证。
+                        所有 AI 助手实例运行在公司内网，对话数据全程在企业内部流转，不会经过外部网络。平台还提供操作审计日志，关键操作都有记录可追溯。你可以放心在助手中讨论工作相关的内容。
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        是否支持自定义插件开发？
+                        遇到问题应该找谁？
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        是的，我们提供完整的插件开发 SDK 和文档，支持使用 Python、JavaScript 等语言开发自定义插件。企业版用户还可以获得我们的插件开发支持和审核服务。
+                        如果是使用问题，可以在飞书群"DevOps Claw 交流群"中提问。如果是实例运行异常或功能 Bug，可以通过飞书机器人提交工单，DevOps 团队会尽快响应处理。
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        提供免费试用吗？
+                        可以安装自定义插件吗？
                         <span>+</span>
                     </div>
                     <div class="faq-answer">
-                        是的，我们提供 14 天的专业版免费试用，无需信用卡。试用期间您可以体验所有专业版功能，我们的技术团队也会协助您完成部署和配置。
+                        可以。通过 Gateway Dashboard 可以安装 OpenClaw 官方插件和社区插件。如果你需要开发自定义插件来对接公司内部系统，可以联系 DevOps 团队获取技术支持。
                     </div>
                 </div>
             </div>
@@ -1402,10 +1298,10 @@
     </section>
 
     <!-- CTA Section -->
-    <section id="cta" class="cta">
-        <h2>准备好开始使用了吗？</h2>
-        <p>加入 100+ 企业，让 AI 助手为您的 DevOps 团队赋能</p>
-        <a href="#" class="btn btn-white">免费试用 14 天</a>
+    <section class="cta">
+        <h2>准备好创建你的 AI 助手了吗？</h2>
+        <p>登录平台，一键创建专属 AI 助手，让 AI 融入你的日常工作</p>
+        <a href="/" class="btn btn-white">立即体验</a>
     </section>
 
     <!-- Footer -->
@@ -1414,51 +1310,41 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="logo">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D6B9"/>
-                            <path d="M2 17L12 22L22 17" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M2 12L12 17L22 12" stroke="#00D6B9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <span class="logo-icon">🦞</span>
                         <span class="logo-text">DevOps Claw</span>
                     </div>
-                    <p>企业级 OpenClaw 部署方案，让 AI 助手安全地运行在您的企业内网。</p>
+                    <p>公司内部 OpenClaw 托管平台，让每位员工都能拥有专属 AI 助手。</p>
                 </div>
                 <div class="footer-column">
-                    <h4>产品</h4>
+                    <h4>平台</h4>
                     <ul>
-                        <li><a href="#features">功能特性</a></li>
-                        <li><a href="#pricing">定价方案</a></li>
-                        <li><a href="#">更新日志</a></li>
-                        <li><a href="#">路线图</a></li>
+                        <li><a href="/">进入平台</a></li>
+                        <li><a href="#features">核心功能</a></li>
+                        <li><a href="changelog.html">更新日志</a></li>
+                        <li><a href="prd.html">产品文档</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>文档</h4>
+                    <h4>使用指南</h4>
                     <ul>
-                        <li><a href="#">快速开始</a></li>
-                        <li><a href="#">部署指南</a></li>
-                        <li><a href="#">API 文档</a></li>
-                        <li><a href="#">插件开发</a></li>
+                        <li><a href="#deployment">使用流程</a></li>
+                        <li><a href="#architecture">系统架构</a></li>
+                        <li><a href="#faq">常见问题</a></li>
+                        <li><a href="#">飞书对接指南</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>支持</h4>
                     <ul>
-                        <li><a href="#">帮助中心</a></li>
-                        <li><a href="#">社区论坛</a></li>
-                        <li><a href="#">联系销售</a></li>
-                        <li><a href="#">状态页</a></li>
+                        <li><a href="#">飞书交流群</a></li>
+                        <li><a href="#">提交工单</a></li>
+                        <li><a href="#">问题反馈</a></li>
+                        <li><a href="#">DevOps 团队</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>Copyright © 2026 DevOps Claw Team. All rights reserved.</p>
-                <div class="footer-social">
-                    <a href="#">📧</a>
-                    <a href="#">💬</a>
-                    <a href="#">🐦</a>
-                    <a href="#">💻</a>
-                </div>
+                <p>Copyright © 2026 DevOps Claw Team. 内部使用，请勿外传。</p>
             </div>
         </div>
     </footer>

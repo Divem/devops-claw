@@ -1,6 +1,7 @@
 <template>
-  <n-modal :show="show" :mask-closable="false">
+  <n-modal :show="show" :mask-closable="true">
     <div class="login-modal">
+      <n-button quaternary circle size="small" class="modal-close" @click="handleClose">✕</n-button>
       <div class="login-header">
         <span class="login-icon">🔐</span>
         <h3 class="login-title">域账号登录</h3>
@@ -53,14 +54,20 @@ import { NModal, NForm, NFormItem, NInput, NButton } from 'naive-ui'
 import { useAuthStore } from '@/stores/auth'
 
 defineProps<{ show: boolean }>()
+const emit = defineEmits<{ close: [] }>()
 
 const authStore = useAuthStore()
 
 const form = ref({ username: '', password: '' })
 const errorMessage = ref('')
-const formRef = ref()
 
 const canSubmit = computed(() => form.value.username.trim() !== '' && form.value.password.trim() !== '')
+
+function handleClose() {
+  form.value = { username: '', password: '' }
+  errorMessage.value = ''
+  emit('close')
+}
 
 async function handleSubmit() {
   if (!canSubmit.value || authStore.isLoading) return
@@ -82,6 +89,13 @@ async function handleSubmit() {
   padding: 24px;
   width: 480px;
   max-width: 90vw;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
 }
 
 .login-header {

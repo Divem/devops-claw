@@ -158,6 +158,7 @@ const isValid = computed(() => {
   if (!isEdit.value) {
     if (!form.imageUrl.trim()) return false
     if (!form.version.trim()) return false
+  }
   return true
 })
 
