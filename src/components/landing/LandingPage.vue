@@ -9,7 +9,7 @@
         </div>
         
         <nav class="header-nav">
-          <a href="#" class="header-link">Claw 体验指南</a>
+          <a href="/html/landing.html" class="header-link">了解一下</a>
         </nav>
       </div>
     </header>
