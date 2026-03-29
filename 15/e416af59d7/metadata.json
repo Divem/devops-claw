@@ -3,12 +3,14 @@
   "checkpoint_id": "15e416af59d7",
   "strategy": "manual-commit",
   "branch": "v1",
-  "checkpoints_count": 4,
+  "checkpoints_count": 6,
   "files_touched": [
     "deploy-and-send.skill",
     "dist.zip",
     "docs/information-architecture.md",
+    "md/prompt-summary-30d.md",
     "public/html/index.html",
+    "public/html/landing.html",
     "public/html/prd.html",
     "src/components/landing/HeroSection.vue",
     "src/components/landing/LandingPage.vue"
@@ -25,13 +27,19 @@
       "transcript": "/15/e416af59d7/1/full.jsonl",
       "content_hash": "/15/e416af59d7/1/content_hash.txt",
       "prompt": "/15/e416af59d7/1/prompt.txt"
+    },
+    {
+      "metadata": "/15/e416af59d7/2/metadata.json",
+      "transcript": "/15/e416af59d7/2/full.jsonl",
+      "content_hash": "/15/e416af59d7/2/content_hash.txt",
+      "prompt": "/15/e416af59d7/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 165764,
+    "input_tokens": 244251,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 1429383,
-    "output_tokens": 20004,
-    "api_call_count": 34
+    "cache_read_tokens": 2420495,
+    "output_tokens": 36793,
+    "api_call_count": 53
   }
 }
