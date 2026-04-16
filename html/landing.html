@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Claw - 平台介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #006eff;
+            --primary-light: #e6f2ff;
+            --success: #67C23A;
+            --warning: #ff8800;
+            --danger: #f23030;
+            --text-title: #1a1a1a;
+            --text-body: #333333;
+            --text-secondary: #666666;
+            --bg-white: #ffffff;
+            --bg-page: #f5f5f5;
+            --border: #e5e5e5;
+            --brand-teal: #00D6B9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-body);
+            background: var(--bg-page);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-title);
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0052cc;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-body);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-page);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 24px 100px;
+            text-align: center;
+            background: linear-gradient(180deg, #ffffff 0%, #f7f7f7 100%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 13px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-cta .btn {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 40px 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #ffffff 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Capabilities Section */
+        .capabilities {
+            padding: 100px 24px;
+            background: var(--bg-white);
+        }
+
+        .capabilities-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .capability-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+
+        .capability-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .capability-row.reverse {
+            direction: rtl;
+        }
+
+        .capability-row.reverse > * {
+            direction: ltr;
+        }
+
+        .capability-visual {
+            background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .console-preview {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            color: #fff;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        .console-header {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .console-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .console-dot.red { background: #ff5f57; }
+        .console-dot.yellow { background: #febc2e; }
+        .console-dot.green { background: #28c840; }
+
+        .console-line {
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .console-line.prompt::before {
+            content: '$ ';
+            color: var(--brand-teal);
+        }
+
+        .console-line.success {
+            color: var(--success);
+        }
+
+        .capability-text h3 {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 20px;
+        }
+
+        .capability-text p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .capability-list {
+            list-style: none;
+        }
+
+        .capability-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-body);
+        }
+
+        .capability-list li::before {
+            content: '✓';
+            width: 22px;
+            height: 22px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Architecture Section */
+        .architecture {
+            padding: 100px 24px;
+            background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+        }
+
+        .architecture-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .architecture-diagram {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 60px;
+            border: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .arch-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 32px;
+            background: var(--bg-page);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .arch-layer:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .arch-layer-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .arch-layer-content h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 6px;
+        }
+
+        .arch-layer-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .arch-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        /* Deploy Flow Section */
+        .deploy-flow {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .flow-step {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            position: relative;
+            text-align: center;
+        }
+
+        .flow-step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .flow-step-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+
+        .flow-step h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .flow-step p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .flow-step .role-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .role-tag.admin {
+            background: #fff5f5;
+            color: var(--danger);
+        }
+
+        .role-tag.user {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Security Section */
+        .security {
+            padding: 100px 24px;
+            background: var(--bg-white);
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .security-card {
+            background: var(--bg-page);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 20px;
+        }
+
+        .security-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .security-content h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .security-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            padding: 100px 24px;
+        }
+
+        .use-cases-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .case-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .case-card:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        .case-card:hover h4,
+        .case-card:hover p {
+            color: white;
+        }
+
+        .case-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .case-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .case-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 100px 24px;
+            background: var(--bg-white);
+        }
+
+        .faq-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-list {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding-right: 40px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 24px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #0052cc 100%);
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta .btn {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            background: #f0f0f0;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: rgba(255, 255, 255, 0.65);
+            padding: 60px 24px 24px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 16px;
+        }
+
+        .footer-brand .logo-text {
+            color: white;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .capability-row {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .section-header h2 {
+                font-size: 28px;
+            }
+
+            .features-grid,
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .architecture-diagram {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🦞</span>
+                <span class="logo-text">DevOps Claw</span>
+            </div>
+            <nav class="nav">
+                <a href="#overview">项目简介</a>
+                <a href="#features">核心功能</a>
+                <a href="#architecture">系统架构</a>
+                <a href="#deployment">使用流程</a>
+                <a href="#faq">常见问题</a>
+            </nav>
+            <div class="header-actions">
+                <a href="/" class="btn btn-primary">进入平台</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="overview" class="hero">
+        <div class="hero-badge">内部平台 - DevOps Claw</div>
+        <h1>DevOps Claw<br><span>企业 AI 助手托管平台</span></h1>
+        <p class="hero-subtitle">
+            公司内部的 OpenClaw（开源 AI 助手平台）托管服务。让每位员工都能一键创建专属 AI 助手，接入飞书，拥有记忆和个性，安全地运行在企业内网中。
+        </p>
+        <div class="hero-cta">
+            <a href="/" class="btn btn-primary">
+                进入平台
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a href="#features" class="btn btn-secondary">了解更多</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">一键部署</div>
+                <div class="stat-label">自动化 VM + OpenClaw 安装</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">飞书集成</div>
+                <div class="stat-label">WebSocket 长连接，直接对话</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">企业内网</div>
+                <div class="stat-label">数据不出公司，安全可控</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">完整功能</div>
+                <div class="stat-label">原版 OpenClaw，能力无损</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>核心功能</h2>
+            <p>基于开源 OpenClaw，提供企业级托管能力</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>一键创建 AI 助手</h3>
+                <p>员工无需了解技术细节，在平台上填写名称即可一键创建专属 OpenClaw 实例。系统自动完成 VM 分配、OpenClaw 安装和 Gateway 启动。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🦞</div>
+                <h3>原版 OpenClaw 体验</h3>
+                <p>每个实例都是完整的 OpenClaw，拥有独特个性、长期记忆、多 Agent 编排能力，以及内置的官方集成插件，不阉割任何功能。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>飞书深度集成</h3>
+                <p>通过飞书 WebSocket 长连接，你的 AI 助手可以直接在飞书群聊或私聊中使用，就像和同事聊天一样自然。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>数据不出企业</h3>
+                <p>所有 AI 助手实例运行在公司内网，对话数据、记忆数据全程在企业内部流转，满足数据安全和合规要求。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>DevOps 工具链集成</h3>
+                <p>内置 GitLab、Jenkins、Kubernetes、Prometheus 等 DevOps 工具插件，让 AI 助手真正融入日常开发运维流程。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>管理控制台</h3>
+                <p>管理员可通过后台统一监控所有实例状态、管理凭证池、审批长连接申请、配置资源配额，运维工作一目了然。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="capabilities">
+        <div class="capabilities-content">
+            <div class="section-header">
+                <h2>平台能力</h2>
+                <p>面向员工和管理员的双端设计，满足不同角色的使用需求</p>
+            </div>
+
+            <div class="capability-row">
+                <div class="capability-visual">
+                    <div class="console-preview">
+                        <div class="console-header">
+                            <div class="console-dot red"></div>
+                            <div class="console-dot yellow"></div>
+                            <div class="console-dot green"></div>
+                        </div>
+                        <div class="console-line prompt">claw create --name "我的助手" --personality "严谨"</div>
+                        <div class="console-line">✓ 正在分配 VM 资源...</div>
+                        <div class="console-line">✓ 安装 OpenClaw 运行环境</div>
+                        <div class="console-line">✓ 启动 Gateway 服务</div>
+                        <div class="console-line success">✓ 创建成功！访问: https://claw.internal/my-assistant</div>
+                        <div class="console-line prompt">claw list</div>
+                        <div class="console-line">实例列表: 我的助手 🟢 运行中 | 运行时长: 2d 3h</div>
+                    </div>
+                </div>
+                <div class="capability-text">
+                    <h3>员工端：一键创建，即刻使用</h3>
+                    <p>员工在前台页面填写基本信息即可创建专属 AI 助手，系统自动完成所有底层部署工作。创建后可直接在飞书中与助手对话，也可以通过 Gateway Dashboard 进行个性化配置。</p>
+                    <ul class="capability-list">
+                        <li>Web 表单一键创建，无需技术背景</li>
+                        <li>自动 VM 分配与 OpenClaw 安装</li>
+                        <li>飞书对话集成，开箱即用</li>
+                        <li>Gateway Dashboard 个性化配置</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="capability-row reverse">
+                <div class="capability-visual">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div style="background: #006eff; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">24</div>
+                            <div style="font-size: 13px; opacity: 0.9;">运行实例</div>
+                        </div>
+                        <div style="background: #67C23A; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">22</div>
+                            <div style="font-size: 13px; opacity: 0.9;">正常</div>
+                        </div>
+                        <div style="background: #909399; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">1</div>
+                            <div style="font-size: 13px; opacity: 0.9;">已停止</div>
+                        </div>
+                        <div style="background: #f23030; color: white; padding: 24px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">1</div>
+                            <div style="font-size: 13px; opacity: 0.9;">待处理</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="capability-text">
+                    <h3>管理端：集中管控，全局可视</h3>
+                    <p>管理员通过后台控制台统一监控所有 AI 助手实例的运行状态、资源使用情况，管理凭证池和 API Key，审批飞书长连接申请，并配置各团队的资源配额。</p>
+                    <ul class="capability-list">
+                        <li>实例监控与资源使用统计</li>
+                        <li>凭证池管理与 API Key 分配</li>
+                        <li>飞书长连接审批流程</li>
+                        <li>团队资源配额配置</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="capability-row">
+                <div class="capability-visual">
+                    <div style="background: #1e1e1e; border-radius: 8px; padding: 20px; font-family: 'Consolas', monospace; font-size: 13px; color: #d4d4d4;">
+                        <div style="color: #6a9955;"># DevOps Claw 产品关系</div>
+                        <div style="margin-top: 12px;"><span style="color: #569cd6;">OpenClaw</span> <span style="color: #9cdcfe;">(开源项目)</span></div>
+                        <div style="padding-left: 16px;">└── <span style="color: #569cd6;">飞书 OpenClaw</span> <span style="color: #9cdcfe;">(飞书托管)</span></div>
+                        <div style="padding-left: 32px;">└── <span style="color: #569cd6;">DevOps Claw</span> <span style="color: #9cdcfe;">(本项目 · 内部自建)</span></div>
+                        <div style="margin-top: 12px;"><span style="color: #9cdcfe;">定位:</span> <span style="color: #ce9178;">企业内部 AI 助手托管平台</span></div>
+                        <div><span style="color: #9cdcfe;">参考:</span> <span style="color: #ce9178;">模仿飞书 OpenClaw 的产品体验</span></div>
+                        <div><span style="color: #9cdcfe;">部署:</span> <span style="color: #ce9178;">内网 VM + Kubernetes + 飞书 OAuth</span></div>
+                    </div>
+                </div>
+                <div class="capability-text">
+                    <h3>产品定位与背景</h3>
+                    <p>DevOps Claw 的定位是公司内部的 OpenClaw 托管服务，产品灵感来自飞书 OpenClaw（飞书版托管方案）。我们的目标是让每位员工都能像使用飞书 OpenClaw 一样，轻松拥有专属 AI 助手，同时确保所有数据留在公司内部。</p>
+                    <ul class="capability-list">
+                        <li>OpenClaw → 飞书 OpenClaw → DevOps Claw</li>
+                        <li>模仿飞书 OpenClaw 的产品体验</li>
+                        <li>适配公司现有的基础设施和安全要求</li>
+                        <li>面向内部员工，完全免费</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="architecture">
+        <div class="architecture-content">
+            <div class="section-header">
+                <h2>系统架构</h2>
+                <p>三层架构设计，前后端分离，灵活可扩展</p>
+            </div>
+            <div class="architecture-diagram">
+                <div class="arch-layers">
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">👥</div>
+                        <div class="arch-layer-content">
+                            <h4>员工端前台</h4>
+                            <p>一键创建 OpenClaw、项目管理、跳转 Gateway Dashboard / 飞书聊天。基于 Vue 3 + TypeScript + Tailwind CSS 构建。</p>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">🎛️</div>
+                        <div class="arch-layer-content">
+                            <h4>管理端后台</h4>
+                            <p>实例监控、凭证池管理（API Key / Token）、飞书长连接审批、团队资源配额配置、操作审计日志。</p>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer">
+                        <div class="arch-layer-icon">⚙️</div>
+                        <div class="arch-layer-content">
+                            <h4>后端服务</h4>
+                            <p>编排引擎（VM 生命周期管理）、飞书集成服务（OAuth / WebSocket）、监控服务、API Gateway。统一对外提供 RESTful API。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deploy Flow Section -->
+    <section id="deployment" class="deploy-flow">
+        <div class="section-header">
+            <h2>使用流程</h2>
+            <p>三步完成从创建到对话的全流程</p>
+        </div>
+        <div class="flow-steps">
+            <div class="flow-step">
+                <div class="flow-step-number">1</div>
+                <div class="flow-step-icon">🔑</div>
+                <h4>管理员准备凭证</h4>
+                <p>管理员在后台配置 API Key、Token 等凭证，添加到凭证池中，确保创建实例时有可用的凭证资源。</p>
+                <span class="role-tag admin">管理员操作</span>
+            </div>
+            <div class="flow-step">
+                <div class="flow-step-number">2</div>
+                <div class="flow-step-icon">⚡</div>
+                <h4>员工一键创建</h4>
+                <p>员工在前台页面填写 AI 助手名称和偏好，点击创建。系统自动完成 VM 分配、OpenClaw 安装和 Gateway 启动。</p>
+                <span class="role-tag user">员工操作</span>
+            </div>
+            <div class="flow-step">
+                <div class="flow-step-number">3</div>
+                <div class="flow-step-icon">💬</div>
+                <h4>管理员配置飞书连接</h4>
+                <p>管理员审批飞书长连接申请，配置 WebSocket 对接后，员工即可在飞书中直接与 AI 助手对话。</p>
+                <span class="role-tag admin">管理员操作</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases">
+        <div class="use-cases-content">
+            <div class="section-header">
+                <h2>适用场景</h2>
+                <p>AI 助手可以在日常工作中为你做什么</p>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-icon">🚀</div>
+                    <h4>CI/CD 助手</h4>
+                    <p>自动触发构建部署，查询流水线状态</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📊</div>
+                    <h4>监控告警</h4>
+                    <p>智能分析监控数据，自动告警通知</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">🐛</div>
+                    <h4>故障排查</h4>
+                    <p>协助分析日志，快速定位问题根因</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📅</div>
+                    <h4>日程管理</h4>
+                    <p>安排日程、创建任务、跟踪进度</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📚</div>
+                    <h4>知识库问答</h4>
+                    <p>基于公司文档的智能问答</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">🔧</div>
+                    <h4>运维自动化</h4>
+                    <p>批量操作、定时任务、脚本执行</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📝</div>
+                    <h4>会议纪要</h4>
+                    <p>自动整理会议记录，生成待办事项</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-icon">📈</div>
+                    <h4>数据分析</h4>
+                    <p>生成报表、数据可视化、趋势分析</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="security">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="section-header">
+                <h2>安全保障</h2>
+                <p>数据不出企业，全程可控可审计</p>
+            </div>
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon">🏢</div>
+                    <div class="security-content">
+                        <h4>内网隔离部署</h4>
+                        <p>所有 AI 助手实例运行在公司内网 VM 中，数据不经过外部网络，从根源上杜绝数据泄露风险。</p>
+                    </div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🔐</div>
+                    <div class="security-content">
+                        <h4>统一认证接入</h4>
+                        <p>通过飞书 OAuth 统一认证，员工使用飞书账号登录，无需额外注册，身份认证安全可靠。</p>
+                    </div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">📋</div>
+                    <div class="security-content">
+                        <h4>操作审计日志</h4>
+                        <p>记录所有用户操作和系统变更，管理员可追溯实例创建、凭证使用、配置变更等关键操作。</p>
+                    </div>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🛡️</div>
+                    <div class="security-content">
+                        <h4>凭证安全管理</h4>
+                        <p>API Key 和 Token 通过凭证池统一管理，支持轮换和回收，避免凭证泄露风险。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq">
+        <div class="faq-content">
+            <div class="section-header">
+                <h2>常见问题</h2>
+                <p>关于 DevOps Claw 的内部常见问题解答</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        DevOps Claw 是什么？和飞书 OpenClaw 有什么关系？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        DevOps Claw 是公司内部自建的 OpenClaw（开源 AI 助手平台）托管服务，产品灵感来自飞书 OpenClaw。简单理解：OpenClaw 是开源项目，飞书 OpenClaw 是飞书提供的托管版本，DevOps Claw 是我们公司内部搭建的版本。区别在于所有数据运行在公司内网，安全可控。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        如何创建自己的 AI 助手？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        登录平台后，在首页点击"创建助手"按钮，填写助手名称和基本配置即可。系统会自动完成 VM 分配、OpenClaw 安装等底层操作，通常几分钟内就能完成。创建成功后，你可以通过 Gateway Dashboard 进行个性化配置。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        创建 AI 助手需要管理员审批吗？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        实例创建本身是自动化的，不需要审批。但如果你想将 AI 助手接入飞书对话，需要管理员审批飞书长连接申请并完成 WebSocket 对接配置。这是为了确保飞书集成的安全性和规范性。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        我的对话数据安全吗？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        所有 AI 助手实例运行在公司内网，对话数据全程在企业内部流转，不会经过外部网络。平台还提供操作审计日志，关键操作都有记录可追溯。你可以放心在助手中讨论工作相关的内容。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        遇到问题应该找谁？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        如果是使用问题，可以在飞书群"DevOps Claw 交流群"中提问。如果是实例运行异常或功能 Bug，可以通过飞书机器人提交工单，DevOps 团队会尽快响应处理。
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        可以安装自定义插件吗？
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        可以。通过 Gateway Dashboard 可以安装 OpenClaw 官方插件和社区插件。如果你需要开发自定义插件来对接公司内部系统，可以联系 DevOps 团队获取技术支持。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>准备好创建你的 AI 助手了吗？</h2>
+        <p>登录平台，一键创建专属 AI 助手，让 AI 融入你的日常工作</p>
+        <a href="/" class="btn btn-white">立即体验</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">🦞</span>
+                        <span class="logo-text">DevOps Claw</span>
+                    </div>
+                    <p>公司内部 OpenClaw 托管平台，让每位员工都能拥有专属 AI 助手。</p>
+                </div>
+                <div class="footer-column">
+                    <h4>平台</h4>
+                    <ul>
+                        <li><a href="/">进入平台</a></li>
+                        <li><a href="#features">核心功能</a></li>
+                        <li><a href="changelog.html">更新日志</a></li>
+                        <li><a href="prd.html">产品文档</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>使用指南</h4>
+                    <ul>
+                        <li><a href="#deployment">使用流程</a></li>
+                        <li><a href="#architecture">系统架构</a></li>
+                        <li><a href="#faq">常见问题</a></li>
+                        <li><a href="#">飞书对接指南</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>支持</h4>
+                    <ul>
+                        <li><a href="#">飞书交流群</a></li>
+                        <li><a href="#">提交工单</a></li>
+                        <li><a href="#">问题反馈</a></li>
+                        <li><a href="#">DevOps 团队</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright © 2026 DevOps Claw Team. 内部使用，请勿外传。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const icon = this.querySelector('span');
+                if (answer.style.display === 'none' || !answer.style.display) {
+                    answer.style.display = 'block';
+                    icon.textContent = '−';
+                } else {
+                    answer.style.display = 'none';
+                    icon.textContent = '+';
+                }
+            });
+        });
+
+        // Initialize FAQ answers as visible
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
