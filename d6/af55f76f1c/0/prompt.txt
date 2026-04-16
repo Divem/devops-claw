@@ -10,3 +10,7 @@ content.js:1 IS_SAFARI false  打开后 404
 ---
 
 点击进入平台后 404 页面,为什么https://divem.github.io/是 404,必须用 deops-claw吗
+
+---
+
+我配置 claw.yuanwen.xyz后,还是要带devops-claw 吗,其他项目只需要域名就好了啊
