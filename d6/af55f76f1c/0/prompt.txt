@@ -1,0 +1,12 @@
+lockdown-install.js:1 SES Removing unpermitted intrinsics
+devops-claw/:9  GET https://divem.github.io/devops-claw/assets/_plugin-vue_export-helper-1acTymw5.js net::ERR_ABORTED 404 (Not Found)
+content.js:1 chrome
+content.js:1 IS_SAFARI false  打开后 404
+
+---
+
+1. 图片没有正常显示;点击了解一下后是 404
+
+---
+
+点击进入平台后 404 页面,为什么https://divem.github.io/是 404,必须用 deops-claw吗
