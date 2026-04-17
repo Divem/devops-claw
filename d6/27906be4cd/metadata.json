@@ -3,9 +3,18 @@
   "checkpoint_id": "d627906be4cd",
   "strategy": "manual-commit",
   "branch": "v1",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
-    ".DS_Store"
+    ".DS_Store",
+    "src/App.vue",
+    "src/components/CompleteModal.vue",
+    "src/components/CreateModal.vue",
+    "src/components/ProgressModal.vue",
+    "src/components/admin/AdminLayout.vue",
+    "src/mocks/handlers.ts",
+    "src/router/index.ts",
+    "src/stores/admin.ts",
+    "src/views/admin/AdminDashboard.vue"
   ],
   "sessions": [
     {
@@ -13,13 +22,19 @@
       "transcript": "/d6/27906be4cd/0/full.jsonl",
       "content_hash": "/d6/27906be4cd/0/content_hash.txt",
       "prompt": "/d6/27906be4cd/0/prompt.txt"
+    },
+    {
+      "metadata": "/d6/27906be4cd/1/metadata.json",
+      "transcript": "/d6/27906be4cd/1/full.jsonl",
+      "content_hash": "/d6/27906be4cd/1/content_hash.txt",
+      "prompt": "/d6/27906be4cd/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 19,
-    "cache_creation_tokens": 103923,
-    "cache_read_tokens": 32328,
-    "output_tokens": 10847,
-    "api_call_count": 4
+    "input_tokens": 39,
+    "cache_creation_tokens": 191021,
+    "cache_read_tokens": 118542,
+    "output_tokens": 11953,
+    "api_call_count": 8
   }
 }
