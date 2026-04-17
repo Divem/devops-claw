@@ -2,7 +2,7 @@
   <n-modal :show="show" :mask-closable="false" :closable="false">
     <div class="progress-modal">
       <div class="modal-header">
-        <h2 class="modal-title">正在创建 OpenClaw 项目</h2>
+        <h2 class="modal-title">{{ titleText }}</h2>
         <p class="modal-subtitle">一键接入飞书，创建预计耗时 1 分钟。</p>
       </div>
 
@@ -45,27 +45,42 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { NModal, NButton } from 'naive-ui'
-import type { StepInfo, ProgressStep } from '@/types/project'
 
-const props = defineProps<{
+type AgentType = 'openclaw' | 'hermes'
+
+interface GenericStepInfo {
+  key: string
+  label: string
+  status: 'pending' | 'running' | 'done' | 'error'
+  elapsed?: number
+}
+
+const props = withDefaults(defineProps<{
   show: boolean
-  steps: StepInfo[]
+  steps: GenericStepInfo[]
   skippedBotConfig?: boolean
-}>()
+  agentType?: AgentType
+}>(), {
+  agentType: 'openclaw',
+})
 
 const emit = defineEmits<{
   retry: []
-  skipToStep: [step: ProgressStep]
+  skipToStep: [step: string]
 }>()
 
 const hasError = computed(() => props.steps.some((s) => s.status === 'error'))
 
-// OpenClaw 步骤完成时可以点击跳转到下一步
-function isStepClickable(step: StepInfo): boolean {
-  return step.key === 'openclaw' && step.status === 'done'
+const titleText = computed(() =>
+  props.agentType === 'hermes' ? '正在创建 Hermes Agent' : '正在创建 OpenClaw 项目',
+)
+
+// Agent 主步骤（openclaw 或 hermes）完成时可以点击跳转到下一步
+function isStepClickable(step: GenericStepInfo): boolean {
+  return step.key === props.agentType && step.status === 'done'
 }
 
-function handleStepClick(step: StepInfo) {
+function handleStepClick(step: GenericStepInfo) {
   if (isStepClickable(step)) {
     emit('skipToStep', 'feishu')
   }

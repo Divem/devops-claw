@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import('@/views/ProjectAdmin.vue'),
     },
     {
+      path: '/hermes/:id/admin',
+      name: 'hermes-admin',
+      component: () => import('@/views/HermesAdmin.vue'),
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: () => import('@/components/admin/AdminLayout.vue'),
@@ -23,6 +28,11 @@ const router = createRouter({
           path: 'instances',
           name: 'admin-instances',
           component: () => import('@/views/admin/InstanceList.vue'),
+        },
+        {
+          path: 'hermes',
+          name: 'admin-hermes',
+          component: () => import('@/views/admin/HermesInstanceList.vue'),
         },
         {
           path: 'global-config',

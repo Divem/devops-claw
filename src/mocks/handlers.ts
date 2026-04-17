@@ -22,6 +22,19 @@ import {
 } from './adminData'
 import { getImages, createImage, updateImage, deleteImage } from './imageData'
 import { mockAuthLogin, mockAuthRefresh, mockAuthMe } from './data'
+import {
+  getHermesProject,
+  createHermesProject,
+  getHermesProgress,
+  deleteHermesProject,
+  updateHermesBotConfig,
+  getHermesInstances,
+  getHermesInstanceDetail,
+  executeHermesInstanceAction,
+  createHermesInstance,
+  getHermesInstanceCreateProgress,
+  getHermesProjectById,
+} from './hermesData'
 
 export const handlers = [
   // 认证接口
@@ -290,5 +303,110 @@ export const handlers = [
       return new HttpResponse(null, { status: 404 })
     }
     return new HttpResponse(null, { status: 204 })
+  }),
+
+  // ==================== Hermes 用户端接口 ====================
+
+  http.get('/api/hermes/project', async () => {
+    await delay(300)
+    const project = getHermesProject()
+    if (!project) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(project)
+  }),
+
+  http.post('/api/hermes/project', async ({ request }) => {
+    await delay(500)
+    const body = (await request.json()) as {
+      name: string
+      botName?: string
+      avatarUrl: string
+      appId?: string
+      appSecret?: string
+    }
+    const project = createHermesProject(body.name, body.avatarUrl, body.botName)
+    return HttpResponse.json(project, { status: 201 })
+  }),
+
+  http.get('/api/hermes/project/:id/progress', async () => {
+    await delay(1500)
+    const progress = getHermesProgress()
+    return HttpResponse.json(progress)
+  }),
+
+  http.delete('/api/hermes/project/:id', async () => {
+    await delay(300)
+    deleteHermesProject()
+    return new HttpResponse(null, { status: 204 })
+  }),
+
+  http.put('/api/hermes/project/:id/bot-config', async ({ request }) => {
+    await delay(300)
+    const body = (await request.json()) as { appId: string; appSecret: string }
+    const project = updateHermesBotConfig(body.appId, body.appSecret)
+    return HttpResponse.json(project)
+  }),
+
+  // ==================== Hermes 管理端接口 ====================
+
+  http.get('/api/admin/hermes-instances', async ({ request }) => {
+    await delay(300)
+    const url = new URL(request.url)
+    const result = getHermesInstances({
+      search: url.searchParams.get('search') || undefined,
+      status: url.searchParams.get('status') || undefined,
+      sort: url.searchParams.get('sort') || undefined,
+      order: url.searchParams.get('order') || undefined,
+      page: Number(url.searchParams.get('page')) || undefined,
+      pageSize: Number(url.searchParams.get('pageSize')) || undefined,
+    })
+    return HttpResponse.json(result)
+  }),
+
+  http.get('/api/admin/hermes-instances/:id', async ({ params }) => {
+    await delay(200)
+    const detail = getHermesInstanceDetail(params.id as string)
+    if (!detail) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(detail)
+  }),
+
+  http.post('/api/admin/hermes-instances/:id/action', async ({ params, request }) => {
+    await delay(500)
+    const body = (await request.json()) as { action: string }
+    const result = executeHermesInstanceAction(params.id as string, body.action)
+    if (!result) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(result)
+  }),
+
+  http.post('/api/admin/hermes-instances', async ({ request }) => {
+    await delay(800)
+    const body = (await request.json()) as { name: string; avatarUrl: string; appId?: string; appSecret?: string }
+    if (!body.name || !body.avatarUrl) {
+      return HttpResponse.json({ message: '参数缺失' }, { status: 400 })
+    }
+    const inst = createHermesInstance(body.name, body.avatarUrl, body.appId, body.appSecret)
+    return HttpResponse.json(inst, { status: 201 })
+  }),
+
+  http.get('/api/admin/hermes-instances/:id/progress', async ({ params, request }) => {
+    await delay(200)
+    const url = new URL(request.url)
+    const hasAppId = url.searchParams.get('hasAppId') === 'true'
+    const progress = getHermesInstanceCreateProgress(params.id as string, hasAppId)
+    return HttpResponse.json(progress)
+  }),
+
+  http.get('/api/hermes-projects/:id', async ({ params }) => {
+    await delay(300)
+    const project = getHermesProjectById(params.id as string)
+    if (!project) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json(project)
   }),
 ]

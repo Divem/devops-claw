@@ -6,7 +6,7 @@
   >
     <div class="create-modal">
       <div class="modal-header">
-        <h2 class="modal-title">创建 OpenClaw 项目</h2>
+        <h2 class="modal-title">{{ titleText }}</h2>
         <p class="modal-subtitle">一键接入飞书，创建预计耗时 1 分钟。</p>
         <n-button
           quaternary
@@ -85,7 +85,7 @@
           style="text-align: center; margin-top: 12px"
           @click="handleSkipAndCreate"
         >
-          跳过机器人配置，先直接创建OpenClaw
+          {{ skipText }}
         </p>
       </div>
     </div>
@@ -97,14 +97,31 @@ import { reactive, computed, watch } from 'vue'
 import { NModal, NInput, NButton, NAvatar } from 'naive-ui'
 import { avatarList } from '@/mocks/data'
 
-const props = defineProps<{
+type AgentType = 'openclaw' | 'hermes'
+
+const props = withDefaults(defineProps<{
   show: boolean
-}>()
+  agentType?: AgentType
+}>(), {
+  agentType: 'openclaw',
+})
 
 const emit = defineEmits<{
   close: []
   submit: [payload: { name: string; avatarUrl: string; appId?: string; appSecret?: string }]
 }>()
+
+const titleText = computed(() =>
+  props.agentType === 'hermes' ? '创建 Hermes Agent' : '创建 OpenClaw 项目',
+)
+const skipText = computed(() =>
+  props.agentType === 'hermes'
+    ? '跳过机器人配置，先直接创建 Hermes'
+    : '跳过机器人配置，先直接创建OpenClaw',
+)
+const defaultName = computed(() =>
+  props.agentType === 'hermes' ? '达尔文的Hermes' : '达尔文的OpenClaw',
+)
 
 const form = reactive({
   name: '',
@@ -120,7 +137,7 @@ watch(() => props.show, (newShow) => {
       form.avatarUrl = avatarList[0]
     }
     if (!form.name.trim()) {
-      form.name = '达尔文的OpenClaw'
+      form.name = defaultName.value
     }
   }
 })

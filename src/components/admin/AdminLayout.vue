@@ -58,7 +58,8 @@ const store = useProjectStore()
 
 const menuItems = [
   { key: 'dashboard', label: '仪表盘', icon: '📊', to: '/admin/dashboard' },
-  { key: 'instances', label: '实例管理', icon: '🖥️', to: '/admin/instances' },
+  { key: 'instances', label: 'OpenClaw 实例', icon: '🦞', to: '/admin/instances' },
+  { key: 'hermes', label: 'Hermes 实例', icon: '🪽', to: '/admin/hermes' },
   { key: 'images', label: '镜像管理', icon: '📦', to: '/admin/images' },
   { key: 'global-config', label: '全局配置', icon: '⚙️', to: '/admin/global-config' },
   { key: 'approvals', label: '审批管理', icon: '✅', to: '/admin/approvals' },

@@ -1,6 +1,10 @@
 <template>
   <div class="admin-dashboard">
-    <!-- 统计卡片 -->
+    <!-- OpenClaw 统计卡片 -->
+    <div class="stats-section-title">
+      <span class="section-logo">🦞</span>
+      <span>OpenClaw 实例</span>
+    </div>
     <div class="stats-grid">
       <div class="stat-card clickable" @click="navigateTo('/admin/instances')">
         <div class="stat-icon total">📦</div>
@@ -27,6 +31,42 @@
         <div class="stat-icon error">⚠️</div>
         <div class="stat-info">
           <div class="stat-value">{{ stats.errorInstances }}</div>
+          <div class="stat-label">异常</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hermes 统计卡片 -->
+    <div class="stats-section-title">
+      <span class="section-logo">🪽</span>
+      <span>Hermes 实例</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card clickable" @click="navigateTo('/admin/hermes')">
+        <div class="stat-icon total">📦</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ hermesStats.totalInstances }}</div>
+          <div class="stat-label">实例总数</div>
+        </div>
+      </div>
+      <div class="stat-card clickable" @click="navigateTo('/admin/hermes', { status: 'running' })">
+        <div class="stat-icon running">🟢</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ hermesStats.runningInstances }}</div>
+          <div class="stat-label">运行中</div>
+        </div>
+      </div>
+      <div class="stat-card clickable" @click="navigateTo('/admin/hermes', { status: 'stopped' })">
+        <div class="stat-icon stopped">🔴</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ hermesStats.stoppedInstances }}</div>
+          <div class="stat-label">已停止</div>
+        </div>
+      </div>
+      <div class="stat-card clickable" @click="navigateTo('/admin/hermes', { status: 'error' })">
+        <div class="stat-icon error">⚠️</div>
+        <div class="stat-info">
+          <div class="stat-value">{{ hermesStats.errorInstances }}</div>
           <div class="stat-label">异常</div>
         </div>
       </div>
@@ -137,12 +177,20 @@ import InteractiveTrendChart from '@/components/dashboard/InteractiveTrendChart.
 import TimeRangeSelector from '@/components/dashboard/TimeRangeSelector.vue'
 import { useTrendData } from '@/composables/useTrendData'
 import { getDashboardData } from '@/mocks/data'
+import { getHermesDashboardStats } from '@/mocks/hermesData'
 import type { TimeRange, TodoItem, DashboardStats, ResourceUsage } from '@/types/dashboard'
 
 const router = useRouter()
 const { trendData, currentRange, isLoading, loadData, setTimeRange, refresh } = useTrendData()
 
 const stats = ref<DashboardStats>({
+  totalInstances: 0,
+  runningInstances: 0,
+  stoppedInstances: 0,
+  errorInstances: 0,
+})
+
+const hermesStats = ref<DashboardStats>({
   totalInstances: 0,
   runningInstances: 0,
   stoppedInstances: 0,
@@ -171,6 +219,11 @@ async function fetchDashboardData() {
   } catch {
     // 静默失败，保持默认值
   }
+  try {
+    hermesStats.value = getHermesDashboardStats()
+  } catch {
+    // 静默失败
+  }
 }
 
 async function handleTimeRangeChange(range: TimeRange) {
@@ -193,6 +246,21 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .admin-dashboard {
+}
+
+/* 统计分区标题 */
+.stats-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: @textColorTitle;
+  margin-bottom: 12px;
+}
+
+.section-logo {
+  font-size: 16px;
 }
 
 /* 统计卡片 */
