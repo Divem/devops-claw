@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "677aa38406f1",
+  "session_id": "ses_265aee246ffeW5u2x4Gxmz9Qza",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-17T10:11:43.930943Z",
+  "branch": "v1",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "vite.config.ts"
+  ],
+  "agent": "OpenCode",
+  "turn_id": "a086d23618f5",
+  "initial_attribution": {
+    "calculated_at": "2026-04-17T10:11:43.930228Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
