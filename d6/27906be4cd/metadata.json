@@ -79,6 +79,12 @@
       "transcript": "/d6/27906be4cd/6/full.jsonl",
       "content_hash": "/d6/27906be4cd/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/d6/27906be4cd/7/metadata.json",
+      "transcript": "/d6/27906be4cd/7/full.jsonl",
+      "content_hash": "/d6/27906be4cd/7/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
