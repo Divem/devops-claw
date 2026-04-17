@@ -6,17 +6,34 @@
   "checkpoints_count": 4,
   "files_touched": [
     ".DS_Store",
+    ".opencode/package-lock.json",
+    "docs/DEVOPS产品团队产品系列和分工清单.md",
+    "docs/user-manual.md",
+    "generate_doc.cjs",
+    "openspec/changes/bot-config-publish-guide/.openspec.yaml",
+    "openspec/changes/bot-config-publish-guide/design.md",
+    "openspec/changes/bot-config-publish-guide/proposal.md",
+    "openspec/changes/bot-config-publish-guide/specs/bot-publish-guide/spec.md",
+    "openspec/changes/bot-config-publish-guide/tasks.md",
+    "prd.md",
     "src/App.vue",
+    "src/components/AgentTypeSelectModal.vue",
     "src/components/CompleteModal.vue",
     "src/components/CreateModal.vue",
+    "src/components/HermesAgentAdmin.vue",
+    "src/components/HermesProjectCard.vue",
     "src/components/ProgressModal.vue",
     "src/components/admin/AdminLayout.vue",
     "src/components/admin/HermesInstanceCreateModal.vue",
     "src/components/admin/HermesInstanceDrawer.vue",
     "src/components/admin/HermesInstanceTable.vue",
     "src/mocks/handlers.ts",
+    "src/mocks/hermesData.ts",
     "src/router/index.ts",
     "src/stores/admin.ts",
+    "src/stores/hermes.ts",
+    "src/types/hermes.ts",
+    "src/views/HermesAdmin.vue",
     "src/views/admin/AdminDashboard.vue",
     "src/views/admin/HermesInstanceList.vue"
   ],
@@ -38,6 +55,12 @@
       "transcript": "/d6/27906be4cd/2/full.jsonl",
       "content_hash": "/d6/27906be4cd/2/content_hash.txt",
       "prompt": "/d6/27906be4cd/2/prompt.txt"
+    },
+    {
+      "metadata": "/d6/27906be4cd/3/metadata.json",
+      "transcript": "/d6/27906be4cd/3/full.jsonl",
+      "content_hash": "/d6/27906be4cd/3/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
