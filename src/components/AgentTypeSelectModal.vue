@@ -28,7 +28,16 @@
           <div class="type-icon openclaw-icon">🦞</div>
           <div class="type-info">
             <div class="type-name">OpenClaw</div>
-            <div class="type-desc">企业级 AI 助手平台，支持飞书一键部署，适合日常办公场景。</div>
+            <div class="type-desc">{{ agentDetails.openclaw.description }}</div>
+            <a
+              class="type-link"
+              :href="agentDetails.openclaw.link"
+              target="_blank"
+              rel="noopener noreferrer"
+              @click.stop
+            >
+              了解更多 →
+            </a>
           </div>
           <n-button type="primary" size="small">选择</n-button>
         </div>
@@ -41,7 +50,16 @@
           <div class="type-icon hermes-icon">🪽</div>
           <div class="type-info">
             <div class="type-name">Hermes Agent</div>
-            <div class="type-desc">轻量级智能 Agent，专为任务编排与工具调用设计，响应更快。</div>
+            <div class="type-desc">{{ agentDetails.hermes.description }}</div>
+            <a
+              class="type-link"
+              :href="agentDetails.hermes.link"
+              target="_blank"
+              rel="noopener noreferrer"
+              @click.stop
+            >
+              了解更多 →
+            </a>
           </div>
           <n-button type="primary" size="small">选择</n-button>
         </div>
@@ -61,6 +79,19 @@ const emit = defineEmits<{
   close: []
   select: [type: 'openclaw' | 'hermes']
 }>()
+
+const agentDetails = {
+  openclaw: {
+    description:
+      '轻量敏捷的开源 AI 助手框架，强调模型选择自由与数据自主。适合追求极简部署、灵活自定义和快速上手的团队。',
+    link: 'https://openclaw.ai/',
+  },
+  hermes: {
+    description:
+      '具备持续进化能力的 24/7 自主代理，自动从经验中创建和优化技能。适合需要代理长期自主学习并处理复杂任务的企业场景。',
+    link: 'https://hermes-agent.nousresearch.com/',
+  },
+}
 
 function handleSelect(type: 'openclaw' | 'hermes') {
   emit('select', type)
@@ -159,5 +190,18 @@ function handleSelect(type: 'openclaw' | 'hermes') {
   font-size: 12px;
   color: @textColorPlaceholder;
   line-height: 1.5;
+}
+
+.type-link {
+  font-size: 12px;
+  color: @primaryColor;
+  text-decoration: none;
+  line-height: 1.5;
+  margin-top: 4px;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>
