@@ -3,7 +3,7 @@
   "checkpoint_id": "d627906be4cd",
   "strategy": "manual-commit",
   "branch": "v1",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     ".DS_Store",
     "src/App.vue",
@@ -11,10 +11,14 @@
     "src/components/CreateModal.vue",
     "src/components/ProgressModal.vue",
     "src/components/admin/AdminLayout.vue",
+    "src/components/admin/HermesInstanceCreateModal.vue",
+    "src/components/admin/HermesInstanceDrawer.vue",
+    "src/components/admin/HermesInstanceTable.vue",
     "src/mocks/handlers.ts",
     "src/router/index.ts",
     "src/stores/admin.ts",
-    "src/views/admin/AdminDashboard.vue"
+    "src/views/admin/AdminDashboard.vue",
+    "src/views/admin/HermesInstanceList.vue"
   ],
   "sessions": [
     {
@@ -28,13 +32,19 @@
       "transcript": "/d6/27906be4cd/1/full.jsonl",
       "content_hash": "/d6/27906be4cd/1/content_hash.txt",
       "prompt": "/d6/27906be4cd/1/prompt.txt"
+    },
+    {
+      "metadata": "/d6/27906be4cd/2/metadata.json",
+      "transcript": "/d6/27906be4cd/2/full.jsonl",
+      "content_hash": "/d6/27906be4cd/2/content_hash.txt",
+      "prompt": "/d6/27906be4cd/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 39,
-    "cache_creation_tokens": 191021,
-    "cache_read_tokens": 118542,
-    "output_tokens": 11953,
-    "api_call_count": 8
+    "input_tokens": 4654,
+    "cache_creation_tokens": 559640,
+    "cache_read_tokens": 8630201,
+    "output_tokens": 94446,
+    "api_call_count": 91
   }
 }

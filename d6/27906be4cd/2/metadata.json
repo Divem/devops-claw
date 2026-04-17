@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "d627906be4cd",
+  "session_id": "a575a725-ca86-4f77-8bd1-7d8504edd85a",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-17T08:36:06.8533Z",
+  "branch": "v1",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".DS_Store",
+    "src/App.vue",
+    "src/components/CompleteModal.vue",
+    "src/components/CreateModal.vue",
+    "src/components/ProgressModal.vue",
+    "src/components/admin/AdminLayout.vue",
+    "src/components/admin/HermesInstanceCreateModal.vue",
+    "src/components/admin/HermesInstanceDrawer.vue",
+    "src/components/admin/HermesInstanceTable.vue",
+    "src/mocks/handlers.ts",
+    "src/router/index.ts",
+    "src/stores/admin.ts",
+    "src/views/admin/AdminDashboard.vue",
+    "src/views/admin/HermesInstanceList.vue"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7",
+  "turn_id": "53e94e7238ca",
+  "token_usage": {
+    "input_tokens": 4615,
+    "cache_creation_tokens": 368619,
+    "cache_read_tokens": 8511659,
+    "output_tokens": 82493,
+    "api_call_count": 83
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-17T08:36:06.594166Z",
+    "agent_lines": 1693,
+    "human_added": 2741,
+    "human_modified": 45,
+    "human_removed": 0,
+    "total_committed": 4479,
+    "agent_percentage": 37.79861576244697
+  }
+}

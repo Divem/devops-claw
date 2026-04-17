@@ -1,0 +1,5 @@
+目前只支持 openclaw 的创建，需要再加一个 hermes Agent 的创建能力，用户端支持 hermes 创建和配置，管理端增加 hermes Agent的管理能力
+
+---
+
+继续
