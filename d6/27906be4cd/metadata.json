@@ -3,7 +3,7 @@
   "checkpoint_id": "d627906be4cd",
   "strategy": "manual-commit",
   "branch": "v1",
-  "checkpoints_count": 4,
+  "checkpoints_count": 9,
   "files_touched": [
     ".DS_Store",
     ".opencode/package-lock.json",
@@ -61,13 +61,19 @@
       "transcript": "/d6/27906be4cd/3/full.jsonl",
       "content_hash": "/d6/27906be4cd/3/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/d6/27906be4cd/4/metadata.json",
+      "transcript": "/d6/27906be4cd/4/full.jsonl",
+      "content_hash": "/d6/27906be4cd/4/content_hash.txt",
+      "prompt": "/d6/27906be4cd/4/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 4654,
+    "input_tokens": 43994,
     "cache_creation_tokens": 559640,
-    "cache_read_tokens": 8630201,
-    "output_tokens": 94446,
-    "api_call_count": 91
+    "cache_read_tokens": 8632761,
+    "output_tokens": 95695,
+    "api_call_count": 92
   }
 }
